@@ -1,0 +1,9 @@
+#IntelliJ Garbage
+.idea/
+
+#VScode Garbage
+.vscode/
+.DS_Store
+
+#Java
+out/
