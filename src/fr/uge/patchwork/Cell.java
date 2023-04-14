@@ -12,4 +12,20 @@ public class Cell {
         button = false;
     }
 
+    public void setButton(boolean b){
+        button = b;
+    }
+
+    public boolean player1(){
+        return player1;
+    }
+
+    public boolean player2(){
+        return player2;
+    }
+
+    public boolean button(){
+        return button;
+    }
+
 }
