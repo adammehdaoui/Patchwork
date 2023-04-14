@@ -13,17 +13,16 @@ public class TimeBoard {
         for(int i=0; i<nbCases; i++){
             cells.add(new Cell());
 
-            if(i%6==0 && i!=0){
+            if(i%6==5 && i>5){
                 cells.get(i).setButton(true);
             }
         }
+        cells.get(5).setButton(true);
     }
 
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-
-        sb.append("--".repeat(cells.size()+1)).append("\n");
 
         sb.append("|");
 
@@ -37,10 +36,6 @@ public class TimeBoard {
 
             sb.append("|");
         }
-
-
-
-        sb.append("\n").append("--".repeat(cells.size()+1));
 
         return sb.toString();
     }

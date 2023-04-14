@@ -9,9 +9,23 @@ public class Player {
     private ArrayList<Piece> pieces;
     private PlayerBoard board;
 
-    public Player(int id){
+    public Player(int id, PlayerBoard board){
         this.id = id;
-        buttons = 5;
+        this.buttons = 5;
+        this.pieces = new ArrayList<Piece>();
+        this.board = board;
     }
 
+    public void buyPiece(Piece piece){
+        if(this.buttons >= piece.cost()){
+            this.buttons -= piece.cost();
+            this.pieces.add(piece);
+
+            //on place la piece sur le board
+            this.board.placePiece(piece);
+        }
+        else{
+            System.out.println("Not enough buttons");
+        }
+    }
 }
