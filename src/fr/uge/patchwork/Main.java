@@ -8,6 +8,9 @@ public class Main {
         TimeBoard timeBoard = new TimeBoard();
 
         System.out.println(timeBoard);
+
+        PlayerBoard playerBoard = new PlayerBoard(new boolean[9][9]);
+        System.out.println(playerBoard);
     }
 
 }
