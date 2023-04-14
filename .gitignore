@@ -4,6 +4,3 @@
 #VScode Garbage
 .vscode/
 .DS_Store
-
-#Java
-out/
