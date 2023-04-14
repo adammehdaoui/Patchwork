@@ -16,16 +16,18 @@ public class Player {
         this.board = board;
     }
 
-    public void buyPiece(Piece piece){
+    public boolean buyPiece(Piece piece){
         if(this.buttons >= piece.cost()){
             this.buttons -= piece.cost();
             this.pieces.add(piece);
 
             //on place la piece sur le board
             this.board.placePiece(piece);
+
+            return true;
         }
         else{
-            System.out.println("Not enough buttons");
+            return false;
         }
     }
 }

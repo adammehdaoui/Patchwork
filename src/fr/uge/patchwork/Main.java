@@ -22,15 +22,22 @@ public class Main {
         Piece piece1 = new Piece(schema, 3, 4, 1);
         Piece piece2 = new Piece(schema, 2, 2, 0);
 
-        // Création du plateau de jeu
+        // Création du plateau de jeu et placement des joueurs à 0
         TimeBoard timeBoard = new TimeBoard();
 
         // Le joueur 1 achete la piece 1
-        player1.buyPiece(piece1);
+        if (player1.buyPiece(piece1)) {
+            System.out.println("Le joueur 1 a acheté la pièce 1");
+        } else {
+            System.out.println("Le joueur 1 n'a pas pu acheter la pièce 1");
+        }
 
-        // Le joueur 2 achete la piece 1 et 2
-        player2.buyPiece(piece1);
-        player2.buyPiece(piece2);
+        // Le joueur 2 achete la piece 1
+        if (player2.buyPiece(piece1)) {
+            System.out.println("Le joueur 2 a acheté la pièce 1");
+        } else {
+            System.out.println("Le joueur 2 n'a pas pu acheter la pièce 1");
+        }
 
         //print du jeu
         System.out.println(timeBoard);
