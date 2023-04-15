@@ -1,0 +1,42 @@
+package fr.uge.patchwork;
+
+import java.util.ArrayList;
+
+public class PieceList {
+    private ArrayList<Piece> pieces;
+    private int neutralPiece;
+
+    public PieceList(){
+        pieces = new ArrayList<Piece>();
+        neutralPiece = 0;
+    }
+
+    public void addPiece(Piece piece){
+        pieces.add(piece);
+    }
+
+    //on cherche la piece avec le moins de true pour y placer la neutralPiece
+    public void placeNeutral(){
+        int res = 0;
+        for (Piece piece : pieces) {
+            if(piece.countTrue() < pieces.get(res).countTrue()){
+                res = pieces.indexOf(piece);
+            }
+        }
+        this.neutralPiece = res;
+    }
+
+    //on renvoie les 3 pieces qui suivent la neutralPiece
+    public Piece[] nextPieces(){
+        Piece[] res = new Piece[3];
+        for (int i = 0; i < 3; i++) {
+            res[i] = pieces.get((neutralPiece + i + 1) % pieces.size());
+        }
+        return res;
+    }
+
+    public void removePiece(int index){
+        pieces.remove((neutralPiece + index) % pieces.size());
+        this.neutralPiece = (neutralPiece + index) % pieces.size();
+    }
+}

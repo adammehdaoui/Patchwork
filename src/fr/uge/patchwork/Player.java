@@ -16,18 +16,47 @@ public class Player {
         this.board = board;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
+    public void addButtons(int buttons){
+        this.buttons += buttons;
+    }
+
+    //essaie de placer la piece et si elle rentre, on l'ajoute à sa liste et il passe à la caisse
     public boolean buyPiece(Piece piece){
         if(this.buttons >= piece.cost()){
-            this.buttons -= piece.cost();
-            this.pieces.add(piece);
-
-            //on place la piece sur le board
-            this.board.placePiece(piece);
-
-            return true;
+            //on essaie de placer la piece sur le board
+            if(this.board.placePiece(piece)){
+                this.buttons -= piece.cost();
+                this.pieces.add(piece);
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;
         }
+    }
+
+    //parcours sa liste de piece et renvoie le total de boutons qu'il doit gagner
+    public int getEarnedButton(){
+        int res = 0;
+        for (Piece piece : pieces) {
+            res += piece.button();
+        }
+        return res;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Player ").append(this.id).append(", ");
+        sb.append("buttons: ").append(this.buttons).append(", ");
+        sb.append("board: ").append("\n").append(this.board).append("\n");
+        return sb.toString();
     }
 }

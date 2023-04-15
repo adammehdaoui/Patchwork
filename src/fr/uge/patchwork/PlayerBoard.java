@@ -14,7 +14,8 @@ public record PlayerBoard(boolean[][] board) {
     }
 
 
-    public void placePiece(Piece p) {
+    // on essaie de placer la piece sur le board
+    public boolean placePiece(Piece p) {
 
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
@@ -38,11 +39,12 @@ public record PlayerBoard(boolean[][] board) {
                                     this.board[i + k][j + l] = p.schema()[k][l];
                                 }
                             }
-                            return;
+                            return true;
                         }
                     }
                 }
             }
         }
+        return false;
     }
 }
