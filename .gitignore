@@ -4,3 +4,6 @@
 #VScode Garbage
 .vscode/
 .DS_Store
+
+#Garbage
+*.class
