@@ -7,7 +7,7 @@ public class TimeBoard {
     final static int nbCases = 54;
 
     //le dernier joueur qui a joué
-    private int lastMove = 1;
+    private int lastMove;
 
     public TimeBoard() {
         cells = new ArrayList<>();
@@ -16,6 +16,7 @@ public class TimeBoard {
         for(int i=0; i<nbCases; i++){
             cells.add(new Cell());
 
+            //on place les boutons de manière régulière
             if(i%6==5 && i>0){
                 cells.get(i).setButton(true);
             }
@@ -24,6 +25,8 @@ public class TimeBoard {
         //on place les joueurs à la première cellule du TimeBoard (début du jeu)
         cells.get(0).setPlayer1(true);
         cells.get(0).setPlayer2(true);
+
+        lastMove = 1;
     }
 
     public int getLastMove(){
@@ -33,6 +36,7 @@ public class TimeBoard {
     //déplace le joueur playerId de move cases et renvoie le nombre de boutons qu'il a traversé
     public int movePlayer(int playerId, int move){
         this.lastMove = playerId;
+
         for(int i=0; i<nbCases; i++){
             if(playerId == 1){
                 if(cells.get(i).player1()){
@@ -64,7 +68,7 @@ public class TimeBoard {
         return 0;
     }
 
-    //renvoie le nombre de boutton entre 2 indices
+    //renvoie le nombre de bouton entre 2 indices
     public int nbButton(int start, int end){
         int res = 0;
         for(int i=start; i<end; i++){
