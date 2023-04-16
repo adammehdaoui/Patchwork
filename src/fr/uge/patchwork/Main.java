@@ -39,8 +39,6 @@ public class Main {
         // Création du plateau de jeu
         TimeBoard timeBoard = new TimeBoard();
 
-
-
         //boucle de jeu
         while(!timeBoard.endGame()){
 

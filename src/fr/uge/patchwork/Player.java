@@ -24,7 +24,7 @@ public class Player {
         this.buttons += buttons;
     }
 
-    //essaie de placer la piece et si elle rentre, on l'ajoute à sa liste et il passe à la caisse
+    //essaie de placer la pièce et si elle rentre, on l'ajoute à sa liste et il passe à la caisse
     public boolean buyPiece(Piece piece){
         if(this.buttons >= piece.cost()){
             //on essaie de placer la piece sur le board
@@ -42,7 +42,7 @@ public class Player {
         }
     }
 
-    //parcours sa liste de piece et renvoie le total de boutons qu'il doit gagner
+    //parcourt sa liste de pièces et renvoie le total de boutons qu'il doit gagner
     public int getEarnedButton(){
         int res = 0;
         for (Piece piece : pieces) {

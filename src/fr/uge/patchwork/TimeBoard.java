@@ -9,23 +9,21 @@ public class TimeBoard {
     //le dernier joueur qui a joué
     private int lastMove = 1;
 
-
     public TimeBoard() {
         cells = new ArrayList<>();
 
-        //on crée les cases et place les boutons toutes les 6 cases
+        //on crée les cases et on place les boutons toutes les 6 cases
         for(int i=0; i<nbCases; i++){
             cells.add(new Cell());
 
-            if(i%6==5 && i>5){
+            if(i%6==5 && i>0){
                 cells.get(i).setButton(true);
             }
         }
-        //on place les joueurs
+
+        //on place les joueurs à la première cellule du TimeBoard (début du jeu)
         cells.get(0).setPlayer1(true);
         cells.get(0).setPlayer2(true);
-        //on place le premier bouton
-        cells.get(5).setButton(true);
     }
 
     public int getLastMove(){
