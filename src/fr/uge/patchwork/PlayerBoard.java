@@ -16,18 +16,18 @@ public record PlayerBoard(boolean[][] board) {
 
     // on essaie de placer la piece sur le board
     public boolean placePiece(Piece p) {
-        for (int i = 0; i < this.board.length; i++) {
-            for (int j = 0; j < this.board[i].length; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
 
                 //si la case est vide
-                if (!this.board[i][j]) {
-                    if (i + p.schema().length <= this.board.length && j + p.schema()[0].length <= this.board[i].length) {
+                if (!board[i][j]) {
+                    if (i + p.schema().length <= board.length && j + p.schema()[0].length <= board[i].length) {
                         // on regarde si la pièce peut être placée
                         boolean canBePlaced = true;
 
                         for (int k = 0; k < p.schema().length; k++) {
                             for (int l = 0; l < p.schema()[k].length; l++) {
-                                if (this.board[i + k][j + l] && p.schema()[k][l]) {
+                                if (board[i + k][j + l] && p.schema()[k][l]) {
                                     canBePlaced = false;
                                 }
                             }
@@ -37,7 +37,7 @@ public record PlayerBoard(boolean[][] board) {
                             // on place la pièce
                             for (int k = 0; k < p.schema().length; k++) {
                                 for (int l = 0; l < p.schema()[k].length; l++) {
-                                    this.board[i + k][j + l] = p.schema()[k][l];
+                                    board[i + k][j + l] = p.schema()[k][l];
                                 }
                             }
                             return true;

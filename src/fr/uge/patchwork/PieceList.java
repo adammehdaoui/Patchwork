@@ -23,7 +23,7 @@ public class PieceList {
                 res = pieces.indexOf(piece);
             }
         }
-        this.neutralPiece = res;
+        neutralPiece = res;
     }
 
     //on renvoie les 3 pieces qui suivent la neutralPiece
@@ -37,6 +37,6 @@ public class PieceList {
 
     public void removePiece(int index){
         pieces.remove((neutralPiece + index) % pieces.size());
-        this.neutralPiece = (neutralPiece + index) % pieces.size();
+        neutralPiece = (neutralPiece + index) % pieces.size();
     }
 }

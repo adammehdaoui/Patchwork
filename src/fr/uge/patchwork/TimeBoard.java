@@ -30,12 +30,12 @@ public class TimeBoard {
     }
 
     public int getLastMove(){
-        return this.lastMove;
+        return lastMove;
     }
 
     //déplace le joueur playerId de move cases et renvoie le nombre de boutons qu'il a traversé
     public int movePlayer(int playerId, int move){
-        this.lastMove = playerId;
+        lastMove = playerId;
 
         for(int i=0; i<nbCases; i++){
             if(playerId == 1){

@@ -17,7 +17,7 @@ public class Player {
     }
 
     public int getId(){
-        return this.id;
+        return id;
     }
 
     public void addButtons(int buttons){
@@ -26,11 +26,11 @@ public class Player {
 
     //essaie de placer la pièce et si elle rentre, on l'ajoute à sa liste et il passe à la caisse
     public boolean buyPiece(Piece piece){
-        if(this.buttons >= piece.cost()){
+        if(buttons >= piece.cost()){
             //on essaie de placer la piece sur le board
-            if(this.board.placePiece(piece)){
-                this.buttons -= piece.cost();
-                this.pieces.add(piece);
+            if(board.placePiece(piece)){
+                buttons -= piece.cost();
+                pieces.add(piece);
                 return true;
             }
             else{
@@ -54,9 +54,9 @@ public class Player {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Player ").append(this.id).append(", ");
-        sb.append("buttons: ").append(this.buttons).append(", ");
-        sb.append("board: ").append("\n").append(this.board).append("\n");
+        sb.append("Player ").append(id).append(", ");
+        sb.append("buttons: ").append(buttons).append(", ");
+        sb.append("board: ").append("\n").append(board).append("\n");
         return sb.toString();
     }
 }
