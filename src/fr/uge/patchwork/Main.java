@@ -24,6 +24,7 @@ public class Main {
         var schema = new ArrayList<ArrayList<Boolean>>();
         schema.add(new ArrayList<>(List.of(true, true)));
         schema.add(new ArrayList<>(List.of(true, true)));
+        //ta gueule adam
 
         // Création des pièces
         Piece piece1 = new Piece(schema, 3, 4, 1);
