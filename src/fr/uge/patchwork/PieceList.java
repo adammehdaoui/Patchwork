@@ -27,11 +27,12 @@ public class PieceList {
     }
 
     //on renvoie les 3 pieces qui suivent la neutralPiece
-    public Piece[] nextPieces(){
-        Piece[] res = new Piece[3];
-        for (int i = 0; i < 3; i++) {
-            res[i] = pieces.get((neutralPiece + i + 1) % pieces.size());
+    public ArrayList<Piece> nextPieces(){
+        ArrayList<Piece> res = new ArrayList<>(3);
+        for (int i=0; i< 3; i++) {
+            res.add(pieces.get((neutralPiece + i + 1) % pieces.size()));
         }
+
         return res;
     }
 
