@@ -24,10 +24,10 @@ public class Player {
         this.buttons += buttons;
     }
 
-    //essaie de placer la pièce et si elle rentre, on l'ajoute à sa liste et il passe à la caisse
+    // Essaie de placer la pièce et si elle rentre, on l'ajoute à sa liste puis il passe à la caisse.
     public boolean buyPiece(Piece piece){
         if(buttons >= piece.cost()){
-            //on essaie de placer la piece sur le board
+            // On essaie de placer la piece sur le board
             if(board.placePiece(piece)){
                 buttons -= piece.cost();
                 pieces.add(piece);
@@ -42,7 +42,7 @@ public class Player {
         }
     }
 
-    //parcourt sa liste de pièces et renvoie le total de boutons qu'il doit gagner
+    // Parcourt sa liste de pièces et renvoie le total de boutons qu'il doit gagner
     public int getEarnedButton(){
         int res = 0;
         for (Piece piece : pieces) {
@@ -55,8 +55,8 @@ public class Player {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Player ").append(id).append(", ");
-        sb.append("buttons: ").append(buttons).append(", ");
-        sb.append("board: ").append("\n").append(board).append("\n");
+        sb.append("Buttons : ").append(buttons).append(", ");
+        sb.append("Board :\n").append(board).append("\n");
         return sb.toString();
     }
 }

@@ -1,34 +1,59 @@
 package fr.uge.patchwork;
 
+import java.util.ArrayList;
+
 public class Cell {
 
-    private boolean player1;
-    private boolean player2;
+    private Player player1;
+    private Player player2;
     private boolean button;
 
     public Cell(){
-        player1 = false;
-        player2 = false;
+        player1 = null;
+        player2 = null;
         button = false;
     }
 
-    public void setPlayer1(boolean b){
-        player1 = b;
+    public Player getPlayer(Player player){
+        if(player.getId() == 1)
+            return player1;
+        else
+            return player2;
     }
-
-    public void setPlayer2(boolean b){
-        player2 = b;
+    public void setPlayer(Player player){
+        if(player.getId() == 1)
+            player1 = player;
+        else
+            player2 = player;
     }
 
     public void setButton(boolean b){
         button = b;
     }
 
-    public boolean player1(){
+    public void freePlayer(Player player){
+        if(player.getId() == 1){
+            player1 = null;
+        }
+        else{
+            player2 = null;
+        }
+    }
+
+    public ArrayList<Player> getPlayers(){
+        ArrayList<Player> players = new ArrayList<Player>(2);
+        if(player1 != null)
+            players.add(player1);
+        if(player2 != null)
+            players.add(player2);
+        return players;
+    }
+
+    public Player player1(){
         return player1;
     }
 
-    public boolean player2(){
+    public Player player2(){
         return player2;
     }
 

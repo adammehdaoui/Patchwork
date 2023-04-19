@@ -15,7 +15,7 @@ public class PieceList {
         pieces.add(piece);
     }
 
-    //on cherche la piece avec le moins de true pour y placer la neutralPiece:
+    // On cherche la pièce avec le moins de true pour y placer la neutralPiece :
     public void placeNeutral(){
         int res = 0;
         for (Piece piece : pieces) {
@@ -26,7 +26,7 @@ public class PieceList {
         neutralPiece = res;
     }
 
-    //on renvoie les 3 pieces qui suivent la neutralPiece
+    // On renvoie les 3 pièces qui suivent la neutralPiece.
     public ArrayList<Piece> nextPieces(){
         ArrayList<Piece> res = new ArrayList<>(3);
         for (int i=0; i< 3; i++) {
