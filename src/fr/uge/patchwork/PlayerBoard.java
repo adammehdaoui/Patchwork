@@ -21,13 +21,13 @@ public record PlayerBoard(boolean[][] board) {
 
                 //si la case est vide
                 if (!board[i][j]) {
-                    if (i + p.schema().length <= board.length && j + p.schema()[0].length <= board[i].length) {
+                    if (i + p.schema().size() <= board.length && j + p.schema().get(0).size() <= board[i].length) {
                         // on regarde si la pièce peut être placée
                         boolean canBePlaced = true;
 
-                        for (int k = 0; k < p.schema().length; k++) {
-                            for (int l = 0; l < p.schema()[k].length; l++) {
-                                if (board[i + k][j + l] && p.schema()[k][l]) {
+                        for (int k = 0; k < p.schema().size(); k++) {
+                            for (int l = 0; l < p.schema().get(k).size(); l++) {
+                                if (board[i + k][j + l] && p.schema().get(k).get(l)) {
                                     canBePlaced = false;
                                 }
                             }
@@ -35,9 +35,9 @@ public record PlayerBoard(boolean[][] board) {
 
                         if (canBePlaced) {
                             // on place la pièce
-                            for (int k = 0; k < p.schema().length; k++) {
-                                for (int l = 0; l < p.schema()[k].length; l++) {
-                                    board[i + k][j + l] = p.schema()[k][l];
+                            for (int k = 0; k < p.schema().size(); k++) {
+                                for (int l = 0; l < p.schema().get(k).size(); l++) {
+                                    board[i + k][j + l] = p.schema().get(k).get(l);
                                 }
                             }
                             return true;

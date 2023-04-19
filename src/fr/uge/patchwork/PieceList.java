@@ -15,7 +15,7 @@ public class PieceList {
         pieces.add(piece);
     }
 
-    //on cherche la piece avec le moins de true pour y placer la neutralPiece
+    //on cherche la piece avec le moins de true pour y placer la neutralPiece:
     public void placeNeutral(){
         int res = 0;
         for (Piece piece : pieces) {

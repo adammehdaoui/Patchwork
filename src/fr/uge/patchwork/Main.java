@@ -1,6 +1,7 @@
 package fr.uge.patchwork;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Main {
@@ -20,9 +21,9 @@ public class Main {
         Map<Integer, Player> players = Map.of(player1.getId(), player1, player2.getId(), player2);
 
         // Création d'un schéma de pièce (un carré de 2x2)
-        boolean[][] schema = new boolean[2][2];
-        java.util.Arrays.fill(schema[0], true);
-        java.util.Arrays.fill(schema[1], true);
+        var schema = new ArrayList<ArrayList<Boolean>>();
+        schema.add(new ArrayList<>(List.of(true, true)));
+        schema.add(new ArrayList<>(List.of(true, true)));
 
         // Création des pièces
         Piece piece1 = new Piece(schema, 3, 4, 1);

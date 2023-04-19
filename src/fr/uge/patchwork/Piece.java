@@ -1,11 +1,13 @@
 package fr.uge.patchwork;
 
-public record Piece(boolean[][] schema, int cost, int time, int button) {
+import java.util.ArrayList;
+
+public record Piece(java.util.ArrayList<java.util.ArrayList<Boolean>> schema, int cost, int time, int button) {
 
     //compte le nombre de true dans la piece (son nombre de carré en gros)
     public int countTrue(){
         int res = 0;
-        for (boolean[] booleans : schema) {
+        for (ArrayList<Boolean> booleans : schema) {
             for (boolean aBoolean : booleans) {
                 if(aBoolean){
                     res++;
@@ -18,7 +20,7 @@ public record Piece(boolean[][] schema, int cost, int time, int button) {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (boolean[] booleans : schema) {
+        for (ArrayList<Boolean> booleans : schema) {
             for (boolean aBoolean : booleans) {
                 sb.append(aBoolean ? "■" : "□");
             }
