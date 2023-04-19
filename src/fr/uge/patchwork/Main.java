@@ -10,8 +10,8 @@ public class Main {
         System.out.println("Lancement du jeu...\n");
 
         // Création des plateaux des joueurs
-        PlayerBoard playerBoard1 = new PlayerBoard(new boolean[9][9]);
-        PlayerBoard playerBoard2 = new PlayerBoard(new boolean[9][9]);
+        PlayerBoard playerBoard1 = new PlayerBoard(new ArrayList<ArrayList<Boolean>>(9));
+        PlayerBoard playerBoard2 = new PlayerBoard(new ArrayList<ArrayList<Boolean>>(9));
 
         // Création des joueurs
         Player player1 = new Player(1, playerBoard1);
@@ -29,7 +29,7 @@ public class Main {
         Piece piece1 = new Piece(schema, 3, 4, 1);
         Piece piece2 = new Piece(schema, 2, 2, 0);
 
-        // Création d'un tableau de 40 pieces (piece 1 et 2 alternées)
+        // Création d'un tableau de 40 pièces (pièces 1 et 2 alternées)
         PieceList pieces = new PieceList();
         for (int i = 0; i < 20; i++) {
             pieces.addPiece(piece1);

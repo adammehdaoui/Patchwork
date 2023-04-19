@@ -2,7 +2,7 @@ package fr.uge.patchwork;
 
 import java.util.ArrayList;
 
-public record Piece(java.util.ArrayList<java.util.ArrayList<Boolean>> schema, int cost, int time, int button) {
+public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, int button) {
 
     //compte le nombre de true dans la piece (son nombre de carré en gros)
     public int countTrue(){
