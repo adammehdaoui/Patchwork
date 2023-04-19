@@ -33,6 +33,7 @@ public record ReadFile(Path path) {
                 data = line.split(" ");
             }
 
+            //ta gueule adam
             int cost = Integer.parseInt(data[0]);
             int time = Integer.parseInt(data[1]);
             int button = Integer.parseInt(data[2]);
