@@ -53,16 +53,16 @@ public class Main {
             System.out.println("C'est au tour du joueur " + id + "\n");
 
             //on affiche les pieces jouables
-            Piece[] playablePieces = pieces.nextPieces();
+            ArrayList<Piece> playablePieces = pieces.nextPieces();
             System.out.println("Les pièces jouables sont :");
             for (int i = 0; i < 3; i++) {
-                System.out.println("Pièce " + i + " : \n" + playablePieces[i]);
+                System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
             }
 
             //le joueur id achete la piece 1
-            if(players.get(id).buyPiece(playablePieces[0])){
+            if(players.get(id).buyPiece(playablePieces.get(0))){
                 //on déplace le joueur et recupere le nombre de boutons passés puis on ajoute les boutons gagnés
-                int buttonToEarn = timeBoard.movePlayer(id, playablePieces[0].time());
+                int buttonToEarn = timeBoard.movePlayer(id, playablePieces.get(0).time());
                 for (int i = 0; i < buttonToEarn; i++) {
                     players.get(id).addButtons(players.get(id).getEarnedButton());
                 }

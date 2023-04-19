@@ -24,7 +24,6 @@ public class Cell {
         button = b;
     }
 
-
     public boolean player1(){
         return player1;
     }
