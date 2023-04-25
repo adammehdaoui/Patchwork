@@ -27,17 +27,10 @@ public class Main {
         schema.add(new ArrayList<>(List.of(true, true)));
         schema.add(new ArrayList<>(List.of(true, true)));
 
-        // Création des pièces
-        Piece piece1 = new Piece(schema, 3, 4, 1);
-        Piece piece2 = new Piece(schema, 2, 2, 0);
 
-        // Création d'un tableau de 40 pièces (pièces 1 et 2 alternées)
-        PieceList pieces = new PieceList();
-        for (int i = 0; i < 20; i++) {
-            pieces.addPiece(piece1);
-            pieces.addPiece(piece2);
-        }
-        pieces.placeNeutral();
+        // Création des pièces
+        var file = new ReadFile(Path.of("docs/allPieces.txt"));
+        var Pl = file.read();
 
         // Création des pièces du vrai jeu
         var file = new ReadFile(Path.of("docs/allPieces.txt"));
@@ -59,8 +52,8 @@ public class Main {
 
             System.out.println("C'est au tour du joueur " + idPlayerPrio + "\n");
 
-            // On affiche les pieces jouables
-            ArrayList<Piece> playablePieces = pieces.nextPieces();
+            // On affiche les Pl jouables
+            ArrayList<Piece> playablePieces = Pl.nextPieces();
             System.out.println("Les pièces jouables sont :");
             for (int i = 0; i < 3; i++) {
                 System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
@@ -76,8 +69,8 @@ public class Main {
                     players.get(idPlayerPrio).addButtons(players.get(idPlayerPrio).getEarnedButton());
                 }
 
-                // On retire la piece du tableau de pieces
-                pieces.removePiece(0);
+                // On retire la piece du tableau de Pl
+                Pl.removePiece(0);
                 System.out.println("Le joueur " + idPlayerPrio + " a acheté la pièce");
             } else {
                 //on avance le joueur devant son adversaire
