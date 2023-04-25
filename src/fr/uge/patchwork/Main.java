@@ -1,12 +1,14 @@
 package fr.uge.patchwork;
 
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException {
         System.out.println("Lancement du jeu...\n");
 
         // Création des plateaux des joueurs
@@ -36,6 +38,10 @@ public class Main {
             pieces.addPiece(piece2);
         }
         pieces.placeNeutral();
+
+        // Création des pièces du vrai jeu
+        var file = new ReadFile(Path.of("docs/allPieces.txt"));
+        var Pl = file.read();
 
         // Création du plateau de jeu
         TimeBoard timeBoard = new TimeBoard(player1, player2);
