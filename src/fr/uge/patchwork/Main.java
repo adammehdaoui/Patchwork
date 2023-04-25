@@ -27,11 +27,6 @@ public class Main {
         schema.add(new ArrayList<>(List.of(true, true)));
         schema.add(new ArrayList<>(List.of(true, true)));
 
-
-        // Création des pièces
-        var file = new ReadFile(Path.of("docs/allPieces.txt"));
-        var Pl = file.read();
-
         // Création des pièces du vrai jeu
         var file = new ReadFile(Path.of("docs/allPieces.txt"));
         var Pl = file.read();
