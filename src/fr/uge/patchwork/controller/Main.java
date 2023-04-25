@@ -31,7 +31,7 @@ public class Main {
         schema.add(new ArrayList<>(List.of(true, true)));
 
         // Création des pièces du vrai jeu
-        var file = new ReadFile(Path.of("ressources/allPieces.txt"));
+        var file = new ReadFile(Path.of("resources/allPieces.txt"));
         var pieceList = file.read();
 
         // Création du plateau de jeu
