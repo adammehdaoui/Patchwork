@@ -12,8 +12,8 @@ public class Main {
         System.out.println("Lancement du jeu...\n");
 
         // Création des plateaux des joueurs
-        PlayerBoard playerBoard1 = new PlayerBoard(new ArrayList<ArrayList<Boolean>>(9));
-        PlayerBoard playerBoard2 = new PlayerBoard(new ArrayList<ArrayList<Boolean>>(9));
+        PlayerBoard playerBoard1 = new PlayerBoard();
+        PlayerBoard playerBoard2 = new PlayerBoard();
 
         // Création des joueurs
         Player player1 = new Player(1, playerBoard1);

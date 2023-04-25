@@ -5,6 +5,17 @@ import java.util.List;
 
 public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
+    public PlayerBoard() {
+        this(new ArrayList<ArrayList<Boolean>>());
+
+        for (int i = 0; i < 9; i++) {
+            board.add(new ArrayList<Boolean>());
+            for (int j = 0; j < 9; j++) {
+                board.get(i).add(false);
+            }
+        }
+    }
+
     // On essaie de placer la piece sur le board
     public boolean placePiece(Piece p) {
         for (int i = 0; i < board.size(); i++) {
