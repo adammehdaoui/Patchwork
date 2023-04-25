@@ -1,4 +1,4 @@
-package fr.uge.patchwork;
+package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
 

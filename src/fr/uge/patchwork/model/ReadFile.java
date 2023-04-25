@@ -1,4 +1,4 @@
-package fr.uge.patchwork;
+package fr.uge.patchwork.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public record ReadFile(Path path) {
-    //fonction qui lit un fichier txt et renvoie un ArrayList de piece
+    /* Fonction qui lisant un fichier .txt et renvoyant une ArrayList de pièces */
     public PieceList read() throws FileNotFoundException {
         var pieces = new PieceList();
         File file = new File(path.toUri());

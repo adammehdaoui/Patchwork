@@ -1,4 +1,7 @@
-package fr.uge.patchwork;
+package fr.uge.patchwork.controller;
+
+import fr.uge.patchwork.model.*;
+/*import fr.uge.patchwork.view.*;*/
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
@@ -28,13 +31,13 @@ public class Main {
         schema.add(new ArrayList<>(List.of(true, true)));
 
         // Création des pièces du vrai jeu
-        var file = new ReadFile(Path.of("docs/allPieces.txt"));
-        var Pl = file.read();
+        var file = new ReadFile(Path.of("ressources/allPieces.txt"));
+        var pieceList = file.read();
 
         // Création du plateau de jeu
         TimeBoard timeBoard = new TimeBoard(player1, player2);
 
-        // Boucle de jeu
+        // Boucle du jeu
         while(!timeBoard.endGame()){
 
             // Affichage des playerboards et de le timeboard
@@ -47,14 +50,14 @@ public class Main {
 
             System.out.println("C'est au tour du joueur " + idPlayerPrio + "\n");
 
-            // On affiche les Pl jouables
-            ArrayList<Piece> playablePieces = Pl.nextPieces();
+            // On affiche les pièces jouables
+            ArrayList<Piece> playablePieces = pieceList.nextPieces();
             System.out.println("Les pièces jouables sont :");
             for (int i = 0; i < 3; i++) {
                 System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
             }
 
-            // Le joueur id achète la pièce 1
+            // Le joueur {id} achète la pièce 1
 
             if(players.get(idPlayerPrio).buyPiece(playablePieces.get(0))){
                 //on déplace le joueur et recupere le nombre de boutons passés puis on ajoute les boutons gagnés
@@ -64,8 +67,8 @@ public class Main {
                     players.get(idPlayerPrio).addButtons(players.get(idPlayerPrio).getEarnedButton());
                 }
 
-                // On retire la piece du tableau de Pl
-                Pl.removePiece(0);
+                // On retire la pièce du tableau de
+                pieceList.removePiece(0);
                 System.out.println("Le joueur " + idPlayerPrio + " a acheté la pièce");
             } else {
                 //on avance le joueur devant son adversaire
@@ -78,7 +81,7 @@ public class Main {
 
         }
 
-        // Affiche fin de jeu
+        // Affichage de la fin du jeu
         System.out.println("FIN DU JEU");
 
     }
