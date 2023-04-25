@@ -52,6 +52,40 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
         return false;
     }
 
+
+    // Retourne la place où l'on peut placer la pièce spéciale 7x7. S'il n'y a pas la place
+    // de la placer sur le board, alors on retourne -1. A TESTER + OPTI
+    public int specialPiecePlace(){
+        boolean find = false;
+        int count = 0;
+
+        for(int i=0; i<board.size(); i++){
+            for(int e=0; e<board.get(i).size(); e++){
+                if(!board.get(i).get(e)){
+
+                    for(int j = i; j<i+7 && j<board().size() && !find; j++){
+                        for(int x = e; x<x+7 && x<board.get(e).size() && !find; x++){
+                            if(board.get(j).get(x)){
+                                find = true;
+                                count = 0;
+                            }
+
+                            count++;
+                        }
+                    }
+
+                    //Si les 7x7 cases on été trouvées :
+                    if(count == 49){
+                        return i;
+                    }
+
+                }
+            }
+        }
+
+        return -1;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
