@@ -12,33 +12,34 @@ public record ReadFile(Path path) {
         var pieces = new PieceList();
         File file = new File(path.toUri());
         Scanner sc = new Scanner(file);
+
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
             String[] data = line.split(" ");
             var schema = new ArrayList<ArrayList<Boolean>>();
 
-            while (data.length != 3 && !isParsableToInt(data[0])) {
-                for (int i = 0; i < data.length; i++) {
-                    var row = new ArrayList<Boolean>();
-                    for (int j = 0; j < data[i].length(); j++) {
-                        if (data[i].equals("x")) {
-                            row.add(true);
-                        } else {
-                            row.add(false);
-                        }
+            while (data[0].equals("o") || data[0].equals("x")) {
+                var row = new ArrayList<Boolean>();
+                for (String datum : data) {
+                    if (datum.equals("x")) {
+                        row.add(true);
+                    } else {
+                        row.add(false);
                     }
-                    schema.add(row);
                 }
+                schema.add(row);
+
                 line = sc.nextLine();
                 data = line.split(" ");
             }
 
-            int cost = Integer.parseInt(data[0]);
-            int time = Integer.parseInt(data[1]);
-            int button = Integer.parseInt(data[2]);
+            if(isParsableToInt(data[0])){
+                int cost = Integer.parseInt(data[0]);
+                int time = Integer.parseInt(data[1]);
+                int button = Integer.parseInt(data[2]);
 
-            pieces.addPiece(new Piece(schema, cost, time, button));
-            System.out.println(schema);
+                pieces.addPiece(new Piece(schema, cost, time, button));
+            }
         }
         return pieces;
     }
