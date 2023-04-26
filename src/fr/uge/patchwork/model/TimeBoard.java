@@ -124,22 +124,42 @@ public class TimeBoard {
 
     @Override
     public String toString(){
+        int i=1;
         StringBuilder sb = new StringBuilder();
 
-        sb.append("|");
+        sb.append("TimeBoard :\n------------------------------\n");
 
         for(Cell cell : cells){
+            sb.append("|");
+
             if(cell.button()){
                 sb.append("°");
             }
+            else{
+                sb.append(" ");
+            }
+
             if(cell.player1() != null){
-                sb.append(1);
+                sb.append("1");
+            }
+            else{
+                sb.append(" ");
             }
 
             if(cell.player2() != null){
-                sb.append(2);
+                sb.append("2");
             }
+            else{
+                sb.append(" ");
+            }
+
             sb.append("|");
+
+            if(i%6 == 0 && i!=0){
+                sb.append("\n").append("------------------------------").append("\n");
+            }
+
+            i++;
         }
 
         return sb.toString();

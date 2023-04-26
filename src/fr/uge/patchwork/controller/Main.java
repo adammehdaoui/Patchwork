@@ -43,6 +43,7 @@ public class Main {
             // Affichage des playerboards et de le timeboard
             System.out.println(player1);
             System.out.println(timeBoard);
+            System.out.println("\n");
             System.out.println(player2);
 
             // On récupère l'id du joueur qui doit jouer
