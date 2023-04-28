@@ -20,6 +20,10 @@ public class Player {
         return id;
     }
 
+    public int getButtons(){
+        return buttons;
+    }
+
     public void addButtons(int buttons){
         this.buttons += buttons;
     }

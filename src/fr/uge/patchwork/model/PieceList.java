@@ -41,3 +41,8 @@ public class PieceList {
         neutralPiece = (neutralPiece + index) % pieces.size();
     }
 }
+
+//on verifie qu'il peut ahceter la piece
+//on priint la piece et demande si il veut rotate invert ou validate
+//si il valide il entre des coordonnées
+//si la piece ne rentre pas, on lui dit et on lui redemande rotate...

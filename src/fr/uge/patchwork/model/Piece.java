@@ -35,4 +35,28 @@ public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, in
 
         return sb.toString();
     }
+
+    public Piece rotate() {
+        ArrayList<ArrayList<Boolean>> newSchema = new ArrayList<>();
+        for (int i = 0; i < schema.get(0).size(); i++) {
+            ArrayList<Boolean> newLine = new ArrayList<>();
+            for (int j = schema.size() - 1; j >= 0; j--) {
+                newLine.add(schema.get(j).get(i));
+            }
+            newSchema.add(newLine);
+        }
+        return new Piece(newSchema, cost, time, button);
+    }
+
+    public Piece invert() {
+        ArrayList<ArrayList<Boolean>> newSchema = new ArrayList<>();
+        for (ArrayList<Boolean> booleans : schema) {
+            ArrayList<Boolean> newLine = new ArrayList<>();
+            for (int j = booleans.size() - 1; j >= 0; j--) {
+                newLine.add(booleans.get(j));
+            }
+            newSchema.add(newLine);
+        }
+        return new Piece(newSchema, cost, time, button);
+    }
 }
