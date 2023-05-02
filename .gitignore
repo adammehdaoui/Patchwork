@@ -7,3 +7,6 @@
 
 #Garbage
 *.class
+
+#Build Garbage
+META-INF/
