@@ -15,7 +15,7 @@ public class PieceList {
         pieces.add(piece);
     }
 
-    // On cherche la pièce avec le moins de true pour y placer la neutralPiece :
+    /* On cherche la pièce avec le moins de true pour y placer la neutralPiece : */
     public void placeNeutral(){
         int res = 0;
         for (Piece piece : pieces) {
@@ -26,7 +26,7 @@ public class PieceList {
         neutralPiece = res;
     }
 
-    // On renvoie les 3 pièces qui suivent la neutralPiece.
+    /* On renvoie les 3 pièces qui suivent la neutralPiece. */
     public ArrayList<Piece> nextPieces(){
         ArrayList<Piece> res = new ArrayList<>(3);
         for (int i=0; i< 3; i++) {
@@ -41,8 +41,3 @@ public class PieceList {
         neutralPiece = (neutralPiece + index) % pieces.size();
     }
 }
-
-//on verifie qu'il peut ahceter la piece
-//on priint la piece et demande si il veut rotate invert ou validate
-//si il valide il entre des coordonnées
-//si la piece ne rentre pas, on lui dit et on lui redemande rotate...

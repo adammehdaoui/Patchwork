@@ -6,24 +6,24 @@ public class TimeBoard {
     private final ArrayList<Cell> cells;
     final static int nbCases = 54;
 
-    // Le dernier joueur qui a joué
+    /* Le dernier joueur qui a joué */
     private Player priorityPlayer;
 
     public TimeBoard(Player player1, Player player2) {
         cells = new ArrayList<>();
 
-        // On crée les cases et on place les boutons toutes les 6 cases
+        /* On crée les cases et on place les boutons toutes les 6 cases */
 
         for(int i=0; i<nbCases; i++){
             cells.add(new Cell());
 
-            // On place les boutons de manière régulière
+            /* On place les boutons de manière régulière */
             if(i % 6 == 5){
                 cells.get(i).setButton(true);
             }
         }
 
-        // On place les joueurs à la première cellule du TimeBoard (début du jeu)
+        /* On place les joueurs à la première cellule du TimeBoard (début du jeu) */
         cells.get(0).setPlayer(player1);
         cells.get(0).setPlayer(player2);
 
@@ -34,7 +34,7 @@ public class TimeBoard {
         return priorityPlayer;
     }
 
-    // Déplace le joueur playerId de move cases et renvoie le nombre de boutons qu'il a traversé
+    /* Déplace le joueur playerId de move cases et renvoie le nombre de boutons qu'il a traversé */
     public int movePlayer(Player player, int move) throws ClassNotFoundException {
         int index = -1;
         int moveTo;

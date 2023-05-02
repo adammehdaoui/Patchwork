@@ -46,6 +46,23 @@ public class Player {
         }
     }
 
+    public boolean buyPiece(Piece piece, int x, int y){
+        if(buttons >= piece.cost()){
+            // On essaie de placer la piece sur le board
+            if(board.placePiece(piece, x, y)){
+                buttons -= piece.cost();
+                pieces.add(piece);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
     // Parcourt sa liste de pièces et renvoie le total de boutons qu'il doit gagner
     public int getEarnedButton(){
         int res = 0;
