@@ -2,18 +2,25 @@ package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
 
+/**
+ * Classe dédiée à la représentation du plateau de jeu ("TimeBoard").
+ */
 public class TimeBoard {
     private final ArrayList<Cell> cells;
     final static int nbCases = 54;
 
-    /* Le dernier joueur qui a joué */
+    /* On stocke ici le dernier joueur qui a joué */
     private Player priorityPlayer;
 
+    /**
+     * Constructeur de la classe TimeBoard.
+     * @param player1 : joueur 1
+     * @param player2 : joueur 2
+     */
     public TimeBoard(Player player1, Player player2) {
         cells = new ArrayList<>();
 
         /* On crée les cases et on place les boutons toutes les 6 cases */
-
         for(int i=0; i<nbCases; i++){
             cells.add(new Cell());
 
@@ -30,11 +37,21 @@ public class TimeBoard {
         priorityPlayer = player1;
     }
 
+    /**
+     * Renvoie le joueur prioritaire (le dernier joueur qui a joué).
+     * @return : joueur prioritaire
+     */
     public Player getPriorityPlayer(){
         return priorityPlayer;
     }
 
-    /* Déplace le joueur playerId de move cases et renvoie le nombre de boutons qu'il a traversé */
+    /**
+     * Déplace le joueur en fonction du nombre de cases indiqué.
+     * @param player : joueur à déplacer
+     * @param move : nombre de cases à avancer
+     * @return : nombre de boutons entre l'ancienne et la nouvelle position du joueur
+     * @throws ClassNotFoundException : joueur non trouvé
+     */
     public int movePlayer(Player player, int move) throws ClassNotFoundException {
         int index = -1;
         int moveTo;
@@ -64,7 +81,12 @@ public class TimeBoard {
         return nbButton(index, moveTo);
     }
 
-    // Renvoie le nombre de bouton entre 2 indices
+    /**
+     * Renvoie le nombre de boutons entre deux cases.
+     * @param start : case de départ
+     * @param end : case d'arrivée
+     * @return : nombre de boutons entre les deux cases
+     */
     public int nbButton(int start, int end){
         int res = 0;
         for(int i=start; i<end; i++){
@@ -75,7 +97,10 @@ public class TimeBoard {
         return res;
     }
 
-    // Renvoie la valeur absolue de la distance entre les deux joueurs
+    /**
+     * Renvoie la distance entre les deux joueurs.
+     * @return : distance entre les deux joueurs
+     */
     public int distance(){
         int posP1 = 0;
         int posP2 = 0;
@@ -92,12 +117,18 @@ public class TimeBoard {
         return Math.abs(posP2 - posP1);
     }
 
-    // Renvoie true si les deux joueurs ont atteint la fin du plateau
+    /**
+     * Renvoie vrai si les deux joueurs sont sur la dernière case.
+     * @return : vrai si les deux joueurs sont sur la dernière case
+     */
     public boolean endGame(){
         return cells.get(nbCases - 1).player1() != null && cells.get(nbCases - 1).player2() != null;
     }
 
-    // Renvoie l'id du joueur qui doit jouer
+    /**
+     * Renvoie le joueur qui doit jouer.
+     * @return : joueur qui doit jouer
+     */
     public int turnOf(){
         int posP1 = 0;
         int posP2 = 0;

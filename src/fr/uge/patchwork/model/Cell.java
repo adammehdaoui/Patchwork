@@ -2,12 +2,18 @@ package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
 
+/**
+ * Classe dédiée à la représentation d'une cellule du plateau de jeu ("TimeBoard").
+ */
 public class Cell {
 
     private Player player1;
     private Player player2;
     private boolean button;
 
+    /**
+     * Constructeur de la classe Cell.
+     */
     public Cell(){
         player1 = null;
         player2 = null;
@@ -31,6 +37,10 @@ public class Cell {
         button = b;
     }
 
+    /**
+     * Libère le joueur de la cellule.
+     * @param player : joueur à libérer
+     */
     public void freePlayer(Player player){
         if(player.getId() == 1){
             player1 = null;
@@ -40,6 +50,10 @@ public class Cell {
         }
     }
 
+    /**
+     * Renvoie la liste des joueurs présents sur la cellule.
+     * @return : liste des joueurs présents sur la cellule
+     */
     public ArrayList<Player> getPlayers(){
         ArrayList<Player> players = new ArrayList<Player>(2);
         if(player1 != null)
@@ -60,5 +74,4 @@ public class Cell {
     public boolean button(){
         return button;
     }
-
 }

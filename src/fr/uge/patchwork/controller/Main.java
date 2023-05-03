@@ -11,10 +11,16 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Classe principale du jeu
+ * Contrôleur principal du jeu.
  */
 public class Main {
 
+    /**
+     * Méthode principale du jeu.
+     * @param args : arguments de la ligne de commande
+     * @throws ClassNotFoundException : si la classe n'est pas trouvée
+     * @throws FileNotFoundException : si le fichier n'est pas trouvé
+     */
     public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException {
         System.out.println("Lancement du jeu...\n");
 
@@ -26,7 +32,7 @@ public class Main {
         Player player1 = new Player(1, playerBoard1);
         Player player2 = new Player(2, playerBoard2);
 
-        /* On stocke les joueurs dans une map pour pouvoir les récupérer plus facilement */
+        /* On stocke les joueurs dans une Map */
         Map<Integer, Player> players = Map.of(player1.getId(), player1, player2.getId(), player2);
 
         /* Position des pièces à placer */
@@ -73,7 +79,7 @@ public class Main {
         /* Création du plateau de jeu */
         TimeBoard timeBoard = new TimeBoard(player1, player2);
 
-        /* Boucle du jeu */
+        /* Boucle de jeu */
         while(!timeBoard.endGame()){
             /* Affichage des playerboards et du timeboard */
             System.out.println(player1);
@@ -110,7 +116,7 @@ public class Main {
                     sc.nextLine();
                 }
 
-                /* On print la piece qu'il veut acheter et on lui demande si il veut rotate,
+                /* On affiche la pièce qu'il veut acheter et on lui demande s'il veut rotate,
                 invert ou validate */
                 System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
                 System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
@@ -118,11 +124,11 @@ public class Main {
 
                 while(!str3.equals("validate")){
                     if(str3.equals("rotate")){
-                        /* Replace la pièce par la pièce rotate */
+                        /* Remplace la pièce par la pièce rotate */
                         playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
                     }
                     else if(str3.equals("invert")){
-                        /* Replace la pièce par la pièce invert */
+                        /* Remplace la pièce par la pièce invert */
                         playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
                     }
                     else{
@@ -133,7 +139,7 @@ public class Main {
                     str3 = sc.nextLine();
                 }
 
-                /* On demande ou il veut placer la piece */
+                /* On demande à l'utilisateur où il veut placer la pièce sur son board */
                 System.out.println("Ou voulez-vous placer la pièce ? (x y)");
                 x = sc.nextInt();
                 y = sc.nextInt();
@@ -141,7 +147,7 @@ public class Main {
 
                 /* Le joueur {id} achète la pièce 1 */
                 if(players.get(idPlayerPrio).buyPiece(playablePieces.get(0), x, y)){
-                    /* On déplace le joueur et recupere le nombre de boutons passés puis on ajoute les boutons gagnés */
+                    /* On déplace le joueur et récupère le nombre de boutons passés puis on ajoute les boutons gagnés */
                     int buttonToEarn = timeBoard.movePlayer(players.get(idPlayerPrio), playablePieces.get(0).time());
 
                     for (int i = 0; i < buttonToEarn; i++) {
@@ -164,7 +170,9 @@ public class Main {
                 //TODO finir le else
 
             } else {
+
                 //TODO pas besoin de else ?
+
             }
         }
 

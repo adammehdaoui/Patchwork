@@ -6,8 +6,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Classe dédiée à la lecture d'un fichier contenant toutes les pièces du jeu à interpréter.
+ * @param path : chemin du fichier à lire
+ */
 public record ReadFile(Path path) {
-    /* Fonction qui lisant un fichier .txt et renvoyant une ArrayList de pièces */
+    /**
+     * Lit le fichier et retourne une liste de pièces.
+     * @return : une liste de pièces
+     * @throws FileNotFoundException : si le fichier n'est pas trouvé
+     */
     public PieceList read() throws FileNotFoundException {
         var pieces = new PieceList();
         File file = new File(path.toUri());
@@ -44,6 +52,11 @@ public record ReadFile(Path path) {
         return pieces;
     }
 
+    /**
+     * Vérifie si une chaîne de caractères est convertible en entier.
+     * @param s : chaîne de caractères à vérifier
+     * @return : true si la chaîne est convertible en entier, false sinon.
+     */
     public boolean isParsableToInt(String s){
         try{
             Integer.parseInt(s);

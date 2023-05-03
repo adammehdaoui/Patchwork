@@ -2,6 +2,9 @@ package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
 
+/**
+ * Classe dédiée à la représentation d'un joueur du jeu.
+ */
 public class Player {
 
     private final int id;
@@ -9,6 +12,11 @@ public class Player {
     private ArrayList<Piece> pieces;
     private PlayerBoard board;
 
+    /**
+     * Constructeur de la classe Player.
+     * @param id : identifiant du joueur
+     * @param board : plateau du joueur
+     */
     public Player(int id, PlayerBoard board){
         this.id = id;
         this.buttons = 5;
@@ -28,8 +36,8 @@ public class Player {
         this.buttons += buttons;
     }
 
-    // Essaie de placer la pièce et si elle rentre, on l'ajoute à sa liste puis il passe à la caisse.
-    public boolean buyPiece(Piece piece){
+    /* Ancienne version de la méthode buyPiece, qui ne prend pas en compte les coordonnées */
+    /*public boolean buyPiece(Piece piece){
         if(buttons >= piece.cost()){
             // On essaie de placer la piece sur le board
             if(board.placePiece(piece)){
@@ -44,11 +52,18 @@ public class Player {
         else{
             return false;
         }
-    }
+    }*/
 
+    /**
+     * Achète une pièce et la place sur le plateau du joueur.
+     * @param piece : pièce à acheter
+     * @param x : coordonnée x
+     * @param y: coordonnée y
+     * @return : true si la pièce a été achetée et placée, false sinon
+     */
     public boolean buyPiece(Piece piece, int x, int y){
         if(buttons >= piece.cost()){
-            // On essaie de placer la piece sur le board
+            /* On essaie de placer la piece sur le board */
             if(board.placePiece(piece, x, y)){
                 buttons -= piece.cost();
                 pieces.add(piece);
@@ -63,7 +78,10 @@ public class Player {
         }
     }
 
-    // Parcourt sa liste de pièces et renvoie le total de boutons qu'il doit gagner
+    /**
+     * Retourne le plateau du joueur.
+     * @return : plateau du joueur
+     */
     public int getEarnedButton(){
         int res = 0;
         for (Piece piece : pieces) {
