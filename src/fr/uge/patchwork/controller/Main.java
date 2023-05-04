@@ -66,7 +66,7 @@ public class Main {
         /* Jeu complet */
         else if(str.equals("complet")){
             /* Création des pièces du vrai jeu */
-            var file = new ReadFile(Path.of("resources/allPieces.txt"));
+            var file = new ReadFile(Path.of("allPieces.txt"));
             pieceList = file.read();
         }
         /* Version invalide */

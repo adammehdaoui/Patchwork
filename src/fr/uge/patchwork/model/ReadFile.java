@@ -19,7 +19,7 @@ public record ReadFile(Path path) {
     public PieceList read() throws IOException {
         var pieces = new PieceList();
         String line;
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("allPieces.txt");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         while ((line = reader.readLine()) != null) {
