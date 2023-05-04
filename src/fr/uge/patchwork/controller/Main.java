@@ -4,6 +4,7 @@ import fr.uge.patchwork.model.*;
 /*import fr.uge.patchwork.view.*;*/
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Main {
      * @throws ClassNotFoundException : si la classe n'est pas trouvée
      * @throws FileNotFoundException : si le fichier n'est pas trouvé
      */
-    public static void main(String[] args) throws ClassNotFoundException, FileNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
         System.out.println("Lancement du jeu...\n");
 
         /* Création des plateaux des joueurs */

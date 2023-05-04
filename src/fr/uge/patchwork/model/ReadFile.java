@@ -1,7 +1,6 @@
 package fr.uge.patchwork.model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,18 +10,19 @@ import java.util.Scanner;
  * @param path : chemin du fichier à lire
  */
 public record ReadFile(Path path) {
+
     /**
      * Lit le fichier et retourne une liste de pièces.
      * @return : une liste de pièces
      * @throws FileNotFoundException : si le fichier n'est pas trouvé
      */
-    public PieceList read() throws FileNotFoundException {
+    public PieceList read() throws IOException {
         var pieces = new PieceList();
-        File file = new File(path.toUri());
-        Scanner sc = new Scanner(file);
+        String line;
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("allPieces.txt");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
+        while ((line = reader.readLine()) != null) {
             String[] data = line.split(" ");
             var schema = new ArrayList<ArrayList<Boolean>>();
 
@@ -37,7 +37,7 @@ public record ReadFile(Path path) {
                 }
                 schema.add(row);
 
-                line = sc.nextLine();
+                line = reader.readLine();
                 data = line.split(" ");
             }
 
@@ -49,6 +49,7 @@ public record ReadFile(Path path) {
                 pieces.addPiece(new Piece(schema, cost, time, button));
             }
         }
+
         return pieces;
     }
 

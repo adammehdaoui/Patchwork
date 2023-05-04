@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Class representing a cell of the board (celui où il va placer ses pièces).
- * @param board
+ * @param board : plateau du joueur
  */
 public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
