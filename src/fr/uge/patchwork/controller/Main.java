@@ -166,14 +166,13 @@ public class Main {
                     System.out.println("Le joueur " + idPlayerPrio + " n'a pas pu acheter la pièce, il avance de " + distance + " cases");
                 }
 
-                //TODO changer la fonction buyPiece pour qu'elle prenne en parametre les coordonnées
-                //TODO ajouter dans chaque question un "passé mon tour" si le joueur veut abandonner.
-                //TODO finir le else
-
             } else {
-
-                //TODO pas besoin de else ?
-
+                /* On avance le joueur devant son adversaire */
+                int distance = timeBoard.distance() + 1;
+                timeBoard.movePlayer(players.get(idPlayerPrio), distance);
+                /* Il gagne la distance en boutons */
+                players.get(idPlayerPrio).addButtons(distance);
+                System.out.println("Le joueur " + idPlayerPrio + " n'a pas acheté de pièce, il avance de " + distance + " cases");
             }
         }
 
