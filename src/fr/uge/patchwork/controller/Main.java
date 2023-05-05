@@ -64,8 +64,8 @@ public class Main {
         }
         /* Complete game */
         else if(str.equals("complet")){
-            /* Création des pièces du vrai jeu */
-            var file = new ReadFile(Path.of("allPieces.txt"));
+            /* Creation of the pieces of the complete game version */
+            var file = new ReadFile(Path.of("pieces.txt"));
             pieceList = file.read();
         }
         /* Invalid version */
