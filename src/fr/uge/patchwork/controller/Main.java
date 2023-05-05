@@ -1,7 +1,6 @@
 package fr.uge.patchwork.controller;
 
 import fr.uge.patchwork.model.*;
-/*import fr.uge.patchwork.view.*;*/
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
