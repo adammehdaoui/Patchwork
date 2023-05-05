@@ -51,6 +51,10 @@ public class PieceList {
         this.placeNeutral();
     }
 
+    /**
+     * Add a piece to the list of available pieces.
+     * @param piece : piece to add
+     */
     public void addPiece(Piece piece){
         pieces.add(piece);
     }

@@ -6,8 +6,18 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Class containing all controller methods of the game.
+ */
 public interface Game {
 
+    /**
+     * Controller method to display the status of the game.
+     * @param player1 : player 1
+     * @param player2 : player 2
+     * @param pieceList : list of pieces
+     * @param timeBoard : game board
+     */
     public static void status(Player player1, Player player2, PieceList pieceList,
                               TimeBoard timeBoard){
         /* Display the status of the game */
@@ -28,8 +38,14 @@ public interface Game {
         }
     }
 
+    /**
+     * Controller method to manage the game loop.
+     * @param pieceList : list of pieces
+     * @param players : Map of players by ID
+     * @param timeBoard : game board
+     */
     public static void loop(PieceList pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard) throws IllegalArgumentException {
+                            TimeBoard timeBoard) {
         int idPlayerPrior = timeBoard.turnOf();
 
         /* Asking the player if they want to buy a piece */
@@ -40,15 +56,17 @@ public interface Game {
         if (str.equals("oui")) {
             Game.buy(pieceList, players, timeBoard, idPlayerPrior);
         } else {
-            /* Moving the player in front of his opponent */
-            int distance = timeBoard.distance() + 1;
-            timeBoard.movePlayer(players.get(idPlayerPrior), distance);
-            /* Winning the distance in buttons */
-            players.get(idPlayerPrior).addButtons(distance);
-            System.out.println("Le joueur " + idPlayerPrior + " n'a pas acheté de pièce, il avance de " + distance + " case(s)");
+            Game.pass(players, timeBoard, idPlayerPrior);
         }
     }
 
+    /**
+     * Controller method to manage the case where the player wants to buy a piece.
+     * @param pieceList : list of pieces
+     * @param players : Map of players by ID
+     * @param timeBoard : game board
+     * @param idPlayerPrior : ID of the player who must play
+     */
     public static void buy(PieceList pieceList, Map<Integer, Player> players,
                            TimeBoard timeBoard, int idPlayerPrior){
         int x, y;
@@ -71,14 +89,14 @@ public interface Game {
         /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
         System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
         System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
-        String str3 = sc.nextLine();
+        String str = sc.nextLine();
 
-        while(!str3.equals("validate")){
-            if(str3.equals("rotate")){
+        while(!str.equals("validate")){
+            if(str.equals("rotate")){
                 /* Replacement of the piece by the rotate piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
             }
-            else if(str3.equals("invert")){
+            else if(str.equals("invert")){
                 /* Replacement of the piece with the invert piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
             }
@@ -87,7 +105,7 @@ public interface Game {
             }
             System.out.println("Votre pièce courante : \n" + playablePieces.get(idPiece - 1));
             System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
-            str3 = sc.nextLine();
+            str = sc.nextLine();
         }
 
         /* Asking the user where he wants to place the piece on his board */
@@ -111,6 +129,12 @@ public interface Game {
         }
     }
 
+    /**
+     * Controller method to manage the case where the player wants to overtake his opponent.
+     * @param players : players Map by ID
+     * @param timeBoard : game board
+     * @param idPlayerPrior : ID of the player who must play
+     */
     public static void overtake(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
         /* Moving the player in front of his opponent */
         int distance = timeBoard.distance() + 1;
@@ -118,6 +142,21 @@ public interface Game {
         /* Winning the distance in buttons */
         players.get(idPlayerPrior).addButtons(distance);
         System.out.println("Le joueur " + idPlayerPrior + " n'a pas pu acheter la pièce, il avance de " + distance + " cases");
+    }
+
+    /**
+     * Controller method to manage the case where the player wants to pass.
+     * @param players : players Map by ID
+     * @param timeBoard : game board
+     * @param idPlayerPrior : ID of the player who must play
+     */
+    public static void pass(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
+        /* Moving the player in front of his opponent */
+        int distance = timeBoard.distance() + 1;
+        timeBoard.movePlayer(players.get(idPlayerPrior), distance);
+        /* Winning the distance in buttons */
+        players.get(idPlayerPrior).addButtons(distance);
+        System.out.println("Le joueur " + idPlayerPrior + " n'a pas acheté de pièce, il avance de " + distance + " case(s)");
     }
 
 }

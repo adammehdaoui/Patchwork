@@ -13,8 +13,8 @@ public record ReadFile(Path path) {
 
     /**
      * Read the file and return a list of pieces.
-     * @return : a list of pieces
-     * @throws FileNotFoundException : if the file is not found
+     * @param pieces : list of pieces to fill
+     * @throws IOException : error while reading the file
      */
     public void read(PieceList pieces) throws IOException {
         String line;
