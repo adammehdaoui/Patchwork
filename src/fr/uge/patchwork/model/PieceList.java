@@ -1,6 +1,9 @@
 package fr.uge.patchwork.model;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing the list of pieces available in the game.
@@ -15,6 +18,37 @@ public class PieceList {
     public PieceList(){
         pieces = new ArrayList<Piece>();
         neutralPiece = 0;
+    }
+
+    public void init(String gameVersion) throws IOException, IllegalArgumentException {
+        /* Base game */
+        if(gameVersion.equals("base")){
+            /* Creation of a piece diagram */
+            var schema = new ArrayList<ArrayList<Boolean>>();
+            schema.add(new ArrayList<>(List.of(true, true)));
+            schema.add(new ArrayList<>(List.of(true, true)));
+
+            Piece piece1 = new Piece(schema, 3, 4, 1);
+            Piece piece2 = new Piece(schema, 2, 2, 0);
+
+            /* Creation of a table of 40 pieces (pieces 1 and 2 alternated) */
+            for (int i = 0; i < 20; i++) {
+                this.addPiece(piece1);
+                this.addPiece(piece2);
+            }
+        }
+        /* Complete game */
+        else if(gameVersion.equals("complet")){
+            /* Creation of the pieces of the complete game version */
+            var file = new ReadFile(Path.of("pieces.txt"));
+            file.read(this);
+        }
+        /* Invalid version */
+        else{
+            throw new IllegalArgumentException("Invalid game version");
+        }
+
+        this.placeNeutral();
     }
 
     public void addPiece(Piece piece){
@@ -55,4 +89,5 @@ public class PieceList {
         pieces.remove((neutralPiece + index) % pieces.size());
         neutralPiece = (neutralPiece + index) % pieces.size();
     }
+
 }

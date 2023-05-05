@@ -5,9 +5,9 @@
 ---
 
 Pour lancer le jeu, il suffit d'aller dans le répertoire du jeu puis dans le dossier
-**target** et de lancer le fichier .jar avec la commande suivante :
+**target** et de lancer le fichier Patchwork.jar avec la commande suivante :
 
-```sh
+```shell
 java -jar Patchwork.jar
 ```
 

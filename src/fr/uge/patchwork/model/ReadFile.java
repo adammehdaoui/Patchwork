@@ -16,8 +16,7 @@ public record ReadFile(Path path) {
      * @return : a list of pieces
      * @throws FileNotFoundException : if the file is not found
      */
-    public PieceList read() throws IOException {
-        var pieces = new PieceList();
+    public void read(PieceList pieces) throws IOException {
         String line;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -49,8 +48,6 @@ public record ReadFile(Path path) {
                 pieces.addPiece(new Piece(schema, cost, time, button));
             }
         }
-
-        return pieces;
     }
 
     /**

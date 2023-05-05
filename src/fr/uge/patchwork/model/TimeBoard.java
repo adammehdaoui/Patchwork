@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Class dedicated to the representation of the game board ("TimeBoard").
  */
 public class TimeBoard {
+
     private final ArrayList<Cell> cells;
     final static int nbCases = 54;
 
@@ -49,9 +50,9 @@ public class TimeBoard {
      * @param player : player to move
      * @param move : number of cells to move
      * @return : number of buttons between the old and the new position of the player
-     * @throws ClassNotFoundException : player not found
+     * @throws IllegalArgumentException : argument player not found in the main board
      */
-    public int movePlayer(Player player, int move) throws ClassNotFoundException {
+    public int movePlayer(Player player, int move) throws IllegalArgumentException {
         int index = -1;
         int moveTo;
 
@@ -63,7 +64,7 @@ public class TimeBoard {
         }
 
         if(index<0){
-            throw new ClassNotFoundException("Le joueur n'a pas été trouvé dans le board principal");
+            throw new IllegalArgumentException("Le joueur n'a pas été trouvé dans le board principal");
         }
 
         cells.get(index).freePlayer(player);
