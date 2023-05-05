@@ -3,67 +3,35 @@ package fr.uge.patchwork.model;
 import java.util.ArrayList;
 
 /**
- * Class representing a cell of the board (celui où il va placer ses pièces).
- * @param board : plateau du joueur
+ * Class representing a cell of the board (which is a 9x9 grid).
+ * @param board : board of the player
  */
 public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
     /**
-     * Constructeur de la classe PlayerBoard.
+     * Constructor of the class PlayerBoard.
      */
     public PlayerBoard() {
-        this(new ArrayList<ArrayList<Boolean>>());
+        this(new ArrayList<>());
 
         for (int i = 0; i < 9; i++) {
-            board.add(new ArrayList<Boolean>());
+            board.add(new ArrayList<>());
             for (int j = 0; j < 9; j++) {
                 board.get(i).add(false);
             }
         }
     }
 
-    /* Ancienne méthode de placement de pièce sur le plateau (sans coordonnées) */
-    /*public boolean placePiece(Piece p) {
-        for (int i = 0; i < board.size(); i++) {
-            for (int j = 0; j < board.get(i).size(); j++) {
-                if (!board.get(i).get(j)) {
-                    if (i + p.schema().size() <= board.size() && j + p.schema().get(0).size() <= board.get(i).size()) {
-                        boolean canBePlaced = true;
-
-                        for (int k = 0; k < p.schema().size(); k++) {
-                            for (int l = 0; l < p.schema().get(k).size(); l++) {
-                                if (board.get(i + k).get(j + l) && p.schema().get(k).get(l)) {
-                                    canBePlaced = false;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (canBePlaced) {
-                            for (int k = 0; k < p.schema().size(); k++) {
-                                for (int l = 0; l < p.schema().get(k).size(); l++) {
-                                    board.get(i + k).set(j + l, p.schema().get(k).get(l));
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }*/
-
     /**
-     * Place une pièce sur le plateau du joueur.
-     * @param p : pièce à placer
-     * @param x : coordonnée x
-     * @param y : coordonnée y
-     * @return : true si la pièce a été placée, false sinon
+     * Place a piece on the player's board.
+     * @param p : piece to place
+     * @param x : coordinate x
+     * @param y : coordinate y
+     * @return : true if the piece has been placed, false otherwise
      */
     public boolean placePiece(Piece p, int x, int y) {
         if (x + p.schema().size() <= board.size() && y + p.schema().get(0).size() <= board.get(x).size()) {
-            /* On regarde si la pièce peut être placée */
+            /* Checking if the piece can be placed */
             boolean canBePlaced = true;
 
             for (int k = 0; k < p.schema().size(); k++) {
@@ -76,7 +44,7 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
             }
 
             if (canBePlaced) {
-                /* On place la pièce */
+                /* Place the piece */
                 for (int k = 0; k < p.schema().size(); k++) {
                     for (int l = 0; l < p.schema().get(k).size(); l++) {
                         board.get(x + k).set(y + l, p.schema().get(k).get(l));
@@ -88,14 +56,10 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
         return false;
     }
 
-    /* Retourne la place où l'on peut placer la pièce spéciale 7x7. S'il n'y a pas la place
-    pour la placer sur le board, alors on retourne la valeur -1. A TESTER + OPTI */
-
     /**
-     * Retourne la place où l'on peut placer la pièce spéciale 7x7. S'il n'y a pas la place pour la placer sur le board,
-     * alors on retourne la valeur -1.
-     * @return : la place où l'on peut placer la pièce spéciale 7x7. S'il n'y a pas la place pour la placer sur le board,
-     * alors on retourne la valeur -1.
+     * Returns the place where we can place the special 7x7 piece. If there is no place to place it on the board, then
+     * we return the value -1.
+     * @return : the place where we can place the special 7x7 piece or -1 if there is no place to place it
      */
     public int specialPiecePlace(){
         boolean find = false;
@@ -116,7 +80,7 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
                         }
                     }
 
-                    /* Si les 7x7 cases on été trouvées : */
+                    /* If the 7x7 cases have been found */
                     if(count == 49){
                         return i;
                     }

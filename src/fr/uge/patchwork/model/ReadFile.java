@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Classe dédiée à la lecture d'un fichier contenant toutes les pièces du jeu à interpréter.
- * @param path : chemin du fichier à lire
+ * Class dedicated to the reading of a file containing all the pieces of the game to interpret.
+ * @param path : path of the file to read
  */
 public record ReadFile(Path path) {
 
     /**
-     * Lit le fichier et retourne une liste de pièces.
-     * @return : une liste de pièces
-     * @throws FileNotFoundException : si le fichier n'est pas trouvé
+     * Read the file and return a list of pieces.
+     * @return : a list of pieces
+     * @throws FileNotFoundException : if the file is not found
      */
     public PieceList read() throws IOException {
         var pieces = new PieceList();
@@ -26,7 +26,7 @@ public record ReadFile(Path path) {
             String[] data = line.split(" ");
             var schema = new ArrayList<ArrayList<Boolean>>();
 
-            while (data[0].equals("o") || data[0].equals("x")) {
+            while(data[0].equals("o") || data[0].equals("x")){
                 var row = new ArrayList<Boolean>();
                 for (String datum : data) {
                     if (datum.equals("x")) {
@@ -54,15 +54,15 @@ public record ReadFile(Path path) {
     }
 
     /**
-     * Vérifie si une chaîne de caractères est convertible en entier.
-     * @param s : chaîne de caractères à vérifier
-     * @return : true si la chaîne est convertible en entier, false sinon.
+     * Check if a string is convertible to integer.
+     * @param s : string to check
+     * @return : true if the string is convertible to integer, false otherwise
      */
     public boolean isParsableToInt(String s){
-        try{
+        try {
             Integer.parseInt(s);
             return true;
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e){
             return false;
         }
     }

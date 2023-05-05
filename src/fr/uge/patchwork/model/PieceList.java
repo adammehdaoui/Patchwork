@@ -3,14 +3,14 @@ package fr.uge.patchwork.model;
 import java.util.ArrayList;
 
 /**
- * Classe représentant la liste des pièces disponibles dans le jeu.
+ * Class representing the list of pieces available in the game.
  */
 public class PieceList {
     private ArrayList<Piece> pieces;
     private int neutralPiece;
 
     /**
-     * Constructeur de la classe PieceList.
+     * Constructor of the class PieceList.
      */
     public PieceList(){
         pieces = new ArrayList<Piece>();
@@ -22,7 +22,7 @@ public class PieceList {
     }
 
     /**
-     * Recherche de la pièce avec le moins de true pour y placer la neutralPiece
+     * Searching for the piece with the least true to place the neutralPiece
      */
     public void placeNeutral(){
         int res = 0;
@@ -35,8 +35,8 @@ public class PieceList {
     }
 
     /**
-     * Retourne la liste des trois prochaines pièces disponibles.
-     * @return : la liste des trois prochaines pièces disponibles.
+     * Returns the list of the next three available pieces.
+     * @return : the list of the next three available pieces.
      */
     public ArrayList<Piece> nextPieces(){
         ArrayList<Piece> res = new ArrayList<>(3);
@@ -48,8 +48,8 @@ public class PieceList {
     }
 
     /**
-     * Retire une pièce de la liste des pièces disponibles.
-     * @param index : l'index de la pièce à retirer.
+     * Remove a piece from the list of available pieces.
+     * @param index : index of the piece to remove.
      */
     public void removePiece(int index){
         pieces.remove((neutralPiece + index) % pieces.size());

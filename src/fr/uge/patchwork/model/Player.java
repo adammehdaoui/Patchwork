@@ -3,7 +3,7 @@ package fr.uge.patchwork.model;
 import java.util.ArrayList;
 
 /**
- * Classe dédiée à la représentation d'un joueur du jeu.
+ * Class dedicated to the representation of a player of the game.
  */
 public class Player {
 
@@ -13,9 +13,9 @@ public class Player {
     private PlayerBoard board;
 
     /**
-     * Constructeur de la classe Player.
-     * @param id : identifiant du joueur
-     * @param board : plateau du joueur
+     * Constructor of the class Player.
+     * @param id : ID of the player
+     * @param board : player's board
      */
     public Player(int id, PlayerBoard board){
         this.id = id;
@@ -36,34 +36,16 @@ public class Player {
         this.buttons += buttons;
     }
 
-    /* Ancienne version de la méthode buyPiece, qui ne prend pas en compte les coordonnées */
-    /*public boolean buyPiece(Piece piece){
-        if(buttons >= piece.cost()){
-            // On essaie de placer la piece sur le board
-            if(board.placePiece(piece)){
-                buttons -= piece.cost();
-                pieces.add(piece);
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-        else{
-            return false;
-        }
-    }*/
-
     /**
-     * Achète une pièce et la place sur le plateau du joueur.
-     * @param piece : pièce à acheter
-     * @param x : coordonnée x
-     * @param y: coordonnée y
-     * @return : true si la pièce a été achetée et placée, false sinon
+     * Buy a piece and place it on the player's board.
+     * @param piece : piece to buy
+     * @param x : x coordinate
+     * @param y: y coordinate
+     * @return : true if the piece has been bought and placed, false otherwise
      */
     public boolean buyPiece(Piece piece, int x, int y){
         if(buttons >= piece.cost()){
-            /* On essaie de placer la piece sur le board */
+            /* Trying to place the piece on the board */
             if(board.placePiece(piece, x, y)){
                 buttons -= piece.cost();
                 pieces.add(piece);
@@ -79,8 +61,8 @@ public class Player {
     }
 
     /**
-     * Retourne le plateau du joueur.
-     * @return : plateau du joueur
+     * Returns the number of buttons earned by the player.
+     * @return : number of buttons earned by the player
      */
     public int getEarnedButton(){
         int res = 0;

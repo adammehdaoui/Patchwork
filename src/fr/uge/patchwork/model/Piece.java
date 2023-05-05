@@ -3,17 +3,17 @@ package fr.uge.patchwork.model;
 import java.util.ArrayList;
 
 /**
- * Classe dédiée à la représentation d'une pièce (ou d'un "patch" du jeu).
- * @param schema : schéma de la pièce
- * @param cost : coût de la pièce
- * @param time : temps de la pièce
- * @param button : présence d'un bouton sur la pièce
+ * Class dedicated to the representation of a piece (or a "patch" of the game).
+ * @param schema : diagram of the piece
+ * @param cost : cost of the piece
+ * @param time : time to place the piece
+ * @param button : presence of a button on the piece
  */
 public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, int button) {
 
     /**
-     * Compte le nombre de "true" dans le schéma de la pièce.
-     * @return : le nombre de "true" dans le schéma de la pièce.
+     * Count the number of "true" in the piece's diagram.
+     * @return : number of "true" in the piece's diagram
      */
     public int countTrue(){
         int res = 0;
@@ -28,8 +28,8 @@ public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, in
     }
 
     /**
-     * Retourne une nouvelle pièce correspondant à la rotation de la pièce courante.
-     * @return : une nouvelle pièce correspondant à la rotation de la pièce courante.
+     * Returns a new piece corresponding to the rotation of the current piece.
+     * @return : a new piece corresponding to the rotation of the current piece
      */
     public Piece rotate() {
         ArrayList<ArrayList<Boolean>> newSchema = new ArrayList<>();
@@ -44,8 +44,8 @@ public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, in
     }
 
     /**
-     * Retourne une nouvelle pièce correspondant à l'inversion de la pièce courante.
-     * @return : une nouvelle pièce correspondant à l'inversion de la pièce courante.
+     * Returns a new piece corresponding to the inversion of the current piece.
+     * @return : a new piece corresponding to the inversion of the current piece
      */
     public Piece invert() {
         ArrayList<ArrayList<Boolean>> newSchema = new ArrayList<>();

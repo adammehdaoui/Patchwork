@@ -3,34 +3,33 @@ package fr.uge.patchwork.model;
 import java.util.ArrayList;
 
 /**
- * Classe dédiée à la représentation du plateau de jeu ("TimeBoard").
+ * Class dedicated to the representation of the game board ("TimeBoard").
  */
 public class TimeBoard {
     private final ArrayList<Cell> cells;
     final static int nbCases = 54;
 
-    /* On stocke ici le dernier joueur qui a joué */
-    private Player priorityPlayer;
+    /* Storing here the last player who played */
+    private final Player priorityPlayer;
 
     /**
-     * Constructeur de la classe TimeBoard.
-     * @param player1 : joueur 1
-     * @param player2 : joueur 2
+     * Constructor of the class TimeBoard.
+     * @param player1 : player 1
+     * @param player2 : player 2
      */
     public TimeBoard(Player player1, Player player2) {
         cells = new ArrayList<>();
 
-        /* On crée les cases et on place les boutons toutes les 6 cases */
+        /* Creating the cells and placing the buttons every 6 cells */
         for(int i=0; i<nbCases; i++){
             cells.add(new Cell());
 
-            /* On place les boutons de manière régulière */
             if(i % 6 == 5){
                 cells.get(i).setButton(true);
             }
         }
 
-        /* On place les joueurs à la première cellule du TimeBoard (début du jeu) */
+        /* Positioning the players on the first cell of the TimeBoard (beginning of the game) */
         cells.get(0).setPlayer(player1);
         cells.get(0).setPlayer(player2);
 
@@ -38,19 +37,19 @@ public class TimeBoard {
     }
 
     /**
-     * Renvoie le joueur prioritaire (le dernier joueur qui a joué).
-     * @return : joueur prioritaire
+     * Returns the priority player (the last player who played).
+     * @return : priority player
      */
     public Player getPriorityPlayer(){
         return priorityPlayer;
     }
 
     /**
-     * Déplace le joueur en fonction du nombre de cases indiqué.
-     * @param player : joueur à déplacer
-     * @param move : nombre de cases à avancer
-     * @return : nombre de boutons entre l'ancienne et la nouvelle position du joueur
-     * @throws ClassNotFoundException : joueur non trouvé
+     * Moves the player according to the number of cells indicated.
+     * @param player : player to move
+     * @param move : number of cells to move
+     * @return : number of buttons between the old and the new position of the player
+     * @throws ClassNotFoundException : player not found
      */
     public int movePlayer(Player player, int move) throws ClassNotFoundException {
         int index = -1;
@@ -82,10 +81,10 @@ public class TimeBoard {
     }
 
     /**
-     * Renvoie le nombre de boutons entre deux cases.
-     * @param start : case de départ
-     * @param end : case d'arrivée
-     * @return : nombre de boutons entre les deux cases
+     * Returns the number of buttons between two cells.
+     * @param start : starting cell
+     * @param end : ending cell
+     * @return : number of buttons between the two cells
      */
     public int nbButton(int start, int end){
         int res = 0;
@@ -98,8 +97,8 @@ public class TimeBoard {
     }
 
     /**
-     * Renvoie la distance entre les deux joueurs.
-     * @return : distance entre les deux joueurs
+     * Returns the distance between the two players.
+     * @return : distance between the two players
      */
     public int distance(){
         int posP1 = 0;
@@ -118,16 +117,16 @@ public class TimeBoard {
     }
 
     /**
-     * Renvoie vrai si les deux joueurs sont sur la dernière case.
-     * @return : vrai si les deux joueurs sont sur la dernière case
+     * Returns true if the two players are on the last cell.
+     * @return : true if the two players are on the last cell
      */
     public boolean endGame(){
         return cells.get(nbCases - 1).player1() != null && cells.get(nbCases - 1).player2() != null;
     }
 
     /**
-     * Renvoie le joueur qui doit jouer.
-     * @return : joueur qui doit jouer
+     * Returns the player who must play.
+     * @return : player who must play
      */
     public int turnOf(){
         int posP1 = 0;

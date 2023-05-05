@@ -12,31 +12,31 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Contrôleur principal du jeu.
+ * Main controller of the game.
  */
 public class Main {
 
     /**
-     * Méthode principale du jeu.
-     * @param args : arguments de la ligne de commande
-     * @throws ClassNotFoundException : si la classe n'est pas trouvée
-     * @throws FileNotFoundException : si le fichier n'est pas trouvé
+     * Principal method of the game.
+     * @param args : command line arguments
+     * @throws ClassNotFoundException :  if the class is not found
+     * @throws FileNotFoundException : if the file is not found
      */
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         System.out.println("Lancement du jeu...\n");
 
-        /* Création des plateaux des joueurs */
+        /* Creation of player boards */
         PlayerBoard playerBoard1 = new PlayerBoard();
         PlayerBoard playerBoard2 = new PlayerBoard();
 
-        /* Création des joueurs */
+        /* Creation of players */
         Player player1 = new Player(1, playerBoard1);
         Player player2 = new Player(2, playerBoard2);
 
-        /* On stocke les joueurs dans une Map */
+        /* Storage of players in a Map */
         Map<Integer, Player> players = Map.of(player1.getId(), player1, player2.getId(), player2);
 
-        /* Position des pièces à placer */
+        /* Position of the pieces to be placed */
         int x;
         int y;
 
@@ -46,9 +46,9 @@ public class Main {
         System.out.println("Choisissez votre version de jeu (base ou complet) :");
         String str = sc.nextLine();
 
-        /* Jeu de base */
+        /* Base game */
         if(str.equals("base")){
-            /* Création d'un schéma de pièce (un carré de 2x2) */
+            /* Creation of a piece diagram */
             var schema = new ArrayList<ArrayList<Boolean>>();
             schema.add(new ArrayList<>(List.of(true, true)));
             schema.add(new ArrayList<>(List.of(true, true)));
@@ -56,20 +56,20 @@ public class Main {
             Piece piece1 = new Piece(schema, 3, 4, 1);
             Piece piece2 = new Piece(schema, 2, 2, 0);
 
-            /* Création d'un tableau de 40 pièces (pièces 1 et 2 alternées) */
+            /* Creation of a table of 40 pieces (pieces 1 and 2 alternated) */
             for (int i = 0; i < 20; i++) {
                 pieceList.addPiece(piece1);
                 pieceList.addPiece(piece2);
             }
 
         }
-        /* Jeu complet */
+        /* Complete game */
         else if(str.equals("complet")){
             /* Création des pièces du vrai jeu */
             var file = new ReadFile(Path.of("allPieces.txt"));
             pieceList = file.read();
         }
-        /* Version invalide */
+        /* Invalid version */
         else{
             System.out.println("Vous n'avez pas choisi une version valide du jeu.");
             System.exit(0);
@@ -77,34 +77,34 @@ public class Main {
 
         pieceList.placeNeutral();
 
-        /* Création du plateau de jeu */
+        /* Creation of the game board */
         TimeBoard timeBoard = new TimeBoard(player1, player2);
 
-        /* Boucle de jeu */
+        /* Game loop */
         while(!timeBoard.endGame()){
-            /* Affichage des playerboards et du timeboard */
+            /* Display of playerboards en timeboard */
             System.out.println(player1);
             System.out.println(timeBoard);
             System.out.println("\n");
             System.out.println(player2);
 
-            /* On récupère l'id du joueur qui doit jouer */
+            /* Retrieving the ID of the player who must play */
             int idPlayerPrio = timeBoard.turnOf();
 
             System.out.println("C'est au tour du joueur " + idPlayerPrio + "\n");
 
-            /* On affiche les pièces jouables */
+            /* Displaying playable pieces */
             ArrayList<Piece> playablePieces = pieceList.nextPieces();
             System.out.println("Les pièces jouables sont :");
             for (int i = 0; i < 3; i++) {
                 System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
             }
 
-            /* On demande au joueur si il veut acheter une pièce */
+            /* Asking the player if they want to buy a piece */
             System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
             String str2 = sc.nextLine();
             if (str2.equals("oui")) {
-                /* On demande au joueur quelle pièce il veut acheter */
+                /* Asking the player which piece they want to buy */
                 System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
                 int idPiece = sc.nextInt();
                 sc.nextLine();
@@ -117,19 +117,18 @@ public class Main {
                     sc.nextLine();
                 }
 
-                /* On affiche la pièce qu'il veut acheter et on lui demande s'il veut rotate,
-                invert ou validate */
+                /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
                 System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
                 System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
                 String str3 = sc.nextLine();
 
                 while(!str3.equals("validate")){
                     if(str3.equals("rotate")){
-                        /* Remplace la pièce par la pièce rotate */
+                        /* Replacement of the piece by the rotate piece */
                         playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
                     }
                     else if(str3.equals("invert")){
-                        /* Remplace la pièce par la pièce invert */
+                        /* Replacement of the piece with the invert piece */
                         playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
                     }
                     else{
@@ -140,15 +139,14 @@ public class Main {
                     str3 = sc.nextLine();
                 }
 
-                /* On demande à l'utilisateur où il veut placer la pièce sur son board */
-                System.out.println("Ou voulez-vous placer la pièce ? (x y)");
+                /* Asking the user where he wants to place the piece on his board */
+                System.out.println("Où voulez-vous placer la pièce ? (x y)");
                 x = sc.nextInt();
                 y = sc.nextInt();
                 sc.nextLine();
 
-                /* Le joueur {id} achète la pièce 1 */
                 if(players.get(idPlayerPrio).buyPiece(playablePieces.get(0), x, y)){
-                    /* On déplace le joueur et récupère le nombre de boutons passés puis on ajoute les boutons gagnés */
+                    /* Moving the player and getting the number of buttons passed and then adding the buttons won */
                     int buttonToEarn = timeBoard.movePlayer(players.get(idPlayerPrio), playablePieces.get(0).time());
 
                     for (int i = 0; i < buttonToEarn; i++) {
@@ -158,25 +156,24 @@ public class Main {
                     pieceList.removePiece(0);
                     System.out.println("Le joueur " + idPlayerPrio + " a acheté la pièce");
                 } else {
-                    /* On avance le joueur devant son adversaire */
+                    /* Moving the player in front of his opponent */
                     int distance = timeBoard.distance() + 1;
                     timeBoard.movePlayer(players.get(idPlayerPrio), distance);
-                    /* Il gagne la distance en boutons */
+                    /* Winning the distance in buttons */
                     players.get(idPlayerPrio).addButtons(distance);
                     System.out.println("Le joueur " + idPlayerPrio + " n'a pas pu acheter la pièce, il avance de " + distance + " cases");
                 }
-
             } else {
-                /* On avance le joueur devant son adversaire */
+                /* Moving the player in front of his opponent */
                 int distance = timeBoard.distance() + 1;
                 timeBoard.movePlayer(players.get(idPlayerPrio), distance);
-                /* Il gagne la distance en boutons */
+                /* Winning the distance in buttons */
                 players.get(idPlayerPrio).addButtons(distance);
-                System.out.println("Le joueur " + idPlayerPrio + " n'a pas acheté de pièce, il avance de " + distance + " cases");
+                System.out.println("Le joueur " + idPlayerPrio + " n'a pas acheté de pièce, il avance de " + distance + " case(s)");
             }
         }
 
-        /* Affichage de la fin du jeu */
+        /* Display of the end of the game */
         System.out.println("FIN DU JEU");
     }
 

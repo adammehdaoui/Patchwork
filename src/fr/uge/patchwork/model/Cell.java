@@ -3,7 +3,7 @@ package fr.uge.patchwork.model;
 import java.util.ArrayList;
 
 /**
- * Classe dédiée à la représentation d'une cellule du plateau de jeu ("TimeBoard").
+ * Class dedicated to the representation of a cell of the game board ("TimeBoard").
  */
 public class Cell {
 
@@ -12,7 +12,7 @@ public class Cell {
     private boolean button;
 
     /**
-     * Constructeur de la classe Cell.
+     * Constructor of the class Cell.
      */
     public Cell(){
         player1 = null;
@@ -38,8 +38,8 @@ public class Cell {
     }
 
     /**
-     * Libère le joueur de la cellule.
-     * @param player : joueur à libérer
+     * Free the player from the cell.
+     * @param player : player to free
      */
     public void freePlayer(Player player){
         if(player.getId() == 1){
@@ -51,8 +51,8 @@ public class Cell {
     }
 
     /**
-     * Renvoie la liste des joueurs présents sur la cellule.
-     * @return : liste des joueurs présents sur la cellule
+     * Return the list of players on the cell.
+     * @return : list of players on the cell
      */
     public ArrayList<Player> getPlayers(){
         ArrayList<Player> players = new ArrayList<Player>(2);
