@@ -78,6 +78,10 @@ public class Player {
         }
     }
 
+    /**
+     * Calculate the score of the player according to the rules of the Patchwork game.
+     * @return : score of the player
+     */
     public int score(){
         int score = 0;
         score += buttons;

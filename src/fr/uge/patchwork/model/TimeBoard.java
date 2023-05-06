@@ -102,6 +102,12 @@ public class TimeBoard {
         }
     }
 
+    /**
+     * Predict the movement (before cleaning the time board) of a player according to the number of cells indicated.
+     * @param player : player to move
+     * @return : a map containing the start and end cell of the player
+     * @throws IllegalArgumentException : argument player not found in the main board
+     */
     public Map<String, Integer> predictMovement(Player player, int move) throws IllegalArgumentException {
         int index = -1;
         int moveTo;
