@@ -32,7 +32,7 @@ public class Main {
         /* Storage of players in a Map */
         Map<Integer, Player> players = Map.of(player1.getId(), player1, player2.getId(), player2);
         /* Creation of a list of pieces */
-        PieceList pieceList = new PieceList();
+        PieceSet pieceSet = new PieceSet();
 
         /* Asking the user which version of the game he wants to play */
         Scanner sc = new Scanner(System.in);
@@ -40,15 +40,15 @@ public class Main {
         String str = sc.nextLine();
 
         /* Initialization of the list of pieces depending on the version chosen */
-        pieceList.init(str);
+        pieceSet.init(str);
 
         System.out.print("\nLANCEMENT DU JEU AVEC LA VERSION : " + str + "\n\n");
 
         /* Game loop */
         while(!timeBoard.endGame()){
-            Game.status(player1, player2, pieceList, timeBoard);
+            Game.status(player1, player2, pieceSet, timeBoard);
 
-            Game.loop(pieceList, players, timeBoard);
+            Game.loop(pieceSet, players, timeBoard);
 
             System.out.println("\n========TOUR SUIVANT========\n");
         }

@@ -18,7 +18,7 @@ public interface Game {
      * @param pieceList : list of pieces
      * @param timeBoard : game board
      */
-    public static void status(Player player1, Player player2, PieceList pieceList,
+    public static void status(Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard){
         /* Display the status of the game */
         System.out.println(player1);
@@ -44,7 +44,7 @@ public interface Game {
      * @param players : Map of players by ID
      * @param timeBoard : game board
      */
-    public static void loop(PieceList pieceList, Map<Integer, Player> players,
+    public static void loop(PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard) {
         int idPlayerPrior = timeBoard.turnOf();
 
@@ -71,7 +71,7 @@ public interface Game {
      * @param timeBoard     : game board
      * @param idPlayerPrior : ID of the player who must play
      */
-    public static int[] buy(PieceList pieceList, Map<Integer, Player> players,
+    public static int[] buy(PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, int idPlayerPrior){
         int x, y;
         ArrayList<Piece> playablePieces = pieceList.nextPieces();

@@ -8,14 +8,14 @@ import java.util.List;
 /**
  * Class representing the list of pieces available in the game.
  */
-public class PieceList {
+public class PieceSet {
     private ArrayList<Piece> pieces;
     private int neutralPiece;
 
     /**
      * Constructor of the class PieceList.
      */
-    public PieceList(){
+    public PieceSet(){
         pieces = new ArrayList<Piece>();
         neutralPiece = 0;
     }

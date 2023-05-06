@@ -16,7 +16,7 @@ public record ReadFile(Path path) {
      * @param pieces : list of pieces to fill
      * @throws IOException : error while reading the file
      */
-    public void read(PieceList pieces) throws IOException {
+    public void read(PieceSet pieces) throws IOException {
         String line;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
