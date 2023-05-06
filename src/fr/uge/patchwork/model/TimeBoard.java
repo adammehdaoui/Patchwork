@@ -1,6 +1,7 @@
 package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Class dedicated to the representation of the game board ("TimeBoard").
@@ -31,7 +32,7 @@ public class TimeBoard {
 
             //20, 26, 33, 45, 51
             if(i == 20 || i == 26 || i == 33 || i == 45 || i == 51){
-                cells.get(i).setPatchwork(true);
+                cells.get(i).setPatch(true);
             }
         }
 
@@ -43,24 +44,17 @@ public class TimeBoard {
     }
 
     /**
-     * Returns the priority player (the last player who played).
-     * @return : priority player
-     */
-    public Player getPriorityPlayer(){
-        return priorityPlayer;
-    }
-
-    /**
      * Moves the player according to the number of cells indicated.
+     *
      * @param player : player to move
-     * @param move : number of cells to move
-     * @return : number of buttons between the old and the new position of the player
+     * @param move   : number of cells to move
      * @throws IllegalArgumentException : argument player not found in the main board
      */
-    public int[] movePlayer(Player player, int move) throws IllegalArgumentException {
+    public void movePlayer(Player player, int move) throws IllegalArgumentException {
         int index = -1;
         int moveTo;
 
+        /* Searching for the player in the Time Board */
         for(int i=0; i<nbCases; i++){
             if(cells.get(i).getPlayer(player) != null){
                 index = i;
@@ -72,6 +66,7 @@ public class TimeBoard {
             throw new IllegalArgumentException("Le joueur n'a pas été trouvé dans le board principal");
         }
 
+        /* Freeing the player from the cell and moving it to the new cell */
         cells.get(index).freePlayer(player);
 
         if(index+move >= nbCases){
@@ -83,34 +78,75 @@ public class TimeBoard {
 
         cells.get(moveTo).setPlayer(player);
 
-        return new int[]{nbButton(index, moveTo), nbPatchwork(index, moveTo)};
+        /* If the player crossed a button or a patch, remove it from the cell */
+        for(int e=index; e<moveTo; e++){
+            if(cells.get(e).button()){
+                cells.get(e).setButton(false);
+            }
+
+            if(cells.get(e).patch()){
+                cells.get(e).setPatch(false);
+            }
+        }
+    }
+
+    public Map<String, Integer> predictMovement(Player player, int move) throws IllegalArgumentException {
+        int index = -1;
+        int moveTo;
+
+        /* Searching for the player in the Time Board */
+        for(int i=0; i<nbCases; i++){
+            if(cells.get(i).getPlayer(player) != null){
+                index = i;
+                break;
+            }
+        }
+
+        if(index<0){
+            throw new IllegalArgumentException("Le joueur n'a pas été trouvé dans le board principal");
+        }
+
+        if(index+move >= nbCases){
+            moveTo=nbCases-1;
+        }
+        else{
+            moveTo=index+move;
+        }
+
+        return Map.of("start", index, "end", moveTo);
     }
 
     /**
      * Returns the number of buttons between two cells.
+     *
      * @param start : starting cell
-     * @param end : ending cell
-     * @return : number of buttons between the two cells
+     * @param end   : ending cell
      */
     public int nbButton(int start, int end){
-        int res = 0;
+        int count = 0;
         for(int i=start; i<end; i++){
             if(cells.get(i).button()){
-                res++;
+                count++;
             }
         }
-        return res;
+        return count;
     }
 
-    public int nbPatchwork(int start, int end){
-        int res = 0;
+    /**
+     * Returns the number of patches between two cells.
+     * @param start : starting cell
+     * @param end : ending cell
+     * @return : number of patches between the two cells
+     */
+    public int nbPatch(int start, int end){
+        int count = 0;
         for(int i=start; i<end; i++){
-            if(cells.get(i).patchwork()){
-                res++;
-                cells.get(i).setPatchwork(false);
+            if(cells.get(i).patch()){
+                count++;
+                cells.get(i).setPatch(false);
             }
         }
-        return res;
+        return count;
     }
 
     /**
@@ -174,20 +210,23 @@ public class TimeBoard {
         int i=1;
         StringBuilder sb = new StringBuilder();
 
-        sb.append("TimeBoard :\n------------------------------\n");
+        sb.append("TimeBoard :\n------------------------------------\n");
 
         for(Cell cell : cells){
             sb.append("|");
+
+            if(cell.patch()){
+                sb.append("■");
+            }
+            else{
+                sb.append(" ");
+            }
 
             if(cell.button()){
                 sb.append("°");
             }
             else{
                 sb.append(" ");
-            }
-
-            if(cell.patchwork()){
-                sb.append("■");
             }
 
             if(cell.player1() != null){
@@ -207,7 +246,7 @@ public class TimeBoard {
             sb.append("|");
 
             if(i%6 == 0 && i!=0){
-                sb.append("\n").append("------------------------------").append("\n");
+                sb.append("\n").append("------------------------------------").append("\n");
             }
 
             i++;

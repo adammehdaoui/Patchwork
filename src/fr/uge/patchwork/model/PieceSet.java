@@ -22,7 +22,7 @@ public class PieceSet {
 
     public void init(String gameVersion) throws IOException, IllegalArgumentException {
         /* Base game */
-        if(gameVersion.equals("base")){
+        if(gameVersion.equals("1")){
             /* Creation of a piece diagram */
             var schema = new ArrayList<ArrayList<Boolean>>();
             schema.add(new ArrayList<>(List.of(true, true)));
@@ -38,9 +38,9 @@ public class PieceSet {
             }
         }
         /* Complete game */
-        else if(gameVersion.equals("complet")){
+        else if(gameVersion.equals("2")){
             /* Creation of the pieces of the complete game version */
-            var file = new ReadFile(Path.of("pieces.txt"));
+            var file = new PieceFactory(Path.of("pieces.txt"));
             file.read(this);
         }
         /* Invalid version */

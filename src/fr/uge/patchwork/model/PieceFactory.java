@@ -3,13 +3,12 @@ package fr.uge.patchwork.model;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Class dedicated to the reading of a file containing all the pieces of the game to interpret.
  * @param path : path of the file to read
  */
-public record ReadFile(Path path) {
+public record PieceFactory(Path path) {
 
     /**
      * Read the file and return a list of pieces.

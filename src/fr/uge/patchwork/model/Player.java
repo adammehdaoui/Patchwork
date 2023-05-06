@@ -9,8 +9,10 @@ public class Player {
 
     private final int id;
     private int buttons;
-    private ArrayList<Piece> pieces;
-    private PlayerBoard board;
+
+    private boolean specialPiece;
+    private final ArrayList<Piece> pieces;
+    private final PlayerBoard board;
 
     /**
      * Constructor of the class Player.
@@ -20,7 +22,7 @@ public class Player {
     public Player(int id, PlayerBoard board){
         this.id = id;
         this.buttons = 5;
-        this.pieces = new ArrayList<Piece>();
+        this.pieces = new ArrayList<>();
         this.board = board;
     }
 

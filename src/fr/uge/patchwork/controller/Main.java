@@ -36,25 +36,22 @@ public class Main {
 
         /* Asking the user which version of the game he wants to play */
         Scanner sc = new Scanner(System.in);
-        System.out.println("Choisissez votre version de jeu (base ou complet) :");
+        System.out.println("Choisissez votre version de jeu : 1 ou 2.");
         String str = sc.nextLine();
 
         /* Initialization of the list of pieces depending on the version chosen */
         pieceSet.init(str);
 
-        System.out.print("\nLANCEMENT DU JEU AVEC LA VERSION : " + str + "\n\n");
+        System.out.print("\nLANCEMENT DU JEU EN VERSION " + str + ".\n\n");
 
         /* Game loop */
         while(!timeBoard.endGame()){
             Game.status(player1, player2, pieceSet, timeBoard);
-
-            Game.loop(pieceSet, players, timeBoard);
-
-            System.out.println("\n========TOUR SUIVANT========\n");
+            Game.progress(pieceSet, players, timeBoard);
         }
 
         /* Display of the end of the game */
-        System.out.println("FIN DU JEU");
+        System.out.println("FIN DU JEU.");
     }
 
 }

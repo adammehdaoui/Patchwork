@@ -10,7 +10,7 @@ public class Cell {
     private Player player1;
     private Player player2;
     private boolean button;
-    private boolean patchwork;
+    private boolean patch;
 
     /**
      * Constructor of the class Cell.
@@ -21,6 +21,13 @@ public class Cell {
         button = false;
     }
 
+    public Player player1(){
+        return player1;
+    }
+
+    public Player player2(){
+        return player2;
+    }
     public Player getPlayer(Player player){
         if(player.getId() == 1)
             return player1;
@@ -34,12 +41,20 @@ public class Cell {
             player2 = player;
     }
 
+    public boolean button(){
+        return button;
+    }
     public void setButton(boolean b){
         button = b;
     }
-    public void setPatchwork(boolean b) {
-        patchwork = b;
+
+    public boolean patch(){
+        return patch;
     }
+    public void setPatch(boolean b) {
+        patch = b;
+    }
+
     /**
      * Free the player from the cell.
      * @param player : player to free
@@ -58,27 +73,11 @@ public class Cell {
      * @return : list of players on the cell
      */
     public ArrayList<Player> getPlayers(){
-        ArrayList<Player> players = new ArrayList<Player>(2);
+        ArrayList<Player> players = new ArrayList<>(2);
         if(player1 != null)
             players.add(player1);
         if(player2 != null)
             players.add(player2);
         return players;
-    }
-
-    public Player player1(){
-        return player1;
-    }
-
-    public Player player2(){
-        return player2;
-    }
-
-    public boolean button(){
-        return button;
-    }
-
-    public boolean patchwork(){
-        return patchwork;
     }
 }
