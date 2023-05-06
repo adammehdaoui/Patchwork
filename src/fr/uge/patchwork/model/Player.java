@@ -34,6 +34,22 @@ public class Player {
         return buttons;
     }
 
+    public boolean getSpecialPiece(){
+        return specialPiece;
+    }
+
+    public void setSpecialPiece(boolean b){
+        specialPiece = b;
+    }
+
+    public ArrayList<Piece> getPieces(){
+        return pieces;
+    }
+
+    public PlayerBoard getBoard(){
+        return board;
+    }
+
     public void addButtons(int buttons){
         this.buttons += buttons;
     }
@@ -62,16 +78,17 @@ public class Player {
         }
     }
 
-    /**
-     * Returns the number of buttons earned by the player.
-     * @return : number of buttons earned by the player
-     */
-    public int getEarnedButton(){
-        int res = 0;
-        for (Piece piece : pieces) {
-            res += piece.button();
+    public int score(){
+        int score = 0;
+        score += buttons;
+
+        if(specialPiece){
+            score += 7;
         }
-        return res;
+
+        score -= board.countEmptyCells();
+
+        return score;
     }
 
     @Override

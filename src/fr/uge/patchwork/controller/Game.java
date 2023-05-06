@@ -3,7 +3,7 @@ package fr.uge.patchwork.controller;
 import fr.uge.patchwork.model.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -46,8 +46,11 @@ public interface Game {
      * @param timeBoard : game board
      */
     static void progress(PieceSet pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard) {
+                            TimeBoard timeBoard, String gameVersion) {
         int idPlayerPrior = timeBoard.turnOf();
+        System.out.println("\n==========TOUR SUIVANT==========\n");
+
+        Game.status(players.get(1), players.get(2), pieceList, timeBoard);
 
         /* Asking the player if they want to buy a piece */
         Scanner sc = new Scanner(System.in);
@@ -60,7 +63,19 @@ public interface Game {
             Game.overtake(players, timeBoard, idPlayerPrior);
         }
 
-        System.out.println("\n==========TOUR SUIVANT==========\n");
+        if(gameVersion.equals("2")){
+            if(players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()){
+                    players.get(1).setSpecialPiece(true);
+                    timeBoard.setSpecialPieceAvailable(false);
+                    System.out.println("Le joueur 1 a gagné la tuile spéciale.");
+            }
+
+            if(players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()){
+                players.get(2).setSpecialPiece(true);
+                timeBoard.setSpecialPieceAvailable(false);
+                System.out.println("Le joueur 2 a gagné la tuile spéciale.");
+            }
+        }
     }
 
     /**
@@ -159,10 +174,7 @@ public interface Game {
         /* Moving the player in front of his opponent */
         timeBoard.movePlayer(players.get(idPlayerPrior), distance);
 
-        System.out.println("movement :" + movement);
-        System.out.println("buttons earned:" + buttonsEarned);
-        System.out.println("patches earned:" + patchesEarned);
-        System.out.println("Le joueur " + idPlayerPrior + " n'a pas acheté de pièce, il avance de " + distance + " case(s).");
+        System.out.println("Le joueur " + idPlayerPrior + " dépasse son adversaire, il avance de " + distance + " case(s).");
     }
 
     /**
@@ -173,13 +185,26 @@ public interface Game {
      */
     static void reward(Map<Integer, Player> players, int patchesEarned, int idPlayerPrior){
         Scanner sc = new Scanner(System.in);
+        int x = -1;
+        int y = -1;
+        boolean validIntegers = false;
 
         if(patchesEarned > 0){
             for (int i = 0; i < patchesEarned; i++) {
                 System.out.println("Vous avez gagné une pièce spéciale 1x1! Veuillez choisir où la placer (x y).");
-                var x = sc.nextInt();
-                var y = sc.nextInt();
-                sc.nextLine();
+
+                while(!validIntegers){
+                    try {
+                        x = sc.nextInt();
+                        y = sc.nextInt();
+                        sc.nextLine();
+                        validIntegers = true;
+                    } catch (InputMismatchException e){
+                        System.out.println("Les entiers entrés ne sont pas valides, veuillez essayer à nouveau (x y).");
+                        sc.nextLine();
+                    }
+                }
+
 
                 var schema = new ArrayList<ArrayList<Boolean>>();
                 var row = new ArrayList<Boolean>();
@@ -187,13 +212,28 @@ public interface Game {
                 schema.add(row);
                 var square = new Piece(schema, 0, 0, 0);
 
-                while(!players.get(idPlayerPrior).buyPiece(square , x, y)){
+                while(!players.get(idPlayerPrior).buyPiece(square, x, y)){
                     System.out.println("Vous ne pouvez pas placer la pièce à ces positions, veuillez choisir d'autres coordonnées (x y).");
                     x = sc.nextInt();
                     y = sc.nextInt();
-                    sc.nextLine();
                 }
             }
         }
     }
+
+    static void end(Map<Integer, Player> players, TimeBoard timeBoard){
+        int scorePlayer1 = players.get(1).score();
+        int scorePlayer2 = players.get(2).score();
+
+        if(scorePlayer1 > scorePlayer2){
+            System.out.println("\nLe joueur 1 a gagné avec " + scorePlayer1 + " points contre " + scorePlayer2 +
+                    " points.");
+        } else if(scorePlayer1 < scorePlayer2){
+            System.out.println("\nLe joueur 2 a gagné avec " + scorePlayer2 + " points contre " + scorePlayer1 +
+                    " points.");
+        } else {
+            System.out.println("\nÉgalité parfaite entre les deux joueurs avec " + scorePlayer1 + " points.");
+        }
+    }
+
 }

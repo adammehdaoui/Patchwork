@@ -9,7 +9,9 @@ import java.util.Map;
 public class TimeBoard {
 
     private final ArrayList<Cell> cells;
-    final static int nbCases = 54;
+    private final static int nbCases = 54;
+
+    private boolean specialPieceAvailable;
 
     /* Storing here the last player who played */
     private final Player priorityPlayer;
@@ -41,6 +43,16 @@ public class TimeBoard {
         cells.get(0).setPlayer(player2);
 
         priorityPlayer = player1;
+
+        specialPieceAvailable = true;
+    }
+
+    public boolean isSpecialPieceAvailable(){
+        return specialPieceAvailable;
+    }
+
+    public void setSpecialPieceAvailable(boolean b){
+        specialPieceAvailable = b;
     }
 
     /**

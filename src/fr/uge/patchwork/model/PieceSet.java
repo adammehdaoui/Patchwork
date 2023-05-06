@@ -20,6 +20,12 @@ public class PieceSet {
         neutralPiece = 0;
     }
 
+    /**
+     * Get the list of pieces depending on the game version.
+     * @param gameVersion : version of the game
+     * @throws IOException : error while reading the file
+     * @throws IllegalArgumentException : invalid game version
+     */
     public void init(String gameVersion) throws IOException, IllegalArgumentException {
         /* Base game */
         if(gameVersion.equals("1")){

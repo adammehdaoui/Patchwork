@@ -56,40 +56,48 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
         return false;
     }
 
-    /**
-     * Returns the place where we can place the special 7x7 piece. If there is no place to place it on the board, then
-     * we return the value -1.
-     * @return : the place where we can place the special 7x7 piece or -1 if there is no place to place it
-     */
-    public int specialPiecePlace(){
-        boolean find = false;
+    public boolean isSpecialPieceEarnable(){
         int count = 0;
 
-        for(int i=0; i<board.size(); i++){
-            for(int e=0; e<board.get(i).size(); e++){
-                if(!board.get(i).get(e)){
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board.get(i).size(); j++){
 
-                    for(int j = i; j<i+7 && j<board().size() && !find; j++){
-                        for(int x = e; x<x+7 && x<board.get(e).size() && !find; x++){
-                            if(board.get(j).get(x)){
-                                find = true;
-                                count = 0;
+                if(board.get(i).get(j) && i+7 < board.size() && j+7 < board.get(i).size()){
+                    outerLoop:
+                    for(int k = i; k < board.size(); k++){
+                        for(int l = j; l < board.get(k).size(); l++){
+                            if(board.get(k).get(l)){
+                                count++;
                             }
-
-                            count++;
+                            else{
+                                count = 0;
+                                break outerLoop;
+                            }
+                            if(count == 49){
+                                return true;
+                            }
                         }
                     }
+                }
 
-                    /* If the 7x7 cases have been found */
-                    if(count == 49){
-                        return i;
-                    }
+            }
+        }
 
+        return false;
+    }
+
+    public int countEmptyCells(){
+        int count = 0;
+
+        for (ArrayList<Boolean> booleans : board) {
+            for (Boolean aBoolean : booleans) {
+                if (!aBoolean) {
+                    count++;
                 }
             }
         }
 
-        return -1;
+        return count;
     }
 
     @Override
