@@ -60,7 +60,7 @@ public interface Game {
             earnTab = Game.pass(players, timeBoard, idPlayerPrior);
         }
 
-        System.out.println("Vous avez gagné " + earnTab[0] + " boutons et " + earnTab[1] + " patchworks 1x1");
+
         int buttonToEarn = earnTab[0];
         int patchworkToEarn = earnTab[1];
 
