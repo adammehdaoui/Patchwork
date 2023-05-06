@@ -225,9 +225,8 @@ public interface Game {
     /**
      * Controller method to display the winner of the game.
      * @param players : players Map by ID
-     * @param timeBoard : game board
      */
-    static void end(Map<Integer, Player> players, TimeBoard timeBoard){
+    static void end(Map<Integer, Player> players){
         int scorePlayer1 = players.get(1).score();
         int scorePlayer2 = players.get(2).score();
 

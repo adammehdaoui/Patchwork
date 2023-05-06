@@ -34,10 +34,6 @@ public class Player {
         return buttons;
     }
 
-    public boolean getSpecialPiece(){
-        return specialPiece;
-    }
-
     public void setSpecialPiece(boolean b){
         specialPiece = b;
     }

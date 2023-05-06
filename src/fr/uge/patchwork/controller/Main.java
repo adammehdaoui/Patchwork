@@ -49,7 +49,7 @@ public class Main {
             Game.progress(pieceSet, players, timeBoard, gameVersion);
         }
 
-        Game.end(players, timeBoard);
+        Game.end(players);
 
         sc.close();
 
