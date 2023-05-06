@@ -52,23 +52,56 @@ public interface Game {
         Scanner sc = new Scanner(System.in);
         System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
         String str = sc.nextLine();
+        int[] earnTab;
 
         if (str.equals("oui")) {
-            Game.buy(pieceList, players, timeBoard, idPlayerPrior);
+            earnTab = Game.buy(pieceList, players, timeBoard, idPlayerPrior);
         } else {
-            Game.pass(players, timeBoard, idPlayerPrior);
+            earnTab = Game.pass(players, timeBoard, idPlayerPrior);
+        }
+
+        System.out.println("Vous avez gagné " + earnTab[0] + " boutons et " + earnTab[1] + " patchworks 1x1");
+        int buttonToEarn = earnTab[0];
+        int patchworkToEarn = earnTab[1];
+
+        for (int i = 0; i < buttonToEarn; i++) {
+            players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).getEarnedButton());
+        }
+
+        if(patchworkToEarn > 0){
+            for (int i = 0; i < patchworkToEarn; i++) {
+                System.out.println("Vous avez gagné un patchwork 1x1! Choisissez où le placer (x y)");
+                var xP = sc.nextInt();
+                var yP = sc.nextInt();
+                sc.nextLine();
+
+                var schema = new ArrayList<ArrayList<Boolean>>();
+                var row = new ArrayList<Boolean>();
+                row.add(true);
+                schema.add(row);
+                var square = new Piece(schema, 0, 0, 0);
+
+                while (!players.get(idPlayerPrior).buyPiece(square , xP, yP)){
+                    System.out.println("Vous ne pouvez pas placer le patchwork ici, choisissez un autre endroit (x y)");
+                    xP = sc.nextInt();
+                    yP = sc.nextInt();
+                    sc.nextLine();
+                }
+                System.out.println("Vous avez placé le patchwork");
+            }
         }
     }
 
     /**
      * Controller method to manage the case where the player wants to buy a piece.
-     * @param pieceList : list of pieces
-     * @param players : Map of players by ID
-     * @param timeBoard : game board
+     *
+     * @param pieceList     : list of pieces
+     * @param players       : Map of players by ID
+     * @param timeBoard     : game board
      * @param idPlayerPrior : ID of the player who must play
      */
-    public static void buy(PieceList pieceList, Map<Integer, Player> players,
-                           TimeBoard timeBoard, int idPlayerPrior){
+    public static int[] buy(PieceList pieceList, Map<Integer, Player> players,
+                            TimeBoard timeBoard, int idPlayerPrior){
         int x, y;
         ArrayList<Piece> playablePieces = pieceList.nextPieces();
         Scanner sc = new Scanner(System.in);
@@ -113,20 +146,19 @@ public interface Game {
         x = sc.nextInt();
         y = sc.nextInt();
         sc.nextLine();
+        int[] earnTab;
 
         if(players.get(idPlayerPrior).buyPiece(playablePieces.get(0), x, y)){
             /* Moving the player and getting the number of buttons passed and then adding the buttons won */
-            int buttonToEarn = timeBoard.movePlayer(players.get(idPlayerPrior), playablePieces.get(0).time());
-
-            for (int i = 0; i < buttonToEarn; i++) {
-                players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).getEarnedButton());
-            }
+            earnTab = timeBoard.movePlayer(players.get(idPlayerPrior), playablePieces.get(0).time());
 
             pieceList.removePiece(0);
             System.out.println("Le joueur " + idPlayerPrior + " a acheté la pièce");
         } else {
-            overtake(players, timeBoard, idPlayerPrior);
+            earnTab = overtake(players, timeBoard, idPlayerPrior);
         }
+
+        return earnTab;
     }
 
     /**
@@ -135,28 +167,33 @@ public interface Game {
      * @param timeBoard : game board
      * @param idPlayerPrior : ID of the player who must play
      */
-    public static void overtake(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
+    public static int[] overtake(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
         /* Moving the player in front of his opponent */
         int distance = timeBoard.distance() + 1;
-        timeBoard.movePlayer(players.get(idPlayerPrior), distance);
+        var earnTab = timeBoard.movePlayer(players.get(idPlayerPrior), distance);
         /* Winning the distance in buttons */
         players.get(idPlayerPrior).addButtons(distance);
         System.out.println("Le joueur " + idPlayerPrior + " n'a pas pu acheter la pièce, il avance de " + distance + " cases");
+
+        return earnTab;
     }
 
     /**
      * Controller method to manage the case where the player wants to pass.
-     * @param players : players Map by ID
-     * @param timeBoard : game board
+     *
+     * @param players       : players Map by ID
+     * @param timeBoard     : game board
      * @param idPlayerPrior : ID of the player who must play
      */
-    public static void pass(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
+    public static int[] pass(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
         /* Moving the player in front of his opponent */
         int distance = timeBoard.distance() + 1;
-        timeBoard.movePlayer(players.get(idPlayerPrior), distance);
+        int[] earnTab = timeBoard.movePlayer(players.get(idPlayerPrior), distance);
         /* Winning the distance in buttons */
         players.get(idPlayerPrior).addButtons(distance);
         System.out.println("Le joueur " + idPlayerPrior + " n'a pas acheté de pièce, il avance de " + distance + " case(s)");
+
+        return earnTab;
     }
 
 }

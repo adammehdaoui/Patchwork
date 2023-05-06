@@ -28,6 +28,11 @@ public class TimeBoard {
             if(i % 6 == 5){
                 cells.get(i).setButton(true);
             }
+
+            //20, 26, 33, 45, 51
+            if(i == 20 || i == 26 || i == 33 || i == 45 || i == 51){
+                cells.get(i).setPatchwork(true);
+            }
         }
 
         /* Positioning the players on the first cell of the TimeBoard (beginning of the game) */
@@ -52,7 +57,7 @@ public class TimeBoard {
      * @return : number of buttons between the old and the new position of the player
      * @throws IllegalArgumentException : argument player not found in the main board
      */
-    public int movePlayer(Player player, int move) throws IllegalArgumentException {
+    public int[] movePlayer(Player player, int move) throws IllegalArgumentException {
         int index = -1;
         int moveTo;
 
@@ -78,7 +83,7 @@ public class TimeBoard {
 
         cells.get(moveTo).setPlayer(player);
 
-        return nbButton(index, moveTo);
+        return new int[]{nbButton(index, moveTo), nbPatchwork(index, moveTo)};
     }
 
     /**
@@ -92,6 +97,17 @@ public class TimeBoard {
         for(int i=start; i<end; i++){
             if(cells.get(i).button()){
                 res++;
+            }
+        }
+        return res;
+    }
+
+    public int nbPatchwork(int start, int end){
+        int res = 0;
+        for(int i=start; i<end; i++){
+            if(cells.get(i).patchwork()){
+                res++;
+                cells.get(i).setPatchwork(false);
             }
         }
         return res;
@@ -168,6 +184,10 @@ public class TimeBoard {
             }
             else{
                 sb.append(" ");
+            }
+
+            if(cell.patchwork()){
+                sb.append("■");
             }
 
             if(cell.player1() != null){

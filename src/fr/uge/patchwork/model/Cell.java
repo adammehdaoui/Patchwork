@@ -10,6 +10,7 @@ public class Cell {
     private Player player1;
     private Player player2;
     private boolean button;
+    private boolean patchwork;
 
     /**
      * Constructor of the class Cell.
@@ -36,7 +37,9 @@ public class Cell {
     public void setButton(boolean b){
         button = b;
     }
-
+    public void setPatchwork(boolean b) {
+        patchwork = b;
+    }
     /**
      * Free the player from the cell.
      * @param player : player to free
@@ -73,5 +76,9 @@ public class Cell {
 
     public boolean button(){
         return button;
+    }
+
+    public boolean patchwork(){
+        return patchwork;
     }
 }
