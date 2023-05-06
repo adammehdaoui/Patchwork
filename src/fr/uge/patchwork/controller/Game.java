@@ -60,36 +60,7 @@ public interface Game {
             earnTab = Game.pass(players, timeBoard, idPlayerPrior);
         }
 
-
-        int buttonToEarn = earnTab[0];
-        int patchworkToEarn = earnTab[1];
-
-        for (int i = 0; i < buttonToEarn; i++) {
-            players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).getEarnedButton());
-        }
-
-        if(patchworkToEarn > 0){
-            for (int i = 0; i < patchworkToEarn; i++) {
-                System.out.println("Vous avez gagné un patchwork 1x1! Choisissez où le placer (x y)");
-                var xP = sc.nextInt();
-                var yP = sc.nextInt();
-                sc.nextLine();
-
-                var schema = new ArrayList<ArrayList<Boolean>>();
-                var row = new ArrayList<Boolean>();
-                row.add(true);
-                schema.add(row);
-                var square = new Piece(schema, 0, 0, 0);
-
-                while (!players.get(idPlayerPrior).buyPiece(square , xP, yP)){
-                    System.out.println("Vous ne pouvez pas placer le patchwork ici, choisissez un autre endroit (x y)");
-                    xP = sc.nextInt();
-                    yP = sc.nextInt();
-                    sc.nextLine();
-                }
-                System.out.println("Vous avez placé le patchwork");
-            }
-        }
+        stuffToEarn(players, idPlayerPrior, sc, earnTab[0], earnTab[1]);
     }
 
     /**
@@ -194,6 +165,35 @@ public interface Game {
         System.out.println("Le joueur " + idPlayerPrior + " n'a pas acheté de pièce, il avance de " + distance + " case(s)");
 
         return earnTab;
+    }
+
+    public static void stuffToEarn(Map<Integer, Player> players, int idPlayerPrior, Scanner sc, int buttonToEarn, int patchworkToEarn){
+        for (int i = 0; i < buttonToEarn; i++) {
+            players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).getEarnedButton());
+        }
+
+        if(patchworkToEarn > 0){
+            for (int i = 0; i < patchworkToEarn; i++) {
+                System.out.println("Vous avez gagné un patchwork 1x1! Choisissez où le placer (x y)");
+                var xP = sc.nextInt();
+                var yP = sc.nextInt();
+                sc.nextLine();
+
+                var schema = new ArrayList<ArrayList<Boolean>>();
+                var row = new ArrayList<Boolean>();
+                row.add(true);
+                schema.add(row);
+                var square = new Piece(schema, 0, 0, 0);
+
+                while (!players.get(idPlayerPrior).buyPiece(square , xP, yP)){
+                    System.out.println("Vous ne pouvez pas placer le patchwork ici, choisissez un autre endroit (x y)");
+                    xP = sc.nextInt();
+                    yP = sc.nextInt();
+                    sc.nextLine();
+                }
+                System.out.println("Vous avez placé le patchwork");
+            }
+        }
     }
 
 }
