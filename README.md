@@ -1,4 +1,4 @@
-# Patchwork
+# Patchwork (https://github.com/adammehdaoui/Patchwork)
 
 **Projet de jeu de société "Patchwork" développée en Java. Contributeurs : Enzo GRENECHE et Adam MEHDAOUI**
 
