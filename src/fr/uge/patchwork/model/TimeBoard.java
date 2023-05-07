@@ -2,6 +2,7 @@ package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class dedicated to the representation of the game board ("TimeBoard").
@@ -22,6 +23,9 @@ public class TimeBoard {
      * @param player2 : player 2
      */
     public TimeBoard(Player player1, Player player2) {
+        Objects.requireNonNull(player1);
+        Objects.requireNonNull(player2);
+
         cells = new ArrayList<>();
 
         /* Creating the cells and placing the buttons every 6 cells */
@@ -32,7 +36,6 @@ public class TimeBoard {
                 cells.get(i).setButton(true);
             }
 
-            //20, 26, 33, 45, 51
             if(i == 20 || i == 26 || i == 33 || i == 45 || i == 51){
                 cells.get(i).setPatch(true);
             }
@@ -53,6 +56,22 @@ public class TimeBoard {
 
     public void setSpecialPieceAvailable(boolean b){
         specialPieceAvailable = b;
+    }
+
+    public int isInFront(){
+        for(int i=0; i<nbCases; i++){
+            if(cells.get(i).player1()!=null && cells.get(i).player2()!=null){
+                return 0;
+            }
+            else if(cells.get(i).player1()!=null){
+                return 1;
+            }
+            else if(cells.get(i).player2()!=null){
+                return 2;
+            }
+        }
+
+        return -1;
     }
 
     /**
@@ -92,10 +111,6 @@ public class TimeBoard {
 
         /* If the player crossed a button or a patch, remove it from the cell */
         for(int e=index; e<moveTo; e++){
-            if(cells.get(e).button()){
-                cells.get(e).setButton(false);
-            }
-
             if(cells.get(e).patch()){
                 cells.get(e).setPatch(false);
             }

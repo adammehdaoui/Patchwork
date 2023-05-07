@@ -1,6 +1,7 @@
 package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class dedicated to the representation of a player of the game.
@@ -20,6 +21,11 @@ public class Player {
      * @param board : player's board
      */
     public Player(int id, PlayerBoard board){
+        if(id != 1 && id != 2)
+            throw new IllegalArgumentException("L'ID du joueur doit être 1 ou 2.");
+
+        Objects.requireNonNull(board);
+
         this.id = id;
         this.buttons = 5;
         this.pieces = new ArrayList<>();
@@ -74,6 +80,16 @@ public class Player {
         }
     }
 
+    public int buttonsToEarn(){
+        int sum = 0;
+
+        for (Piece piece : pieces) {
+            sum += piece.button();
+        }
+
+        return sum;
+    }
+
     /**
      * Calculate the score of the player according to the rules of the Patchwork game.
      * @return : score of the player
@@ -94,8 +110,8 @@ public class Player {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Player ").append(id).append(", ");
-        sb.append("Buttons : ").append(buttons).append(", ");
+        sb.append("Joueur ").append(id).append(", ");
+        sb.append("Boutons : ").append(buttons).append(", ");
         sb.append("Board :\n").append(board).append("\n");
         return sb.toString();
     }

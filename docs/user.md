@@ -4,7 +4,7 @@
 
 ---
 
-Pour lancer le jeu, il suffit d'aller dans le répertoire du jeu puis dans le dossier
+> Pour lancer le jeu, il suffit d'aller dans le répertoire du jeu puis dans le dossier
 **target** et de lancer le fichier Patchwork.jar avec la commande suivante :
 
 ```shell
@@ -16,7 +16,7 @@ java -jar Patchwork.jar
 ---
 
 Une fois le jeu lancé, il vous sera demandé de choisir un mode de jeu. Vous pouvez alors
-choisir entre le mode de **base** et le mode **complet**. Si vous choisissez un nom de mode invalide, le jeu vous le signalera et s'arrêtera.
+choisir entre la version `1` (base) et `2` (complète). Si vous choisissez une version invalide, le jeu vous le signalera et s'arrêtera.
 Une fois le mode choisi, la partie commence.
 
 L'affichage de l'état du jeu se fait dans la console. Il se fait dans l'ordre suivant :
@@ -29,17 +29,17 @@ L'affichage de l'état du jeu se fait dans la console. Il se fait dans l'ordre s
 
 À ce moment, il y a deux possibilités pour le joueur :
 
-### **1. Acheter une pièce**
+### ***1. Acheter une pièce***
 
 Pour acheter une pièce le joueur saisit **"oui"** puis choisit la pièce qu'il veut acheter en entrant sa position (1, 2 ou 3) dans l'affichage tel qu'il est dans le terminal.
 
 Le joueur a ensuite le choix entre trois possibilités :
 
-1. Effectuer une rotation de la pièce choisie (en saisissant **"rotate"**)
-2. Retourner la pièce choisie (en saisissant **"invert"**)
-3. Placer la pièce choisie avec les modifications effectuées (en saisissant **"validate"**)
+1. Effectuer une rotation de la pièce choisie (en saisissant `rotate`)
+2. Retourner la pièce choisie (en saisissant `invert`)
+3. Placer la pièce choisie avec les modifications effectuées (en saisissant `validate`)
 
-### **2. Passer son tour**
+### ***2. Passer son tour***
 
 Pour passer son tour, le joueur saisit **"non"**.
 
@@ -48,5 +48,5 @@ Pour passer son tour, le joueur saisit **"non"**.
 ---
 
 La partie se termine lorsque les deux joueurs sont arrivés à la fin du "TimeBoard".
-Le nom du joueur gagnant est alors affiché dans le terminal.
+Le joueur gagnant est alors affiché dans le terminal.
 

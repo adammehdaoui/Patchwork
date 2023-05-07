@@ -1,14 +1,23 @@
 package fr.uge.patchwork.model;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class dedicated to the reading of a file containing all the pieces of the game to interpret.
  * @param path : path of the file to read
  */
 public record PieceFactory(Path path) {
+
+    public PieceFactory {
+        Objects.requireNonNull(path);
+    }
 
     /**
      * Read the file and return a list of pieces.
@@ -18,6 +27,11 @@ public record PieceFactory(Path path) {
     public void read(PieceSet pieces) throws IOException {
         String line;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("File not found in resources directory");
+        }
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         while ((line = reader.readLine()) != null) {

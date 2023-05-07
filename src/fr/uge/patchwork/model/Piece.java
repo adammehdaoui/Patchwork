@@ -70,9 +70,9 @@ public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, in
             sb.append("\n");
         }
 
-        sb.append("cost: ").append(cost).append("\n");
-        sb.append("time: ").append(time).append("\n");
-        sb.append("button: ").append(button).append("\n");
+        sb.append("coût : ").append(cost).append("\n");
+        sb.append("temps : ").append(time).append("\n");
+        sb.append("bouton(s) : ").append(button).append("\n");
 
         return sb.toString();
     }

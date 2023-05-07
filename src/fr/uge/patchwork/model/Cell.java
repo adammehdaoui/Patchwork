@@ -19,6 +19,7 @@ public class Cell {
         player1 = null;
         player2 = null;
         button = false;
+        patch = false;
     }
 
     public Player player1(){
