@@ -56,6 +56,10 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
         return false;
     }
 
+    /**
+     * Check if the player can earn the special piece (he filled a 7x7 square).
+     * @return : true if the player can earn the special piece, false otherwise
+     */
     public boolean isSpecialPieceEarnable(){
         int count = 0;
 
@@ -86,6 +90,10 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
         return false;
     }
 
+    /**
+     * Count the number of empty cells on the player board.
+     * @return : number of empty cells
+     */
     public int countEmptyCells(){
         int count = 0;
 

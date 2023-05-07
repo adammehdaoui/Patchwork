@@ -8,7 +8,7 @@ L'architecture demandée pour le projet est le modèle `MVC` (Modèle-Vue-Contr�
 
 ## 2.1. Contrôleurs
 
-> Voici un diagramme logique des contrôleurs montrant comment ces derniers sont liés et s'appellent entre eux.
+> Voici un diagramme logique des contrôleurs montrant comment ces derniers sont liés et s'appellent entre eux :
 
 ![diagram_controllers](diagram_controllers.png "Diagramme logique des contrôleurs")
 

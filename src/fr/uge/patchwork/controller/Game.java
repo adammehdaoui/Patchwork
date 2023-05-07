@@ -264,12 +264,12 @@ public interface Game {
     /**
      * Controller method to manage the case where the player is rewarded with patches.
      * @param players : players Map by ID
+     * @param buttonsCrossed : number of buttons crossed
      * @param patchesEarned : number of patches earned
      * @param idPlayerPrior : ID of the player who must play
      */
     static void reward(Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior){
         Scanner sc = new Scanner(System.in);
-        int error = 0;
         int x = -1;
         int y = -1;
         boolean validIntegers = false;

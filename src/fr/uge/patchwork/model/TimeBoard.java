@@ -58,6 +58,10 @@ public class TimeBoard {
         specialPieceAvailable = b;
     }
 
+    /**
+     * Returns the ID of the player who is in front of the other. If both players are on the same cell, returns 0.
+     * @return : 0 if both players are on the same cell, 1 if player 1 is in front of player 2, 2 if player 2 is in front of player 1
+     */
     public int isInFront(){
         for(int i=0; i<nbCases; i++){
             if(cells.get(i).player1()!=null && cells.get(i).player2()!=null){
@@ -120,6 +124,7 @@ public class TimeBoard {
     /**
      * Predict the movement (before cleaning the time board) of a player according to the number of cells indicated.
      * @param player : player to move
+     * @param move : number of cells to move
      * @return : a map containing the start and end cell of the player
      * @throws IllegalArgumentException : argument player not found in the main board
      */

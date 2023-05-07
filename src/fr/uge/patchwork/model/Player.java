@@ -80,6 +80,10 @@ public class Player {
         }
     }
 
+    /**
+     * Calculate the number of buttons a player can earn.
+     * @return : number of buttons earned by the player
+     */
     public int buttonsToEarn(){
         int sum = 0;
 
