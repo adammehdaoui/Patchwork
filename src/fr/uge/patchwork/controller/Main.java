@@ -1,5 +1,8 @@
 package fr.uge.patchwork.controller;
 
+import fr.uge.patchwork.view.*;
+
+import java.awt.image.ImagingOpException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
