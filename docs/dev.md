@@ -26,5 +26,5 @@ L'architecture demandée pour le projet est le modèle `MVC` (Modèle-Vue-Contr�
 
 # 2.3. Vues
 
-> La couche "vue" n'est pour l'instant pas exploité, car la phase 2 se limite à un affichage console et à une interface en ligne de commande. La phase 3 sera dédiée à l'implémentation de la couche "vue" avec une interface graphique. 
+> La couche "vue" n'est pour l'instant pas exploitée, car la phase 2 se limite à un affichage console et à une interface en ligne de commande. La phase 3 sera dédiée à l'implémentation de la couche "vue" avec une interface graphique. 
 
