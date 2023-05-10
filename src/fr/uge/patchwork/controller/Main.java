@@ -20,15 +20,15 @@ public class Main {
      * @throws FileNotFoundException : if the file is not found in controllers
      */
     public static void main(String[] args) throws ClassNotFoundException, IOException {
-//        Application.run(Color.WHITE, context -> {
-//            try {
-//                Thread.sleep(10000);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            context.exit(0);
-//        });
+        Application.run(Color.WHITE, context -> {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            context.exit(0);
+        });
 
         Game.start();
     }
