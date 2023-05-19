@@ -11,6 +11,7 @@ import java.awt.*;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
 
+import fr.uge.patchwork.view.*;
 import fr.umlv.zen5.*;
 import javax.imageio.ImageIO;
 

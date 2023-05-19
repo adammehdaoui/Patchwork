@@ -1,6 +1,7 @@
 package fr.uge.patchwork.controller;
 
 import fr.uge.patchwork.model.*;
+import fr.uge.patchwork.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public interface Game {
         pieceSet.init(gameVersion);
 
         System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ".\n\n");
+
+        View.initView(timeBoard);
 
         /* Starting game loop */
         while(!timeBoard.endGame()){
