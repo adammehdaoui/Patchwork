@@ -7,13 +7,14 @@ import java.nio.file.Files;
 import java.awt.*;
 import java.nio.file.Path;
 
+import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
 import fr.umlv.zen5.*;
 import javax.imageio.ImageIO;
 
 public class View {
 
-    public static void statusView(ApplicationContext context, TimeBoard timeBoard) {
+    public static void statusView(ApplicationContext context, TimeBoard timeBoard, PlayerBoard player1Board, PlayerBoard player2Board) {
         BufferedImage filledSquare = fileToImage("data/Board/filledSquare.png", 30, 30);
         BufferedImage outlineSquare = fileToImage("data/Board/outlineSquare.png", 30, 30);
         BufferedImage outlineSquareTB = fileToImage("data/Board/outlineSquare.png", 60, 60);
@@ -39,10 +40,22 @@ public class View {
             for (i = 0; i < 9; i++) {
                 for (j = 0; j < 9; j++) {
                     /* Player 1 board */
-                    graphics2D.drawImage(outlineSquare, 65 + j * 32, i * 32, null);
+                    if(!player1Board.board().get(i).get(j)) {
+                        graphics2D.drawImage(outlineSquare, 65 + j * 32, i * 32, null);
+                    }
+                    else {
+                        graphics2D.drawImage(filledSquare, 65 + j * 32, i * 32, null);
+                    }
+
                     /* Player 2 board */
-                    graphics2D.drawImage(outlineSquare, (int) (context.getScreenInfo().getWidth() / 1.3 + j * 32),
-                            i * 32, null);
+                    if(!player2Board.board().get(i).get(j)) {
+                        graphics2D.drawImage(outlineSquare, (int) (context.getScreenInfo().getWidth() / 1.3 + j * 32),
+                                i * 32, null);
+                    }
+                    else {
+                        graphics2D.drawImage(outlineSquare, (int) (context.getScreenInfo().getWidth() / 1.3 + j * 32),
+                                i * 32, null);
+                    }
                 }
             }
 

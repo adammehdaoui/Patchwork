@@ -46,13 +46,13 @@ public interface Game {
         System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ".\n\n");
 
         Application.run(Color.BLACK, context -> {
-            View.statusView(context, timeBoard);
+            View.statusView(context, timeBoard, playerBoard1, playerBoard2);
 
             /* Starting game loop */
             while(!timeBoard.endGame()){
                 Game.progress(pieceSet, players, timeBoard, gameVersion);
                 View.clearView(context);
-                View.statusView(context, timeBoard);
+                View.statusView(context, timeBoard, playerBoard1, playerBoard2);
             }
         });
 
