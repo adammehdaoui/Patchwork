@@ -2,7 +2,9 @@ package fr.uge.patchwork.controller;
 
 import fr.uge.patchwork.model.*;
 import fr.uge.patchwork.view.View;
+import fr.umlv.zen5.Application;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -43,12 +45,16 @@ public interface Game {
 
         System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ".\n\n");
 
-        View.initView(timeBoard);
+        Application.run(Color.BLACK, context -> {
+            View.statusView(context, timeBoard);
 
-        /* Starting game loop */
-        while(!timeBoard.endGame()){
-            Game.progress(pieceSet, players, timeBoard, gameVersion);
-        }
+            /* Starting game loop */
+            while(!timeBoard.endGame()){
+                Game.progress(pieceSet, players, timeBoard, gameVersion);
+                View.clearView(context);
+                View.statusView(context, timeBoard);
+            }
+        });
 
         Game.end(players);
 
