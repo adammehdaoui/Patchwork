@@ -120,17 +120,22 @@ public interface Game {
         event = context.pollOrWaitEvent(30000);
         eventUnpressed = context.pollOrWaitEvent(30000);
 
-        if (event == null) {
+        if (event == null || !event.getAction().equals(Event.Action.KEY_PRESSED)) {
             System.out.println("Aucune action effectuée. On passe le tour.");
+            Game.overtake(context, players, timeBoard, idPlayerPrior);
         } else {
             if (event.getKey().equals(KeyboardKey.O)) {
                 Game.buy(context, pieceList, players, timeBoard, idPlayerPrior);
             } else if (event.getKey().equals(KeyboardKey.N)) {
-                Game.overtake(players, timeBoard, idPlayerPrior);
+                Game.overtake(context, players, timeBoard, idPlayerPrior);
+            } else {
+                System.out.println("Aucune action effectuée. On passe le tour.");
+                Game.overtake(context, players, timeBoard, idPlayerPrior);
             }
         }
 
         /*
+        Version dans la console
         Scanner sc = new Scanner(System.in);
 
         String str = sc.nextLine();
@@ -144,11 +149,10 @@ public interface Game {
 
         if(gameVersion.equals("2")){
             if(players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()){
-                    players.get(1).setSpecialPiece(true);
-                    timeBoard.setSpecialPieceAvailable(false);
-                    System.out.println("Le joueur 1 a gagné la tuile spéciale.");
+                players.get(1).setSpecialPiece(true);
+                timeBoard.setSpecialPieceAvailable(false);
+                System.out.println("Le joueur 1 a gagné la tuile spéciale.");
             }
-
             if(players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()){
                 players.get(2).setSpecialPiece(true);
                 timeBoard.setSpecialPieceAvailable(false);
@@ -234,7 +238,7 @@ public interface Game {
             /* The player earns the patches he has passed */
             patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
             if(patchesEarned > 0){
-                reward(players, buttonsCrossed, patchesEarned, idPlayerPrior);
+                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
             }
 
             /* Moving the player and getting the number of buttons passed and then adding the buttons won */
@@ -246,7 +250,7 @@ public interface Game {
         } else {
             System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
 
-            overtake(players, timeBoard, idPlayerPrior);
+            overtake(context, players, timeBoard, idPlayerPrior);
         }
     }
 
@@ -256,7 +260,7 @@ public interface Game {
      * @param timeBoard     game board
      * @param idPlayerPrior ID of the player who must play
      */
-    static void overtake(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
+    static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
         int buttonsCrossed, patchesEarned;
         int distance;
 
@@ -272,7 +276,7 @@ public interface Game {
 
             /* The player earns the patches he has passed */
             if(buttonsCrossed > 0 || patchesEarned > 0){
-                reward(players, buttonsCrossed, patchesEarned, idPlayerPrior);
+                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
             }
 
             System.out.println("Le joueur " + idPlayerPrior + " était en tête, il a donc avancé de " + distance + " case.");
@@ -290,7 +294,7 @@ public interface Game {
 
             /* The player earns the patches he has passed */
             if(buttonsCrossed > 0 || patchesEarned > 0){
-                reward(players, buttonsCrossed, patchesEarned, idPlayerPrior);
+                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
             }
 
             System.out.println("Le joueur " + idPlayerPrior + " a décidé de passer son tour. Il a donc dépassé son adversaire en parcourant "
@@ -310,7 +314,7 @@ public interface Game {
      * @param patchesEarned number of patches earned
      * @param idPlayerPrior ID of the player who must play
      */
-    static void reward(Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior){
+    static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior){
         Scanner sc = new Scanner(System.in);
         int x = -1;
         int y = -1;
@@ -325,6 +329,7 @@ public interface Game {
 
         /* If the player has passed patches, we ask him where he wants to place them */
         for (int i = 0; i < patchesEarned; i++) {
+            View.winPatchView(context);
             System.out.println("Vous avez gagné un patch spécial 1x1 en passant sur une case dédiée ! Veuillez choisir "
                     + "où la placer (ligne colonne).");
 

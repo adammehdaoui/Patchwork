@@ -95,8 +95,8 @@ public class View {
         System.out.println(playablePieces);
 
         context.renderFrame(graphics2D -> {
-            ArrayList<ArrayList<Boolean>> schema = new ArrayList<ArrayList<Boolean>>();
-            int firstPlace = width * 5/13;
+            ArrayList<ArrayList<Boolean>> schema;
+            int firstPlace = width*5/13;
             int px = 0;
             int py = 100;
             int max = 0;
@@ -140,13 +140,24 @@ public class View {
             graphics2D.fillRect(width*5/6, height*19/20, 15, 15);
 
             if (idPlayerPrior == 1) {
-                graphics2D.drawImage(turnPlayer1, (int)width*5/6, (int)height*19/20, null);
+                graphics2D.drawImage(turnPlayer1, width*5/6, height*19/20, null);
             }
             else {
-                graphics2D.drawImage(turnPlayer2, (int)width*5/6, (int)height*19/20, null);
+                graphics2D.drawImage(turnPlayer2, width*5/6, height*19/20, null);
             }
         });
     }
+
+    public static void winPatchView(ApplicationContext context) {
+        BufferedImage winPatch = fileToImage("data/Messages/winPatch.png", 300, 15);
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
+
+        context.renderFrame(graphics2D -> {
+            graphics2D.drawImage(winPatch, width * 6/13, height*19/20, null);
+        });
+    }
+
     public static void clearView(ApplicationContext context) {
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.BLACK);
