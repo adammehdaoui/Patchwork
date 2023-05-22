@@ -9,8 +9,9 @@ import java.nio.file.Path;
 
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
-import fr.umlv.zen5.*;
 import javax.imageio.ImageIO;
+
+import fr.umlv.zen5.*;
 
 public class View {
 

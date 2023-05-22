@@ -12,6 +12,9 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
+import fr.umlv.zen5.Event;
+import fr.umlv.zen5.KeyboardKey;
+
 /**
  * Class containing all controller methods of the game.
  */
@@ -105,13 +108,31 @@ public interface Game {
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, String gameVersion) {
         int idPlayerPrior = timeBoard.turnOf();
+        Event event;
+        Event eventUnpressed;
         System.out.println("\n========== TOUR SUIVANT ==========\n");
 
         Game.status(context, players.get(1), players.get(2), pieceList, timeBoard);
 
         /* Asking the player if they want to buy a piece */
-        Scanner sc = new Scanner(System.in);
         System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
+
+        event = context.pollOrWaitEvent(30000);
+        eventUnpressed = context.pollOrWaitEvent(30000);
+
+        if (event == null) {
+            System.out.println("Aucune action effectuée. On passe le tour.");
+        } else {
+            if (event.getKey().equals(KeyboardKey.O)) {
+                Game.buy(pieceList, players, timeBoard, idPlayerPrior);
+            } else if (event.getKey().equals(KeyboardKey.N)) {
+                Game.overtake(players, timeBoard, idPlayerPrior);
+            }
+        }
+
+        /*
+        Scanner sc = new Scanner(System.in);
+
         String str = sc.nextLine();
 
         if (str.equals("oui")) {
@@ -119,6 +140,7 @@ public interface Game {
         } else {
             Game.overtake(players, timeBoard, idPlayerPrior);
         }
+        */
 
         if(gameVersion.equals("2")){
             if(players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()){
