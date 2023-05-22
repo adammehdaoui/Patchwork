@@ -3,16 +3,12 @@ package fr.uge.patchwork.view;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
-
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
-
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
-
 import fr.umlv.zen5.*;
 
 public class View {
