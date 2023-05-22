@@ -124,7 +124,7 @@ public interface Game {
             System.out.println("Aucune action effectuée. On passe le tour.");
         } else {
             if (event.getKey().equals(KeyboardKey.O)) {
-                Game.buy(pieceList, players, timeBoard, idPlayerPrior);
+                Game.buy(context, pieceList, players, timeBoard, idPlayerPrior);
             } else if (event.getKey().equals(KeyboardKey.N)) {
                 Game.overtake(players, timeBoard, idPlayerPrior);
             }
@@ -164,12 +164,19 @@ public interface Game {
      * @param timeBoard     : game board
      * @param idPlayerPrior : ID of the player who must play
      */
-    static void buy(PieceSet pieceList, Map<Integer, Player> players,
+    static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, int idPlayerPrior){
         int x, y;
         String str = "oui";
         ArrayList<Piece> playablePieces = pieceList.nextPieces();
+        ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBooleans = new ArrayList<ArrayList<ArrayList<Boolean>>>();
         Scanner sc = new Scanner(System.in);
+
+        for (Piece playablePiece : playablePieces) {
+            playablePiecesBooleans.add(playablePiece.schema());
+        }
+
+        View.playablePiecesView(context, playablePiecesBooleans);
 
         /* Asking the player which piece they want to buy */
         System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");

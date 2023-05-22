@@ -6,6 +6,8 @@ import java.nio.file.Files;
 
 import java.awt.*;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
@@ -89,15 +91,57 @@ public class View {
         });
     }
 
+    public static void playablePiecesView(ApplicationContext context, ArrayList<ArrayList<ArrayList<Boolean>>> playablePieces){
+        BufferedImage filledSquare = fileToImage("data/Board/filledSquare.png", 30, 30);
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
+
+        System.out.println(playablePieces);
+
+        context.renderFrame(graphics2D -> {
+            ArrayList<ArrayList<Boolean>> schema = new ArrayList<ArrayList<Boolean>>();
+            int firstPlace = width * 5/13;
+            int px = 0;
+            int py = 100;
+            int max = 0;
+
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.fillRect(width/3, 0, width/3, height/3);
+
+            for (ArrayList<ArrayList<Boolean>> playablePiece : playablePieces) {
+                schema = playablePiece;
+
+                for (ArrayList<Boolean> booleans : schema) {
+                    for (boolean aBoolean : booleans) {
+                        if (aBoolean) {
+                            graphics2D.drawImage(filledSquare, firstPlace + px, py, null);
+                        }
+                        px += 30;
+                    }
+
+                    if (px > max) {
+                        max = px;
+                    }
+
+                    px = 0;
+                    py += 30;
+                }
+
+                py = 100;
+                firstPlace += max + 50;
+            }
+
+        });
+    }
     public static void turnView(ApplicationContext context, int idPlayerPrior) {
         BufferedImage turnPlayer1 = fileToImage("data/Messages/turnPlayer1.png", 225, 15);
         BufferedImage turnPlayer2 = fileToImage("data/Messages/turnPlayer2.png", 225, 15);
-        int width = (int) context.getScreenInfo().getWidth();
-        int height = (int) context.getScreenInfo().getHeight();
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.BLACK);
-            graphics2D.fillRect((int)width*5/6, (int)height*19/20, 15, 15);
+            graphics2D.fillRect(width*5/6, height*19/20, 15, 15);
 
             if (idPlayerPrior == 1) {
                 graphics2D.drawImage(turnPlayer1, (int)width*5/6, (int)height*19/20, null);

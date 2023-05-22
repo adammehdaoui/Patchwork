@@ -80,7 +80,7 @@ public class PieceSet {
 
     /**
      * Returns the list of the next three available pieces.
-     * @return : the list of the next three available pieces.
+     * @return the list of the next three available pieces.
      */
     public ArrayList<Piece> nextPieces(){
         ArrayList<Piece> res = new ArrayList<>(3);
@@ -93,7 +93,7 @@ public class PieceSet {
 
     /**
      * Remove a piece from the list of available pieces.
-     * @param index : index of the piece to remove.
+     * @param index index of the piece to remove.
      */
     public void removePiece(int index){
         pieces.remove((neutralPiece + index) % pieces.size());
