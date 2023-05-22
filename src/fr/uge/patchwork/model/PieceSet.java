@@ -22,9 +22,9 @@ public class PieceSet {
 
     /**
      * Get the list of pieces depending on the game version.
-     * @param gameVersion : version of the game
-     * @throws IOException : error while reading the file
-     * @throws IllegalArgumentException : invalid game version
+     * @param gameVersion version of the game
+     * @throws IOException error while reading the file
+     * @throws IllegalArgumentException invalid game version
      */
     public void init(String gameVersion) throws IOException, IllegalArgumentException {
         /* Base game */
@@ -59,7 +59,7 @@ public class PieceSet {
 
     /**
      * Add a piece to the list of available pieces.
-     * @param piece : piece to add
+     * @param piece piece to add
      */
     public void addPiece(Piece piece){
         pieces.add(piece);

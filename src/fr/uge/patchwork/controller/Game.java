@@ -70,10 +70,10 @@ public interface Game {
 
     /**
      * Controller method to display the status of the game.
-     * @param player1 : player 1
-     * @param player2 : player 2
-     * @param pieceList : list of pieces
-     * @param timeBoard : game board
+     * @param player1 player 1
+     * @param player2 player 2
+     * @param pieceList list of pieces
+     * @param timeBoard game board
      */
     static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard){
@@ -100,10 +100,10 @@ public interface Game {
 
     /**
      * Controller method to manage the game loop.
-     * @param pieceList : list of pieces
-     * @param players : Map of players by ID
-     * @param timeBoard : game board
-     * @param gameVersion : version of the game
+     * @param pieceList list of pieces
+     * @param players Map of players by ID
+     * @param timeBoard game board
+     * @param gameVersion version of the game
      */
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, String gameVersion) {
@@ -159,10 +159,10 @@ public interface Game {
 
     /**
      * Controller method to manage the case where the player wants to buy a piece.
-     * @param pieceList     : list of pieces
-     * @param players       : Map of players by ID
-     * @param timeBoard     : game board
-     * @param idPlayerPrior : ID of the player who must play
+     * @param pieceList     list of pieces
+     * @param players       Map of players by ID
+     * @param timeBoard     game board
+     * @param idPlayerPrior ID of the player who must play
      */
     static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, int idPlayerPrior){
@@ -252,9 +252,9 @@ public interface Game {
 
     /**
      * Controller method to manage the case where the player wants to pass.
-     * @param players       : players Map by ID
-     * @param timeBoard     : game board
-     * @param idPlayerPrior : ID of the player who must play
+     * @param players       players Map by ID
+     * @param timeBoard     game board
+     * @param idPlayerPrior ID of the player who must play
      */
     static void overtake(Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
         int buttonsCrossed, patchesEarned;
@@ -305,10 +305,10 @@ public interface Game {
 
     /**
      * Controller method to manage the case where the player is rewarded with patches.
-     * @param players : players Map by ID
-     * @param buttonsCrossed : number of buttons crossed
-     * @param patchesEarned : number of patches earned
-     * @param idPlayerPrior : ID of the player who must play
+     * @param players players Map by ID
+     * @param buttonsCrossed number of buttons crossed
+     * @param patchesEarned number of patches earned
+     * @param idPlayerPrior ID of the player who must play
      */
     static void reward(Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior){
         Scanner sc = new Scanner(System.in);
@@ -357,7 +357,7 @@ public interface Game {
 
     /**
      * Controller method to display the winner of the game.
-     * @param players : players Map by ID
+     * @param players players Map by ID
      */
     static void end(Map<Integer, Player> players){
         int scorePlayer1 = players.get(1).score();

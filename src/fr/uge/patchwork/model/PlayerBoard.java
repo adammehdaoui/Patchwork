@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Class representing a cell of the board (which is a 9x9 grid).
- * @param board : board of the player
+ * @param board board of the player
  */
 public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
@@ -24,10 +24,10 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
     /**
      * Place a piece on the player's board.
-     * @param p : piece to place
-     * @param x : coordinate x
-     * @param y : coordinate y
-     * @return : true if the piece has been placed, false otherwise
+     * @param p piece to place
+     * @param x coordinate x
+     * @param y coordinate y
+     * @return true if the piece has been placed, false otherwise
      */
     public boolean placePiece(Piece p, int x, int y) {
         if (x + p.schema().size() <= board.size() && y + p.schema().get(0).size() <= board.get(x).size()) {
@@ -58,7 +58,7 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
     /**
      * Check if the player can earn the special piece (he filled a 7x7 square).
-     * @return : true if the player can earn the special piece, false otherwise
+     * @return true if the player can earn the special piece, false otherwise
      */
     public boolean isSpecialPieceEarnable(){
         int count = 0;
@@ -92,7 +92,7 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
 
     /**
      * Count the number of empty cells on the player board.
-     * @return : number of empty cells
+     * @return number of empty cells
      */
     public int countEmptyCells(){
         int count = 0;

@@ -22,9 +22,9 @@ public class Main {
 
     /**
      * Principal method of the game.
-     * @param args : command line arguments (not used in this context)
-     * @throws ClassNotFoundException :  if the class is not found in controllers
-     * @throws FileNotFoundException : if the file is not found in controllers
+     * @param args command line arguments (not used in this context)
+     * @throws ClassNotFoundException if the class is not found in controllers
+     * @throws FileNotFoundException if the file is not found in controllers
      */
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         /*Application.run(Color.WHITE, context -> {

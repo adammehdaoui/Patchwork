@@ -17,8 +17,8 @@ public class Player {
 
     /**
      * Constructor of the class Player.
-     * @param id : ID of the player
-     * @param board : player's board
+     * @param id ID of the player
+     * @param board player's board
      */
     public Player(int id, PlayerBoard board){
         if(id != 1 && id != 2)
@@ -58,10 +58,10 @@ public class Player {
 
     /**
      * Buy a piece and place it on the player's board.
-     * @param piece : piece to buy
-     * @param x : x coordinate
-     * @param y: y coordinate
-     * @return : true if the piece has been bought and placed, false otherwise
+     * @param piece piece to buy
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return true if the piece has been bought and placed, false otherwise
      */
     public boolean buyPiece(Piece piece, int x, int y){
         if(buttons >= piece.cost()){
@@ -82,7 +82,7 @@ public class Player {
 
     /**
      * Calculate the number of buttons a player can earn.
-     * @return : number of buttons earned by the player
+     * @return number of buttons earned by the player
      */
     public int buttonsToEarn(){
         int sum = 0;
@@ -96,7 +96,7 @@ public class Player {
 
     /**
      * Calculate the score of the player according to the rules of the Patchwork game.
-     * @return : score of the player
+     * @return score of the player
      */
     public int score(){
         int score = 0;

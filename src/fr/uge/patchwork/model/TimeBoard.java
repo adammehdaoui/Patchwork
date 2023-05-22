@@ -19,8 +19,8 @@ public class TimeBoard {
 
     /**
      * Constructor of the class TimeBoard.
-     * @param player1 : player 1
-     * @param player2 : player 2
+     * @param player1 player 1
+     * @param player2 player 2
      */
     public TimeBoard(Player player1, Player player2) {
         Objects.requireNonNull(player1);
@@ -60,7 +60,7 @@ public class TimeBoard {
 
     /**
      * Returns the ID of the player who is in front of the other. If both players are on the same cell, returns 0.
-     * @return : 0 if both players are on the same cell, 1 if player 1 is in front of player 2, 2 if player 2 is in front of player 1
+     * @return 0 if both players are on the same cell, 1 if player 1 is in front of player 2, 2 if player 2 is in front of player 1
      */
     public int isInFront(){
         for(int i=0; i<nbCases; i++){
@@ -81,9 +81,9 @@ public class TimeBoard {
     /**
      * Moves the player according to the number of cells indicated.
      *
-     * @param player : player to move
-     * @param move   : number of cells to move
-     * @throws IllegalArgumentException : argument player not found in the main board
+     * @param player player to move
+     * @param move   number of cells to move
+     * @throws IllegalArgumentException argument player not found in the main board
      */
     public void movePlayer(Player player, int move) throws IllegalArgumentException {
         int index = -1;
@@ -123,10 +123,10 @@ public class TimeBoard {
 
     /**
      * Predict the movement (before cleaning the time board) of a player according to the number of cells indicated.
-     * @param player : player to move
-     * @param move : number of cells to move
-     * @return : a map containing the start and end cell of the player
-     * @throws IllegalArgumentException : argument player not found in the main board
+     * @param player player to move
+     * @param move number of cells to move
+     * @return a map containing the start and end cell of the player
+     * @throws IllegalArgumentException argument player not found in the main board
      */
     public Map<String, Integer> predictMovement(Player player, int move) throws IllegalArgumentException {
         int index = -1;
@@ -157,8 +157,8 @@ public class TimeBoard {
     /**
      * Returns the number of buttons between two cells.
      *
-     * @param start : starting cell
-     * @param end   : ending cell
+     * @param start starting cell
+     * @param end   ending cell
      */
     public int nbButton(int start, int end){
         int count = 0;
@@ -172,9 +172,9 @@ public class TimeBoard {
 
     /**
      * Returns the number of patches between two cells.
-     * @param start : starting cell
-     * @param end : ending cell
-     * @return : number of patches between the two cells
+     * @param start starting cell
+     * @param end ending cell
+     * @return number of patches between the two cells
      */
     public int nbPatch(int start, int end){
         int count = 0;
@@ -189,7 +189,7 @@ public class TimeBoard {
 
     /**
      * Returns the distance between the two players.
-     * @return : distance between the two players
+     * @return distance between the two players
      */
     public int distance(){
         int posP1 = 0;
@@ -209,7 +209,7 @@ public class TimeBoard {
 
     /**
      * Returns true if the two players are on the last cell.
-     * @return : true if the two players are on the last cell
+     * @return true if the two players are on the last cell
      */
     public boolean endGame(){
         return cells.get(nbCases - 1).player1() != null && cells.get(nbCases - 1).player2() != null;
@@ -217,7 +217,7 @@ public class TimeBoard {
 
     /**
      * Returns the player who must play.
-     * @return : player who must play
+     * @return player who must play
      */
     public int turnOf(){
         int posP1 = 0;

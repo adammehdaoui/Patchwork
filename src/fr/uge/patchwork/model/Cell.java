@@ -58,7 +58,7 @@ public class Cell {
 
     /**
      * Free the player from the cell.
-     * @param player : player to free
+     * @param player player to free
      */
     public void freePlayer(Player player){
         if(player.getId() == 1){
@@ -71,7 +71,7 @@ public class Cell {
 
     /**
      * Return the list of players on the cell.
-     * @return : list of players on the cell
+     * @return list of players on the cell
      */
     public ArrayList<Player> getPlayers(){
         ArrayList<Player> players = new ArrayList<>(2);

@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 /**
  * Class dedicated to the representation of a piece (or a "patch" of the game).
- * @param schema : diagram of the piece
- * @param cost : cost of the piece
- * @param time : time to place the piece
- * @param button : presence of a button on the piece
+ * @param schema diagram of the piece
+ * @param cost cost of the piece
+ * @param time time to place the piece
+ * @param button presence of a button on the piece
  */
 public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, int button) {
 
     /**
      * Count the number of "true" in the piece's diagram.
-     * @return : number of "true" in the piece's diagram
+     * @return number of "true" in the piece's diagram
      */
     public int countTrue(){
         int res = 0;
@@ -29,7 +29,7 @@ public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, in
 
     /**
      * Returns a new piece corresponding to the rotation of the current piece.
-     * @return : a new piece corresponding to the rotation of the current piece
+     * @return a new piece corresponding to the rotation of the current piece
      */
     public Piece rotate() {
         ArrayList<ArrayList<Boolean>> newSchema = new ArrayList<>();
@@ -45,7 +45,7 @@ public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, in
 
     /**
      * Returns a new piece corresponding to the inversion of the current piece.
-     * @return : a new piece corresponding to the inversion of the current piece
+     * @return a new piece corresponding to the inversion of the current piece
      */
     public Piece invert() {
         ArrayList<ArrayList<Boolean>> newSchema = new ArrayList<>();

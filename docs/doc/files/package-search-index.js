@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.uge.patchwork.controller"},{"l":"fr.uge.patchwork.model"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.uge.patchwork.controller"},{"l":"fr.uge.patchwork.model"},{"l":"fr.uge.patchwork.view"}];updateSearchResults();

@@ -21,8 +21,8 @@ public record PieceFactory(Path path) {
 
     /**
      * Read the file and return a list of pieces.
-     * @param pieces : list of pieces to fill
-     * @throws IOException : error while reading the file
+     * @param pieces list of pieces to fill
+     * @throws IOException error while reading the file
      */
     public void read(PieceSet pieces) throws IOException {
         String line;
@@ -65,8 +65,8 @@ public record PieceFactory(Path path) {
 
     /**
      * Check if a string is convertible to integer.
-     * @param s : string to check
-     * @return : true if the string is convertible to integer, false otherwise
+     * @param s string to check
+     * @return true if the string is convertible to integer, false otherwise
      */
     public boolean isParsableToInt(String s){
         try {
