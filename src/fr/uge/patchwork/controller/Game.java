@@ -3,6 +3,7 @@ package fr.uge.patchwork.controller;
 import fr.uge.patchwork.model.*;
 import fr.uge.patchwork.view.View;
 import fr.umlv.zen5.Application;
+import fr.umlv.zen5.ApplicationContext;
 
 import java.awt.*;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public interface Game {
 
             /* Starting game loop */
             while(!timeBoard.endGame()){
-                Game.progress(pieceSet, players, timeBoard, gameVersion);
+                Game.progress(context, pieceSet, players, timeBoard, gameVersion);
                 View.clearView(context);
                 View.statusView(context, timeBoard, playerBoard1, playerBoard2);
             }
@@ -71,7 +72,7 @@ public interface Game {
      * @param pieceList : list of pieces
      * @param timeBoard : game board
      */
-    static void status(Player player1, Player player2, PieceSet pieceList,
+    static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard){
         /* Display the status of the game */
         System.out.println(player1);
@@ -80,6 +81,9 @@ public interface Game {
 
         /* Retrieving the ID of the player who must play */
         int idPlayerPrior = timeBoard.turnOf();
+
+        /* Displaying the player who must play */
+        View.turnView(context, idPlayerPrior);
 
         System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
 
@@ -98,12 +102,12 @@ public interface Game {
      * @param timeBoard : game board
      * @param gameVersion : version of the game
      */
-    static void progress(PieceSet pieceList, Map<Integer, Player> players,
+    static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, String gameVersion) {
         int idPlayerPrior = timeBoard.turnOf();
         System.out.println("\n========== TOUR SUIVANT ==========\n");
 
-        Game.status(players.get(1), players.get(2), pieceList, timeBoard);
+        Game.status(context, players.get(1), players.get(2), pieceList, timeBoard);
 
         /* Asking the player if they want to buy a piece */
         Scanner sc = new Scanner(System.in);

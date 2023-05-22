@@ -88,6 +88,24 @@ public class View {
         });
     }
 
+    public static void turnView(ApplicationContext context, int idPlayerPrior) {
+        BufferedImage turnPlayer1 = fileToImage("data/Messages/turnPlayer1.png", 225, 15);
+        BufferedImage turnPlayer2 = fileToImage("data/Messages/turnPlayer2.png", 225, 15);
+        int width = (int) context.getScreenInfo().getWidth();
+        int height = (int) context.getScreenInfo().getHeight();
+
+        context.renderFrame(graphics2D -> {
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.fillRect((int)width*5/6, (int)height*19/20, 15, 15);
+
+            if (idPlayerPrior == 1) {
+                graphics2D.drawImage(turnPlayer1, (int)width*5/6, (int)height*19/20, null);
+            }
+            else {
+                graphics2D.drawImage(turnPlayer2, (int)width*5/6, (int)height*19/20, null);
+            }
+        });
+    }
     public static void clearView(ApplicationContext context) {
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.BLACK);
