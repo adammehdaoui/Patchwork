@@ -109,7 +109,6 @@ public interface Game {
                             TimeBoard timeBoard, String gameVersion) {
         int idPlayerPrior = timeBoard.turnOf();
         Event event;
-        Event eventUnpressed;
         System.out.println("\n========== TOUR SUIVANT ==========\n");
 
         Game.status(context, players.get(1), players.get(2), pieceList, timeBoard);
@@ -118,7 +117,7 @@ public interface Game {
         System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
 
         event = context.pollOrWaitEvent(30000);
-        eventUnpressed = context.pollOrWaitEvent(30000);
+        context.pollOrWaitEvent(5000);
 
         if (event == null || !event.getAction().equals(Event.Action.KEY_PRESSED)) {
             System.out.println("Aucune action effectuée. On passe le tour.");
