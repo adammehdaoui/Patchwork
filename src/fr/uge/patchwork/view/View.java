@@ -165,9 +165,7 @@ public class View {
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.WHITE);
             graphics2D.setFont(font.deriveFont(20f));
-
             graphics2D.drawString("VOUS AVEZ GAGNÉ UNE TUILE SPÉCIALE", width * 5/14, height*19/20);
-
         });
     }
 

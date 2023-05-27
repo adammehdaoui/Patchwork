@@ -15,6 +15,8 @@ import java.util.Scanner;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.KeyboardKey;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Class containing all controller methods of the game.
  */
@@ -56,7 +58,7 @@ public interface Game {
             while(!timeBoard.endGame()){
                 try {
                     Game.progress(context, pieceSet, players, timeBoard, gameVersion);
-                } catch (IOException | FontFormatException e) {
+                } catch (IOException | FontFormatException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 View.clearView(context);
@@ -110,7 +112,7 @@ public interface Game {
      * @param gameVersion version of the game
      */
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard, String gameVersion) throws IOException, FontFormatException {
+                            TimeBoard timeBoard, String gameVersion) throws IOException, FontFormatException, InterruptedException {
         int idPlayerPrior = timeBoard.turnOf();
         Event event;
         System.out.println("\n========== TOUR SUIVANT ==========\n");
@@ -172,7 +174,7 @@ public interface Game {
      * @param idPlayerPrior ID of the player who must play
      */
     static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException {
+                            TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException, InterruptedException {
         int x, y;
         String str = "oui";
         ArrayList<Piece> playablePieces = pieceList.nextPieces();
@@ -263,7 +265,7 @@ public interface Game {
      * @param timeBoard     game board
      * @param idPlayerPrior ID of the player who must play
      */
-    static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException {
+    static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException, InterruptedException {
         int buttonsCrossed, patchesEarned;
         int distance;
 
@@ -317,10 +319,9 @@ public interface Game {
      * @param patchesEarned number of patches earned
      * @param idPlayerPrior ID of the player who must play
      */
-    static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior) throws IOException, FontFormatException {
-        Scanner sc = new Scanner(System.in);
-        int x = -1;
-        int y = -1;
+    static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior) throws IOException, FontFormatException, InterruptedException {
+        int x;
+        int y;
         boolean validIntegers = false;
 
         /* For each button cells the player crossed, he earns his number of buttons in patches he has on his board*/
@@ -336,6 +337,25 @@ public interface Game {
             System.out.println("Vous avez gagné un patch spécial 1x1 en passant sur une case dédiée ! Veuillez choisir "
                     + "où la placer (ligne colonne).");
 
+            Event event = context.pollOrWaitEvent(30000);
+            context.pollOrWaitEvent(30000);
+
+            if(idPlayerPrior == 1) {
+                while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
+                        || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
+                        || event.getLocation().getY() > 9 * 32) {
+
+                    System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
+                    event = context.pollOrWaitEvent(30000);
+                    context.pollOrWaitEvent(30000);
+                }
+            }
+
+            x = (int)(event.getLocation().getY() / 32);
+            y = (int)(event.getLocation().getX() - 65) / 32;
+
+            /*
+            Version en ligne de commande
             while(!validIntegers){
                 try {
                     x = sc.nextInt();
@@ -346,8 +366,7 @@ public interface Game {
                     System.out.println("Les entiers entrés ne sont pas valides, veuillez essayer à nouveau (ligne colonne)");
                     sc.nextLine();
                 }
-            }
-
+            } */
 
             var schema = new ArrayList<ArrayList<Boolean>>();
             var row = new ArrayList<Boolean>();
@@ -356,9 +375,21 @@ public interface Game {
             var square = new Piece(schema, 0, 0, 0);
 
             while(!players.get(idPlayerPrior).buyPiece(square, x, y)){
+                event = context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(30000);
+
                 System.out.println("Vous ne pouvez pas placer la pièce à ces positions, veuillez choisir d'autres coordonnées (ligne colonne)");
-                x = sc.nextInt();
-                y = sc.nextInt();
+
+                if(idPlayerPrior == 1) {
+                    while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
+                            || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
+                            || event.getLocation().getY() > 9 * 32) {
+
+                        System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
+                        event = context.pollOrWaitEvent(30000);
+                        context.pollOrWaitEvent(30000);
+                    }
+                }
             }
         }
     }
