@@ -2,10 +2,13 @@ package fr.uge.patchwork.view;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
@@ -14,20 +17,21 @@ import fr.umlv.zen5.*;
 public class View {
 
     public static void statusView(ApplicationContext context, TimeBoard timeBoard, PlayerBoard player1Board, PlayerBoard player2Board) {
-        BufferedImage filledSquare = fileToImage("data/Board/filledSquare.png", 30, 30);
-        BufferedImage outlineSquare = fileToImage("data/Board/outlineSquare.png", 30, 30);
-        BufferedImage outlineSquareTB = fileToImage("data/Board/outlineSquare.png", 60, 60);
-        BufferedImage button = fileToImage("data/Board/button.png", 30, 30);
-        BufferedImage patch = fileToImage("data/Board/patch.png", 30, 30);
+        BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
+        BufferedImage outlineSquare = fileToImage("resources/Board/outlineSquare.png", 30, 30);
+        BufferedImage outlineSquareTB = fileToImage("resources/Board/outlineSquare.png", 60, 60);
+        BufferedImage button = fileToImage("resources/Board/button.png", 30, 30);
+        BufferedImage patch = fileToImage("resources/Board/patch.png", 30, 30);
 
-        BufferedImage player1 = fileToImage("data/Player/player1.png", 15, 15);
-        BufferedImage player2 = fileToImage("data/Player/player2.png", 14, 14);
-        BufferedImage tagPlayer1 = fileToImage("data/Player/tagPlayer1.png", 45, 45);
-        BufferedImage tagPlayer2 = fileToImage("data/Player/tagPlayer2.png", 45, 45);
+        BufferedImage player1 = fileToImage("resources/Player/player1.png", 15, 15);
+        BufferedImage player2 = fileToImage("resources/Player/player2.png", 14, 14);
+        BufferedImage tagPlayer1 = fileToImage("resources/Player/tagPlayer1.png", 45, 45);
+        BufferedImage tagPlayer2 = fileToImage("resources/Player/tagPlayer2.png", 45, 45);
 
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.BLACK);
-            graphics2D.fillRect(0, 0, (int) context.getScreenInfo().getWidth(), (int) context.getScreenInfo().getHeight());
+            graphics2D.fillRect(0, 0, (int) context.getScreenInfo().getWidth(), (int) context.getScreenInfo()
+                    .getHeight());
 
             /* Drawing the tag of players */
             graphics2D.drawImage(tagPlayer1, 0, 0, null);
@@ -88,7 +92,7 @@ public class View {
     }
 
     public static void playablePiecesView(ApplicationContext context, ArrayList<ArrayList<ArrayList<Boolean>>> playablePieces){
-        BufferedImage filledSquare = fileToImage("data/Board/filledSquare.png", 30, 30);
+        BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
@@ -129,32 +133,41 @@ public class View {
 
         });
     }
-    public static void turnView(ApplicationContext context, int idPlayerPrior) {
-        BufferedImage turnPlayer1 = fileToImage("data/Messages/turnPlayer1.png", 225, 15);
-        BufferedImage turnPlayer2 = fileToImage("data/Messages/turnPlayer2.png", 225, 15);
+    public static void turnView(ApplicationContext context, int idPlayerPrior) throws IOException, FontFormatException {
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
-            graphics2D.setColor(Color.BLACK);
-            graphics2D.fillRect(width*5/6, height*19/20, 15, 15);
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
 
             if (idPlayerPrior == 1) {
-                graphics2D.drawImage(turnPlayer1, width*5/6, height*19/20, null);
+                graphics2D.drawString("TOUR DU JOUEUR 1", width*5/6, height*19/20);
             }
             else {
-                graphics2D.drawImage(turnPlayer2, width*5/6, height*19/20, null);
+                graphics2D.drawString("TOUR DU JOUEUR 2", width*5/6, height*19/20);
             }
         });
     }
 
-    public static void winPatchView(ApplicationContext context) {
-        BufferedImage winPatch = fileToImage("data/Messages/winPatch.png", 300, 15);
+    public static void winPatchView(ApplicationContext context) throws IOException, FontFormatException {
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
-            graphics2D.drawImage(winPatch, width * 6/13, height*19/20, null);
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
+
+            graphics2D.drawString("VOUS AVEZ GAGNÉ UNE TUILE SPÉCIALE", width * 5/14, height*19/20);
+
         });
     }
 

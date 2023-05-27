@@ -46,7 +46,7 @@ public class PieceSet {
         /* Complete game */
         else if(gameVersion.equals("2")){
             /* Creation of the pieces of the complete game version */
-            var file = new PieceFactory(Path.of("pieces.txt"));
+            var file = new PieceFactory(Path.of("Pieces/pieces.txt"));
             file.read(this);
         }
         /* Invalid version */

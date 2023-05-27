@@ -54,7 +54,11 @@ public interface Game {
 
             /* Starting game loop */
             while(!timeBoard.endGame()){
-                Game.progress(context, pieceSet, players, timeBoard, gameVersion);
+                try {
+                    Game.progress(context, pieceSet, players, timeBoard, gameVersion);
+                } catch (IOException | FontFormatException e) {
+                    throw new RuntimeException(e);
+                }
                 View.clearView(context);
                 View.statusView(context, timeBoard, playerBoard1, playerBoard2);
             }
@@ -76,7 +80,7 @@ public interface Game {
      * @param timeBoard game board
      */
     static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
-                              TimeBoard timeBoard){
+                              TimeBoard timeBoard) throws IOException, FontFormatException {
         /* Display the status of the game */
         System.out.println(player1);
         System.out.println(timeBoard);
@@ -106,7 +110,7 @@ public interface Game {
      * @param gameVersion version of the game
      */
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard, String gameVersion) {
+                            TimeBoard timeBoard, String gameVersion) throws IOException, FontFormatException {
         int idPlayerPrior = timeBoard.turnOf();
         Event event;
         System.out.println("\n========== TOUR SUIVANT ==========\n");
@@ -168,7 +172,7 @@ public interface Game {
      * @param idPlayerPrior ID of the player who must play
      */
     static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard, int idPlayerPrior){
+                            TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException {
         int x, y;
         String str = "oui";
         ArrayList<Piece> playablePieces = pieceList.nextPieces();
@@ -259,7 +263,7 @@ public interface Game {
      * @param timeBoard     game board
      * @param idPlayerPrior ID of the player who must play
      */
-    static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior){
+    static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException {
         int buttonsCrossed, patchesEarned;
         int distance;
 
@@ -313,7 +317,7 @@ public interface Game {
      * @param patchesEarned number of patches earned
      * @param idPlayerPrior ID of the player who must play
      */
-    static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior){
+    static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior) throws IOException, FontFormatException {
         Scanner sc = new Scanner(System.in);
         int x = -1;
         int y = -1;
