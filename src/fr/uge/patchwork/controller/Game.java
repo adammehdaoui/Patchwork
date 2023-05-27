@@ -8,7 +8,6 @@ import fr.umlv.zen5.ApplicationContext;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -175,10 +174,14 @@ public interface Game {
      */
     static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException, InterruptedException {
-        int x, y;
         String str = "oui";
+        int idPiece = 0;
+        int firstPlace = (int)context.getScreenInfo().getWidth()*5/13;
+        int x, y, px = 0, max = 0;
+        ArrayList<Integer> positions = new ArrayList<>();
         ArrayList<Piece> playablePieces = pieceList.nextPieces();
-        ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBooleans = new ArrayList<ArrayList<ArrayList<Boolean>>>();
+        ArrayList<ArrayList<Boolean>> schema;
+        ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBooleans = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
         for (Piece playablePiece : playablePieces) {
@@ -189,17 +192,77 @@ public interface Game {
 
         /* Asking the player which piece they want to buy */
         System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
-        int idPiece = sc.nextInt();
-        sc.nextLine();
 
-        while(playablePieces.get(idPiece - 1).cost() > players.get(idPlayerPrior).getButtons() && str.equals("oui")){
+        positions.add((int)context.getScreenInfo().getWidth()*5/13);
+
+        for (ArrayList<ArrayList<Boolean>> playablePiece : playablePiecesBooleans) {
+            schema = playablePiece;
+
+            for (ArrayList<Boolean> booleans : schema) {
+                for (boolean ignored : booleans) {
+                    px += 30;
+                }
+
+                if (px > max) {
+                    max = px;
+                }
+
+                px = 0;
+            }
+
+            positions.add(firstPlace += max + 50);
+        }
+
+        Event event = context.pollOrWaitEvent(30000);
+        context.pollOrWaitEvent(5000);
+
+        while(event.getLocation() == null){
+            event = context.pollOrWaitEvent(30000);
+            context.pollOrWaitEvent(5000);
+        }
+
+        px = (int)event.getLocation().getX();
+
+        if(px < positions.get(1)){
+            System.out.println("Pièce 1");
+            idPiece = 1;
+        }
+        else if(px >= positions.get(1) && px < positions.get(2)){
+            System.out.println("Pièce 2");
+            idPiece = 2;
+        }
+        else if(px >= positions.get(2)){
+            System.out.println("Pièce 3");
+            idPiece = 3;
+        }
+
+        while(playablePieces.get(idPiece - 1).cost() > players.get(idPlayerPrior).getButtons()){
             /* Asking the player if he wants to buy another piece */
-            System.out.println("Vous n'avez pas assez de boutons pour acheter cette pièce, voulez-vous toujours en acheter une ? (oui/non)");
-            str = sc.nextLine();
-
+            System.out.println("Vous n'avez pas assez de boutons pour acheter cette pièce");
             System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
-            idPiece = sc.nextInt();
-            sc.nextLine();
+
+            event = context.pollOrWaitEvent(30000);
+            context.pollOrWaitEvent(5000);
+
+            while(event.getLocation() == null){
+                event = context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(5000);
+            }
+
+            px = (int)event.getLocation().getX();
+
+            if(px < positions.get(1)){
+                System.out.println("Pièce 1");
+                idPiece = 1;
+            }
+            else if(px >= positions.get(1) && px < positions.get(2)){
+                System.out.println("Pièce 2");
+                idPiece = 2;
+            }
+            else if(px >= positions.get(2)){
+                System.out.println("Pièce 3");
+                idPiece = 3;
+            }
         }
 
         /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
@@ -322,7 +385,6 @@ public interface Game {
     static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned, int idPlayerPrior) throws IOException, FontFormatException, InterruptedException {
         int x;
         int y;
-        boolean validIntegers = false;
 
         /* For each button cells the player crossed, he earns his number of buttons in patches he has on his board*/
         for (int i = 0; i < buttonsCrossed; i++) {
@@ -338,7 +400,7 @@ public interface Game {
                     + "où la placer (ligne colonne).");
 
             Event event = context.pollOrWaitEvent(30000);
-            context.pollOrWaitEvent(30000);
+            context.pollOrWaitEvent(3000);
 
             if(idPlayerPrior == 1) {
                 while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
@@ -347,12 +409,26 @@ public interface Game {
 
                     System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                     event = context.pollOrWaitEvent(30000);
-                    context.pollOrWaitEvent(30000);
+                    context.pollOrWaitEvent(3000);
                 }
-            }
 
-            x = (int)(event.getLocation().getY() / 32);
-            y = (int)(event.getLocation().getX() - 65) / 32;
+                x = (int)(event.getLocation().getY() / 32);
+                y = (int)(event.getLocation().getX() - 65) / 32;
+            }
+            else{
+                while (event == null || event.getLocation() == null
+                        || event.getLocation().getX() < context.getScreenInfo().getWidth()*1/3
+                        || event.getLocation().getX() > context.getScreenInfo().getWidth()*1/3 + 9 * 32
+                        || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
+
+                    System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
+                    event = context.pollOrWaitEvent(30000);
+                    context.pollOrWaitEvent(3000);
+                }
+
+                x = (int)(event.getLocation().getY() / 32);
+                y = (int)(event.getLocation().getX() - context.getScreenInfo().getWidth()*1/3) / 32;
+            }
 
             /*
             Version en ligne de commande
@@ -376,7 +452,7 @@ public interface Game {
 
             while(!players.get(idPlayerPrior).buyPiece(square, x, y)){
                 event = context.pollOrWaitEvent(30000);
-                context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(3000);
 
                 System.out.println("Vous ne pouvez pas placer la pièce à ces positions, veuillez choisir d'autres coordonnées (ligne colonne)");
 
@@ -387,8 +463,25 @@ public interface Game {
 
                         System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                         event = context.pollOrWaitEvent(30000);
-                        context.pollOrWaitEvent(30000);
+                        context.pollOrWaitEvent(3000);
                     }
+
+                    x = (int)(event.getLocation().getY() / 32);
+                    y = (int)(event.getLocation().getX() - 65) / 32;
+                }
+                else{
+                    while (event == null || event.getLocation() == null
+                            || event.getLocation().getX() < context.getScreenInfo().getWidth()*1/3
+                            || event.getLocation().getX() > context.getScreenInfo().getWidth()*1/3 + 9 * 32
+                            || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
+
+                        System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
+                        event = context.pollOrWaitEvent(30000);
+                        context.pollOrWaitEvent(3000);
+                    }
+
+                    x = (int)(event.getLocation().getY() / 32);
+                    y = (int)(event.getLocation().getX() - context.getScreenInfo().getWidth()*1/3) / 32;
                 }
             }
         }

@@ -88,6 +88,8 @@ public class View {
                     }
                 }
             }
+
+
         });
     }
 
@@ -95,8 +97,6 @@ public class View {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
-
-        System.out.println(playablePieces);
 
         context.renderFrame(graphics2D -> {
             ArrayList<ArrayList<Boolean>> schema;
@@ -166,6 +166,42 @@ public class View {
             graphics2D.setColor(Color.WHITE);
             graphics2D.setFont(font.deriveFont(20f));
             graphics2D.drawString("VOUS AVEZ GAGNÉ UNE TUILE SPÉCIALE", width * 5/14, height*19/20);
+        });
+    }
+
+    public static void currentPiece(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) {
+        BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
+
+        context.renderFrame(graphics2D -> {
+            ArrayList<ArrayList<Boolean>> schema;
+            int firstPlace = width*5/13;
+            int px = 0;
+            int py = 100;
+            int max = 0;
+
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.fillRect(width/3, 0, width/3, height/3);
+
+            schema = currentPiece;
+
+            for (ArrayList<Boolean> booleans : schema) {
+                for (boolean aBoolean : booleans) {
+                    if (aBoolean) {
+                        graphics2D.drawImage(filledSquare, firstPlace + px, py, null);
+                    }
+                    px += 30;
+                }
+
+                if (px > max) {
+                    max = px;
+                }
+
+                px = 0;
+                py += 30;
+            }
+
         });
     }
 
