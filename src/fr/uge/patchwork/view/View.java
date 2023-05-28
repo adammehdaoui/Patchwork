@@ -16,7 +16,7 @@ import fr.umlv.zen5.*;
 
 public class View {
 
-    public static void statusView(ApplicationContext context, TimeBoard timeBoard, PlayerBoard player1Board, PlayerBoard player2Board) {
+    public static void statusView(ApplicationContext context, TimeBoard timeBoard, PlayerBoard player1Board, PlayerBoard player2Board) throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         BufferedImage outlineSquare = fileToImage("resources/Board/outlineSquare.png", 30, 30);
         BufferedImage outlineSquareTB = fileToImage("resources/Board/outlineSquare.png", 60, 60);
@@ -27,6 +27,13 @@ public class View {
         BufferedImage player2 = fileToImage("resources/Player/player2.png", 14, 14);
         BufferedImage tagPlayer1 = fileToImage("resources/Player/tagPlayer1.png", 45, 45);
         BufferedImage tagPlayer2 = fileToImage("resources/Player/tagPlayer2.png", 45, 45);
+
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.BLACK);
@@ -89,12 +96,17 @@ public class View {
                 }
             }
 
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
+            graphics2D.drawString("O : ACHETER UNE PIÈCE" , width*5/6 - 50, height*11/20);
+            graphics2D.drawString("N : PASSER LE TOUR", width*5/6 - 50, height*12/20);
 
         });
     }
 
     public static void playablePiecesView(ApplicationContext context, ArrayList<ArrayList<ArrayList<Boolean>>> playablePieces){
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
+
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
@@ -166,11 +178,17 @@ public class View {
             graphics2D.setColor(Color.WHITE);
             graphics2D.setFont(font.deriveFont(20f));
             graphics2D.drawString("VOUS AVEZ GAGNÉ UNE TUILE SPÉCIALE", width * 5/14, height*19/20);
+            graphics2D.drawString("CLIQUEZ SUR UNE CASE POUR LA PLACER", 20, height*19/20);
         });
     }
 
-    public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) {
+    public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
+
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
@@ -202,6 +220,9 @@ public class View {
                 py += 30;
             }
 
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
+            graphics2D.drawString("I:INVERT; R:ROTATE; V:VALIDER", 30, height*19/20);
         });
     }
 

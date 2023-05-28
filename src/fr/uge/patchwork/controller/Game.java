@@ -51,7 +51,13 @@ public interface Game {
         System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ".\n\n");
 
         Application.run(Color.BLACK, context -> {
-            View.statusView(context, timeBoard, playerBoard1, playerBoard2);
+            try {
+                View.statusView(context, timeBoard, playerBoard1, playerBoard2);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (FontFormatException e) {
+                throw new RuntimeException(e);
+            }
 
             /* Starting game loop */
             while(!timeBoard.endGame()){
@@ -61,7 +67,13 @@ public interface Game {
                     throw new RuntimeException(e);
                 }
                 View.clearView(context);
-                View.statusView(context, timeBoard, playerBoard1, playerBoard2);
+                try {
+                    View.statusView(context, timeBoard, playerBoard1, playerBoard2);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (FontFormatException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
