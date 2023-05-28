@@ -174,7 +174,6 @@ public interface Game {
      */
     static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, int idPlayerPrior) throws IOException, FontFormatException, InterruptedException {
-        String str = "oui";
         int idPiece = 0;
         int firstPlace = (int)context.getScreenInfo().getWidth()*5/13;
         int x, y, px = 0, max = 0;
@@ -182,7 +181,6 @@ public interface Game {
         ArrayList<Piece> playablePieces = pieceList.nextPieces();
         ArrayList<ArrayList<Boolean>> schema;
         ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBooleans = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
 
         for (Piece playablePiece : playablePieces) {
             playablePiecesBooleans.add(playablePiece.schema());
@@ -278,8 +276,8 @@ public interface Game {
         event = context.pollOrWaitEvent(30000);
         context.pollOrWaitEvent(5000);
 
-        while(!event.getKey().equals(KeyboardKey.V)){
-            if(event.getKey().equals(KeyboardKey.R)){
+        while(event.getKey() == null || !event.getKey().equals(KeyboardKey.V)){
+            if(event.getKey() != null && event.getKey().equals(KeyboardKey.R)){
                 /* Replacement of the piece by the rotate piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
                 View.clearView(context);
@@ -288,7 +286,7 @@ public interface Game {
                 schema = playablePieces.get(idPiece - 1).schema();
                 View.currentPieceView(context, schema);
             }
-            else if(event.getKey().equals(KeyboardKey.I)){
+            else if(event.getKey() != null && event.getKey().equals(KeyboardKey.I)){
                 /* Replacement of the piece with the invert piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
                 View.clearView(context);
@@ -321,8 +319,10 @@ public interface Game {
          */
 
         if(idPlayerPrior == 1) {
-            while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
-                    || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
+            while (event == null || event.getLocation() == null
+                    || event.getLocation().getX() < 65
+                    || event.getLocation().getX() > 65 + 9 * 32
+                    || event.getLocation().getY() < 0
                     || event.getLocation().getY() > 9 * 32) {
 
                 System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
@@ -334,10 +334,12 @@ public interface Game {
             y = (int)(event.getLocation().getX() - 65) / 32;
         }
         else{
+
             while (event == null || event.getLocation() == null
-                    || event.getLocation().getX() < context.getScreenInfo().getWidth()*1/3
-                    || event.getLocation().getX() > context.getScreenInfo().getWidth()*1/3 + 9 * 32
-                    || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
+                    || event.getLocation().getX() < context.getScreenInfo().getWidth() / 1.3
+                    || event.getLocation().getX() > context.getScreenInfo().getWidth() / 1.3 + 9 * 32
+                    || event.getLocation().getY() < 0
+                    || event.getLocation().getY() > 9 * 32) {
 
                 System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                 event = context.pollOrWaitEvent(30000);
@@ -345,7 +347,7 @@ public interface Game {
             }
 
             x = (int)(event.getLocation().getY() / 32);
-            y = (int)(event.getLocation().getX() - context.getScreenInfo().getWidth()*1/3) / 32;
+            y = (int)(event.getLocation().getX() - (context.getScreenInfo().getWidth()/1.3)) / 32;
         }
 
         /* If the player bought the piece, we move him on the time board. We also remove the piece from the list */
@@ -462,8 +464,10 @@ public interface Game {
             context.pollOrWaitEvent(3000);
 
             if(idPlayerPrior == 1) {
-                while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
-                        || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
+                while (event == null || event.getLocation() == null
+                        || event.getLocation().getX() < 65
+                        || event.getLocation().getX() > 65 + 9 * 32
+                        || event.getLocation().getY() < 0
                         || event.getLocation().getY() > 9 * 32) {
 
                     System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
@@ -476,9 +480,10 @@ public interface Game {
             }
             else{
                 while (event == null || event.getLocation() == null
-                        || event.getLocation().getX() < context.getScreenInfo().getWidth()*1/3
-                        || event.getLocation().getX() > context.getScreenInfo().getWidth()*1/3 + 9 * 32
-                        || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
+                        || event.getLocation().getX() < context.getScreenInfo().getWidth() / 1.3
+                        || event.getLocation().getX() > context.getScreenInfo().getWidth() / 1.3 + 9 * 32
+                        || event.getLocation().getY() < 0
+                        || event.getLocation().getY() > 9 * 32) {
 
                     System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                     event = context.pollOrWaitEvent(30000);
