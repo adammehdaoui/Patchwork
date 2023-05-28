@@ -268,33 +268,85 @@ public interface Game {
         /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
         System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
 
+        View.clearView(context);
+        View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
         View.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
 
         System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
-        str = sc.nextLine();
+        /* str = sc.nextLine(); */
 
-        while(!str.equals("validate")){
-            if(str.equals("rotate")){
+        event = context.pollOrWaitEvent(30000);
+        context.pollOrWaitEvent(5000);
+
+        while(!event.getKey().equals(KeyboardKey.V)){
+            if(event.getKey().equals(KeyboardKey.R)){
                 /* Replacement of the piece by the rotate piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
+                View.clearView(context);
+                View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
+
+                schema = playablePieces.get(idPiece - 1).schema();
+                View.currentPieceView(context, schema);
             }
-            else if(str.equals("invert")){
+            else if(event.getKey().equals(KeyboardKey.I)){
                 /* Replacement of the piece with the invert piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
+                View.clearView(context);
+                View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
+                schema = playablePieces.get(idPiece - 1).schema();
+                View.currentPieceView(context, schema);
             }
             else{
                 System.out.println("Vous n'avez pas choisi une action valide");
             }
+
             System.out.println("Votre pièce courante : \n" + playablePieces.get(idPiece - 1));
             System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
-            str = sc.nextLine();
+
+            event = context.pollOrWaitEvent(30000);
+            context.pollOrWaitEvent(5000);
+            /* str = sc.nextLine(); */
         }
 
         /* Asking the user where he wants to place the piece on his board */
         System.out.println("Veuillez choisir une position pour votre pièce ? (ligne colonne)");
+
+        event = context.pollOrWaitEvent(30000);
+        context.pollOrWaitEvent(5000);
+
+        /* Version dans la console
         x = sc.nextInt();
         y = sc.nextInt();
         sc.nextLine();
+         */
+
+        if(idPlayerPrior == 1) {
+            while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
+                    || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
+                    || event.getLocation().getY() > 9 * 32) {
+
+                System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
+                event = context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(3000);
+            }
+
+            x = (int)(event.getLocation().getY() / 32);
+            y = (int)(event.getLocation().getX() - 65) / 32;
+        }
+        else{
+            while (event == null || event.getLocation() == null
+                    || event.getLocation().getX() < context.getScreenInfo().getWidth()*1/3
+                    || event.getLocation().getX() > context.getScreenInfo().getWidth()*1/3 + 9 * 32
+                    || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
+
+                System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
+                event = context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(3000);
+            }
+
+            x = (int)(event.getLocation().getY() / 32);
+            y = (int)(event.getLocation().getX() - context.getScreenInfo().getWidth()*1/3) / 32;
+        }
 
         /* If the player bought the piece, we move him on the time board. We also remove the piece from the list */
         if(players.get(idPlayerPrior).buyPiece(playablePieces.get(idPiece - 1), x, y)){
@@ -306,6 +358,7 @@ public interface Game {
             /* The player gets the number of he has on his board for each button cell he crossed */
             buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
             players.get(idPlayerPrior).addButtons(buttonsCrossed);
+
             /* The player earns the patches he has passed */
             patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
             if(patchesEarned > 0){
@@ -318,6 +371,9 @@ public interface Game {
 
             System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
                     " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
+
+            View.clearView(context);
+            View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
         } else {
             System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
 

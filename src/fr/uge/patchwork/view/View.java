@@ -56,7 +56,7 @@ public class View {
                                 i * 32, null);
                     }
                     else {
-                        graphics2D.drawImage(outlineSquare, (int) (context.getScreenInfo().getWidth() / 1.3 + j * 32),
+                        graphics2D.drawImage(filledSquare, (int) (context.getScreenInfo().getWidth() / 1.3 + j * 32),
                                 i * 32, null);
                     }
                 }
