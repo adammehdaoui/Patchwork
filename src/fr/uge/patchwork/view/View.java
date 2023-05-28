@@ -169,7 +169,7 @@ public class View {
         });
     }
 
-    public static void currentPiece(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) {
+    public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();

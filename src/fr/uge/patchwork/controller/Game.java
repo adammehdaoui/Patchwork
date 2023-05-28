@@ -267,6 +267,9 @@ public interface Game {
 
         /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
         System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
+
+        View.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
+
         System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
         str = sc.nextLine();
 
