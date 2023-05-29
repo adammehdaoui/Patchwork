@@ -66,7 +66,6 @@ public interface Game {
                 } catch (IOException | FontFormatException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                View.clearView(context);
                 try {
                     View.statusView(context, timeBoard, playerBoard1, playerBoard2);
                 } catch (IOException e) {
@@ -278,7 +277,6 @@ public interface Game {
         /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
         System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
 
-        View.clearView(context);
         View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
         View.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
 
@@ -292,7 +290,6 @@ public interface Game {
             if(event.getKey() != null && event.getKey().equals(KeyboardKey.R)){
                 /* Replacement of the piece by the rotate piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
-                View.clearView(context);
                 View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
 
                 schema = playablePieces.get(idPiece - 1).schema();
@@ -301,7 +298,6 @@ public interface Game {
             else if(event.getKey() != null && event.getKey().equals(KeyboardKey.I)){
                 /* Replacement of the piece with the invert piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
-                View.clearView(context);
                 View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
                 schema = playablePieces.get(idPiece - 1).schema();
                 View.currentPieceView(context, schema);
@@ -386,7 +382,6 @@ public interface Game {
             System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
                     " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
 
-            View.clearView(context);
             View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
         } else {
             System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
