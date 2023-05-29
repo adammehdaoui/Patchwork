@@ -41,6 +41,8 @@ public class View {
 
         context.renderFrame(graphics2D -> {
             View.clearView(context);
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
 
             /* Drawing the tag of players */
             graphics2D.drawImage(tagPlayer1, 0, 0, null);
@@ -104,6 +106,7 @@ public class View {
             int x = 65;
             int y = 300;
 
+            graphics2D.drawString("" + p1.getButtons() , x - 30, y + 30);
             while(i < p1.getButtons()) {
                 graphics2D.drawImage(miniButton, x, y, null);
 
@@ -122,6 +125,7 @@ public class View {
             x = width - 300;
             y = 300;
 
+            graphics2D.drawString("" + p2.getButtons() , x - 30, y + 30);
             while(i < p2.getButtons()) {
                 graphics2D.drawImage(miniButton, x, y, null);
 
@@ -136,8 +140,7 @@ public class View {
                 i++;
             }
 
-            graphics2D.setColor(Color.WHITE);
-            graphics2D.setFont(font.deriveFont(20f));
+
             graphics2D.drawString("O : ACHETER UNE PIÈCE" , width*5/6 - 50, height*11/20);
             graphics2D.drawString("N : PASSER LE TOUR", width*5/6 - 50, height*12/20);
         });

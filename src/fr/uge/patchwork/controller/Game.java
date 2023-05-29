@@ -373,11 +373,10 @@ public interface Game {
 
             /* The player gets the number of he has on his board for each button cell he crossed */
             buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
-            players.get(idPlayerPrior).addButtons(buttonsCrossed);
 
             /* The player earns the patches he has passed */
             patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
-            if(patchesEarned > 0){
+            if(buttonsCrossed > 0 || patchesEarned > 0){
                 reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
             }
 
@@ -408,39 +407,30 @@ public interface Game {
 
         if(timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0){
             distance = 1;
-            Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
-
-            /* The player gets the number of he has on his board for each button cell he crossed */
-            buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
-            players.get(idPlayerPrior).addButtons(buttonsCrossed);
-            /* The player earns the patches he has passed */
-            patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
-
-            /* The player earns the patches he has passed */
-            if(buttonsCrossed > 0 || patchesEarned > 0){
-                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
-            }
 
             System.out.println("Le joueur " + idPlayerPrior + " était en tête, il a donc avancé de " + distance + " case.");
         }
         else {
-            /* Predicting movement before cleaning the board */
             distance = timeBoard.distance() + 1;
-            Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
-
-            /* The player gets the number of he has on his board for each button cell he crossed */
-            buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
-            players.get(idPlayerPrior).addButtons(buttonsCrossed);
-            /* The player earns the patches he has passed */
-            patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
-
-            /* The player earns the patches he has passed */
-            if(buttonsCrossed > 0 || patchesEarned > 0){
-                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
-            }
 
             System.out.println("Le joueur " + idPlayerPrior + " a décidé de passer son tour. Il a donc dépassé son adversaire en parcourant "
                     + distance + " cases.");
+        }
+
+        Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
+
+        /* The player gets the number of he has on his board for each button cell he crossed */
+        buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
+        for (int i = 0; i < buttonsCrossed; i++){
+            players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
+        }
+
+        /* The player earns the patches he has passed */
+        patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
+
+        /* The player earns the patches he has passed */
+        if(buttonsCrossed > 0 || patchesEarned > 0){
+            reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior);
         }
 
         /* Winning the distance in buttons */

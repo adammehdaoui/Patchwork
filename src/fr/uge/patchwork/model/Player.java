@@ -90,7 +90,6 @@ public class Player {
         for (Piece piece : pieces) {
             sum += piece.button();
         }
-
         return sum;
     }
 
