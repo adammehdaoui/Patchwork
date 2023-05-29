@@ -68,10 +68,10 @@ public class TimeBoard {
                 return 0;
             }
             else if(cells.get(i).player1()!=null){
-                return 1;
+                return 2;
             }
             else if(cells.get(i).player2()!=null){
-                return 2;
+                return 1;
             }
         }
 

@@ -198,7 +198,7 @@ public interface Game {
             playablePiecesBooleans.add(playablePiece.schema());
         }
 
-        View.playablePiecesView(context, playablePiecesBooleans);
+        View.playablePiecesView(context, playablePieces, playablePiecesBooleans);
 
         /* Asking the player which piece they want to buy */
         System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");

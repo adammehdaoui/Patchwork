@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import fr.uge.patchwork.model.Piece;
 import fr.uge.patchwork.model.Player;
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
@@ -123,7 +124,7 @@ public class View {
                 graphics2D.drawImage(miniButton, x, y, null);
 
                 if((i + 1)%6 == 0 && i!=0){
-                    x = 65;
+                    x = width - 300;
                     y += 15;
                 }
                 else{
@@ -140,14 +141,19 @@ public class View {
         });
     }
 
-    public static void playablePiecesView(ApplicationContext context, ArrayList<ArrayList<ArrayList<Boolean>>> playablePieces){
+    public static void playablePiecesView(ApplicationContext context, ArrayList<Piece> playablePieces, ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBoolean) throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
+
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
             ArrayList<ArrayList<Boolean>> schema;
+            int i=0;
             int firstPlace = width*5/13;
             int px = 0;
             int py = 100;
@@ -156,7 +162,7 @@ public class View {
             graphics2D.setColor(Color.BLACK);
             graphics2D.fillRect(width/3, 0, width/3, height/3);
 
-            for (ArrayList<ArrayList<Boolean>> playablePiece : playablePieces) {
+            for (ArrayList<ArrayList<Boolean>> playablePiece : playablePiecesBoolean) {
                 schema = playablePiece;
 
                 for (ArrayList<Boolean> booleans : schema) {
@@ -175,8 +181,16 @@ public class View {
                     py += 30;
                 }
 
+                //print the cost etc of the patches
+                graphics2D.setColor(Color.WHITE);
+                graphics2D.setFont(font.deriveFont(20f));
+                graphics2D.drawString("Cost: " + playablePieces.get(i).cost() , firstPlace + px, 240);
+                graphics2D.drawString("Time: " + playablePieces.get(i).time(), firstPlace + px, 270);
+                graphics2D.drawString("Button: " + playablePieces.get(i).button(), firstPlace + px, 300);
+
                 py = 100;
                 firstPlace += max + 50;
+                i++;
             }
 
         });
