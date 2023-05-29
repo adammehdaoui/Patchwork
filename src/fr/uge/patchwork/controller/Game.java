@@ -52,10 +52,8 @@ public interface Game {
 
         Application.run(Color.BLACK, context -> {
             try {
-                View.statusView(context, timeBoard, playerBoard1, playerBoard2);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (FontFormatException e) {
+                View.statusView(context, timeBoard, players.get(1), players.get(2), playerBoard1, playerBoard2);
+            } catch (IOException | FontFormatException e) {
                 throw new RuntimeException(e);
             }
 
@@ -66,11 +64,11 @@ public interface Game {
                 } catch (IOException | FontFormatException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
                 try {
-                    View.statusView(context, timeBoard, playerBoard1, playerBoard2);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (FontFormatException e) {
+                    View.statusView(context, timeBoard, players.get(1), players.get(2), playerBoard1, playerBoard2);
+                    View.turnView(context, timeBoard.turnOf());
+                } catch (IOException | FontFormatException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -141,11 +139,14 @@ public interface Game {
         } else {
             if (event.getKey().equals(KeyboardKey.O)) {
                 Game.buy(context, pieceList, players, timeBoard, idPlayerPrior);
+                System.out.println(event.getKey());
             } else if (event.getKey().equals(KeyboardKey.N)) {
                 Game.overtake(context, players, timeBoard, idPlayerPrior);
+                System.out.println(event.getKey());
             } else {
                 System.out.println("Aucune action effectuée. On passe le tour.");
                 Game.overtake(context, players, timeBoard, idPlayerPrior);
+                System.out.println(event.getKey());
             }
         }
 
@@ -277,7 +278,8 @@ public interface Game {
         /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
         System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
 
-        View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
+        View.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(), players.get(2).getBoard());
+        View.turnView(context, idPlayerPrior);
         View.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
 
         System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
@@ -290,17 +292,16 @@ public interface Game {
             if(event.getKey() != null && event.getKey().equals(KeyboardKey.R)){
                 /* Replacement of the piece by the rotate piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
-                View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
-
                 schema = playablePieces.get(idPiece - 1).schema();
                 View.currentPieceView(context, schema);
+                View.turnView(context, idPlayerPrior);
             }
             else if(event.getKey() != null && event.getKey().equals(KeyboardKey.I)){
                 /* Replacement of the piece with the invert piece */
                 playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
-                View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
                 schema = playablePieces.get(idPiece - 1).schema();
                 View.currentPieceView(context, schema);
+                View.turnView(context, idPlayerPrior);
             }
             else{
                 System.out.println("Vous n'avez pas choisi une action valide");
@@ -316,6 +317,11 @@ public interface Game {
 
         /* Asking the user where he wants to place the piece on his board */
         System.out.println("Veuillez choisir une position pour votre pièce ? (ligne colonne)");
+
+        schema = playablePieces.get(idPiece - 1).schema();
+
+        View.validatedPieceView(context, schema);
+        View.turnView(context, idPlayerPrior);
 
         event = context.pollOrWaitEvent(30000);
         context.pollOrWaitEvent(5000);
@@ -382,7 +388,7 @@ public interface Game {
             System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
                     " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
 
-            View.statusView(context, timeBoard, players.get(1).getBoard(), players.get(2).getBoard());
+            View.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(), players.get(2).getBoard());
         } else {
             System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
 

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import fr.uge.patchwork.model.Player;
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
@@ -16,11 +17,13 @@ import fr.umlv.zen5.*;
 
 public class View {
 
-    public static void statusView(ApplicationContext context, TimeBoard timeBoard, PlayerBoard player1Board, PlayerBoard player2Board) throws IOException, FontFormatException {
+    public static void statusView(ApplicationContext context, TimeBoard timeBoard, Player p1, Player p2,
+                                  PlayerBoard player1Board, PlayerBoard player2Board) throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         BufferedImage outlineSquare = fileToImage("resources/Board/outlineSquare.png", 30, 30);
         BufferedImage outlineSquareTB = fileToImage("resources/Board/outlineSquare.png", 60, 60);
         BufferedImage button = fileToImage("resources/Board/button.png", 30, 30);
+        BufferedImage miniButton = fileToImage("resources/Board/button.png", 15, 15);
         BufferedImage patch = fileToImage("resources/Board/patch.png", 30, 30);
 
         BufferedImage player1 = fileToImage("resources/Player/player1.png", 15, 15);
@@ -36,9 +39,7 @@ public class View {
         int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
-            graphics2D.setColor(Color.BLACK);
-            graphics2D.fillRect(0, 0, (int) context.getScreenInfo().getWidth(), (int) context.getScreenInfo()
-                    .getHeight());
+            View.clearView(context);
 
             /* Drawing the tag of players */
             graphics2D.drawImage(tagPlayer1, 0, 0, null);
@@ -94,6 +95,42 @@ public class View {
                         graphics2D.drawImage(player2, xDrawSquare + 15, yDrawSquare + 33, null);
                     }
                 }
+            }
+
+            i = 0;
+            int x = 65;
+            int y = 300;
+
+            while(i < p1.getButtons()) {
+                graphics2D.drawImage(miniButton, x, y, null);
+
+                if((i + 1)%6 == 0 && i!=0){
+                    x = 65;
+                    y += 15;
+                }
+                else{
+                    x += 15;
+                }
+
+                i++;
+            }
+
+            i = 0;
+            x = width - 300;
+            y = 300;
+
+            while(i < p2.getButtons()) {
+                graphics2D.drawImage(miniButton, x, y, null);
+
+                if((i + 1)%6 == 0 && i!=0){
+                    x = 65;
+                    y += 15;
+                }
+                else{
+                    x += 15;
+                }
+
+                i++;
             }
 
             graphics2D.setColor(Color.WHITE);
@@ -221,7 +258,52 @@ public class View {
 
             graphics2D.setColor(Color.WHITE);
             graphics2D.setFont(font.deriveFont(20f));
+            graphics2D.drawString("VOTRE PIÈCE", width/2, 150);
             graphics2D.drawString("I:INVERT; R:ROTATE; V:VALIDER", 30, height*19/20);
+        });
+    }
+
+    public static void validatedPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) throws IOException, FontFormatException {
+        BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
+
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
+
+        context.renderFrame(graphics2D -> {
+            ArrayList<ArrayList<Boolean>> schema;
+            int firstPlace = width*5/13;
+            int px = 0;
+            int py = 100;
+            int max = 0;
+
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.fillRect(0, height * 3/4, width/3, height/3);
+
+            schema = currentPiece;
+
+            for (ArrayList<Boolean> booleans : schema) {
+                for (boolean aBoolean : booleans) {
+                    if (aBoolean) {
+                        graphics2D.drawImage(filledSquare, firstPlace + px, py, null);
+                    }
+                    px += 30;
+                }
+
+                if (px > max) {
+                    max = px;
+                }
+
+                px = 0;
+                py += 30;
+            }
+
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
+            graphics2D.drawString("CLIQUER POUR PLACER LA PIÈCE", 30, height*19/20);
         });
     }
 
