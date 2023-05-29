@@ -47,7 +47,9 @@ public record PlayerBoard(ArrayList<ArrayList<Boolean>> board) {
                 /* Place the piece */
                 for (int k = 0; k < p.schema().size(); k++) {
                     for (int l = 0; l < p.schema().get(k).size(); l++) {
-                        board.get(x + k).set(y + l, p.schema().get(k).get(l));
+                        if(p.schema().get(k).get(l)) {
+                            board.get(x + k).set(y + l, true);
+                        }
                     }
                 }
                 return true;
