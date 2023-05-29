@@ -504,7 +504,7 @@ public interface Game {
                 }
 
                 x = (int)(event.getLocation().getY() / 32);
-                y = (int)(event.getLocation().getX() - context.getScreenInfo().getWidth()*1/3) / 32;
+                y = (int)(event.getLocation().getX() - (context.getScreenInfo().getWidth()/1.3)) / 32;
             }
 
             /*

@@ -75,25 +75,27 @@ public class View {
             int yDrawSquare;
             int cellInd;
             /* Drawing the time board */
-            for (i = 0; i < 6; i++) {
+            for (i = 0; i < 7; i++) {
                 for (j = 0; j < 8; j++) {
                     xDrawSquare = (int) ((context.getScreenInfo().getWidth() / 2) + i * 80 - 220);
                     yDrawSquare = (int) ((context.getScreenInfo().getHeight() / 2) + j * 60 - 120);
-                    cellInd = j * 6 + i;
+                    cellInd = j * 7 + i;
 
-                    graphics2D.drawImage(outlineSquareTB, xDrawSquare, yDrawSquare, null);
 
-                    if (timeBoard.cells.get(cellInd).button()) {
-                        graphics2D.drawImage(button, xDrawSquare + 35, yDrawSquare + 15, null);
-                    }
-                    if (timeBoard.cells.get(cellInd).patch()) {
-                        graphics2D.drawImage(patch, xDrawSquare + 35, yDrawSquare + 15, null);
-                    }
-                    if (timeBoard.cells.get(cellInd).player1() != null) {
-                        graphics2D.drawImage(player1, xDrawSquare + 15, yDrawSquare + 15, null);
-                    }
-                    if (timeBoard.cells.get(cellInd).player2() != null) {
-                        graphics2D.drawImage(player2, xDrawSquare + 15, yDrawSquare + 33, null);
+                    if(cellInd < timeBoard.cells.size()) {
+                        graphics2D.drawImage(outlineSquareTB, xDrawSquare, yDrawSquare, null);
+                        if (timeBoard.cells.get(cellInd).button()) {
+                            graphics2D.drawImage(button, xDrawSquare + 35, yDrawSquare + 15, null);
+                        }
+                        if (timeBoard.cells.get(cellInd).patch()) {
+                            graphics2D.drawImage(patch, xDrawSquare + 35, yDrawSquare + 15, null);
+                        }
+                        if (timeBoard.cells.get(cellInd).player1() != null) {
+                            graphics2D.drawImage(player1, xDrawSquare + 15, yDrawSquare + 15, null);
+                        }
+                        if (timeBoard.cells.get(cellInd).player2() != null) {
+                            graphics2D.drawImage(player2, xDrawSquare + 15, yDrawSquare + 33, null);
+                        }
                     }
                 }
             }

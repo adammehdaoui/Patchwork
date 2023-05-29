@@ -36,7 +36,7 @@ public class TimeBoard {
                 cells.get(i).setButton(true);
             }
 
-            if(i == 20 || i == 26 || i == 33 || i == 45 || i == 51){
+            if(i == 21 || i == 27 || i == 33 || i == 45 || i == 51){
                 cells.get(i).setPatch(true);
             }
         }
