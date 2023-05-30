@@ -76,10 +76,11 @@ public class View {
             int xDrawSquare;
             int yDrawSquare;
             int cellInd;
+
             /* Drawing the time board */
             for (i = 0; i < 7; i++) {
                 for (j = 0; j < 8; j++) {
-                    xDrawSquare = (int) ((context.getScreenInfo().getWidth() / 2) + i * 80 - 220);
+                    xDrawSquare = (int) ((context.getScreenInfo().getWidth() / 2) + i * 80 - 280);
                     yDrawSquare = (int) ((context.getScreenInfo().getHeight() / 2) + j * 60 - 120);
                     cellInd = j * 7 + i;
 
