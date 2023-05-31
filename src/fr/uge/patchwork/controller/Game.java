@@ -8,11 +8,14 @@ import fr.umlv.zen5.ApplicationContext;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.KeyboardKey;
+
+import javax.naming.Context;
 
 import static java.lang.Thread.sleep;
 
@@ -24,7 +27,7 @@ public interface Game {
     /**
      * Controller method to start the game loop with the necessary parameters.
      */
-    static void start() throws IOException, FontFormatException {
+    static void start() throws IOException, FontFormatException, InterruptedException {
         /* Creating the game with the necessary parameters */
 
         /* Creation of player boards */
@@ -93,6 +96,12 @@ public interface Game {
 
             Game.end(players, mode);
         }
+        else {
+            /* Starting game loop */
+            while (!timeBoard.endGame()) {
+                Game.progress(null, pieceSet, players, timeBoard, gameVersion, mode);
+            }
+        }
 
         sc.close();
 
@@ -109,24 +118,45 @@ public interface Game {
      */
     static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard, GameMode mode) throws IOException, FontFormatException {
-        /* Display the status of the game */
-        System.out.println(player1);
-        System.out.println(timeBoard);
-        System.out.println(player2);
+        if(mode == GameMode.GUI) {
+            /* Display the status of the game */
+            System.out.println(player1);
+            System.out.println(timeBoard);
+            System.out.println(player2);
 
-        /* Retrieving the ID of the player who must play */
-        int idPlayerPrior = timeBoard.turnOf();
+            /* Retrieving the ID of the player who must play */
+            int idPlayerPrior = timeBoard.turnOf();
 
-        /* Displaying the player who must play */
-        View.turnView(context, idPlayerPrior);
+            /* Displaying the player who must play */
+            View.turnView(context, idPlayerPrior);
 
-        System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
+            System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
 
-        /* Displaying playable pieces */
-        ArrayList<Piece> playablePieces = pieceList.nextPieces();
-        System.out.println("Les pièces jouables sont : \n");
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
+            /* Displaying playable pieces */
+            ArrayList<Piece> playablePieces = pieceList.nextPieces();
+            System.out.println("Les pièces jouables sont : \n");
+            for (int i = 0; i < 3; i++) {
+                System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
+            }
+        }
+        else {
+            /* Display the status of the game */
+            System.out.println(player1);
+            System.out.println(timeBoard);
+            System.out.println(player2);
+
+            /* Retrieving the ID of the player who must play */
+            int idPlayerPrior = timeBoard.turnOf();
+
+            /* Displaying the player who must play */
+            System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
+
+            /* Displaying playable pieces */
+            ArrayList<Piece> playablePieces = pieceList.nextPieces();
+            System.out.println("Les pièces jouables sont : \n");
+            for (int i = 0; i < 3; i++) {
+                System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
+            }
         }
     }
 
@@ -181,6 +211,37 @@ public interface Game {
                 Game.overtake(players, timeBoard, idPlayerPrior);
             }
             */
+
+            if (gameVersion.equals("2")) {
+                if (players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
+                    players.get(1).setSpecialPiece(true);
+                    timeBoard.setSpecialPieceAvailable(false);
+                    System.out.println("Le joueur 1 a gagné la tuile spéciale.");
+                }
+                if (players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
+                    players.get(2).setSpecialPiece(true);
+                    timeBoard.setSpecialPieceAvailable(false);
+                    System.out.println("Le joueur 2 a gagné la tuile spéciale.");
+                }
+            }
+        }
+        else {
+            int idPlayerPrior = timeBoard.turnOf();
+            System.out.println("\n========== TOUR SUIVANT ==========\n");
+
+            Game.status(null, players.get(1), players.get(2), pieceList, timeBoard, mode);
+
+            /* Asking the player if they want to buy a piece */
+            System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
+
+            Scanner sc = new Scanner(System.in);
+            String str = sc.nextLine();
+
+            if (str.equals("oui")) {
+                Game.buy(null, pieceList, players, timeBoard, idPlayerPrior, mode);
+            } else {
+                Game.overtake(null, players, timeBoard, idPlayerPrior, mode);
+            }
 
             if (gameVersion.equals("2")) {
                 if (players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
@@ -409,6 +470,84 @@ public interface Game {
                 overtake(context, players, timeBoard, idPlayerPrior, mode);
             }
         }
+        else {
+            String str;
+            int idPiece = 0;
+            int x, y;
+            ArrayList<Piece> playablePieces = pieceList.nextPieces();
+
+            System.out.println(playablePieces);
+
+            /* Asking the player which piece they want to buy */
+            System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
+            Scanner sc = new Scanner(System.in);
+            idPiece = sc.nextInt();
+
+            while (playablePieces.get(idPiece - 1).cost() > players.get(idPlayerPrior).getButtons()) {
+                /* Asking the player if he wants to buy another piece */
+                System.out.println("Vous n'avez pas assez de boutons pour acheter cette pièce");
+                System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
+                idPiece = sc.nextInt();
+            }
+
+            /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
+            System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
+
+            System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
+            str = sc.nextLine();
+
+            while(!str.equals("validate")) {
+                if (str.equals("rotate")) {
+                    /* Replacement of the piece by the rotate piece */
+                    playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
+                } else if (str.equals("invert")) {
+                    /* Replacement of the piece with the invert piece */
+                    playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
+                } else {
+                    System.out.println("Vous n'avez pas choisi une action valide");
+                }
+
+                System.out.println("Votre pièce courante : \n" + playablePieces.get(idPiece - 1));
+                System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
+
+                str = sc.nextLine();
+            }
+
+            /* Asking the user where he wants to place the piece on his board */
+            System.out.println("Veuillez choisir une position pour votre pièce ? (ligne colonne)");
+
+            x = sc.nextInt();
+            y = sc.nextInt();
+            sc.nextLine();
+
+            /* If the player bought the piece, we move him on the time board. We also remove the piece from the list */
+            if (players.get(idPlayerPrior).buyPiece(playablePieces.get(idPiece - 1), x, y)) {
+                int buttonsCrossed, patchesEarned;
+
+                /* Predicting the movement of the player depending on the piece he bought */
+                Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), playablePieces.get(0).time());
+
+                /* The player gets the number of he has on his board for each button cell he crossed */
+                buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
+
+                /* The player earns the patches he has passed */
+                patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
+                if (buttonsCrossed > 0 || patchesEarned > 0) {
+                    reward(null, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
+                }
+
+                /* Moving the player and getting the number of buttons passed and then adding the buttons won */
+                timeBoard.movePlayer(players.get(idPlayerPrior), playablePieces.get(idPiece - 1).time());
+                pieceList.removePiece(idPiece - 1);
+
+                System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
+                        " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
+            } else {
+                System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
+
+                overtake(null, players, timeBoard, idPlayerPrior, mode);
+            }
+        }
     }
 
     /**
@@ -448,6 +587,42 @@ public interface Game {
             /* The player earns the patches he has passed */
             if (buttonsCrossed > 0 || patchesEarned > 0) {
                 reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
+            }
+
+            /* Winning the distance in buttons */
+            players.get(idPlayerPrior).addButtons(distance);
+            /* Moving the player in front of his opponent */
+            timeBoard.movePlayer(players.get(idPlayerPrior), distance);
+        }
+        else {
+            int buttonsCrossed, patchesEarned;
+            int distance;
+
+            if (timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0) {
+                distance = 1;
+
+                System.out.println("Le joueur " + idPlayerPrior + " était en tête, il a donc avancé de " + distance + " case.");
+            } else {
+                distance = timeBoard.distance() + 1;
+
+                System.out.println("Le joueur " + idPlayerPrior + " a décidé de passer son tour. Il a donc dépassé son adversaire en parcourant "
+                        + distance + " cases.");
+            }
+
+            Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
+
+            /* The player gets the number of he has on his board for each button cell he crossed */
+            buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
+            for (int i = 0; i < buttonsCrossed; i++) {
+                players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
+            }
+
+            /* The player earns the patches he has passed */
+            patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
+
+            /* The player earns the patches he has passed */
+            if (buttonsCrossed > 0 || patchesEarned > 0) {
+                reward(null, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
             }
 
             /* Winning the distance in buttons */
@@ -571,6 +746,53 @@ public interface Game {
                 }
             }
         }
+        else {
+            int x = 0;
+            int y = 0;
+
+            /* For each button cells the player crossed, he earns his number of buttons in patches he has on his board*/
+            for (int i = 0; i < buttonsCrossed; i++) {
+                players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
+                System.out.println("Le joueur " + idPlayerPrior + " a gagné " + players.get(idPlayerPrior).buttonsToEarn()
+                        + " bouton(s) en passant sur une case bouton.");
+            }
+
+            /* If the player has passed patches, we ask him where he wants to place them */
+            for (int i = 0; i < patchesEarned; i++) {
+                boolean validIntegers = false;
+
+                System.out.println("Vous avez gagné un patch spécial 1x1 en passant sur une case dédiée ! Veuillez choisir "
+                        + "où la placer (ligne colonne).");
+
+                Scanner sc = new Scanner(System.in);
+
+                while(!validIntegers){
+                    try {
+                        x = sc.nextInt();
+                        y = sc.nextInt();
+                        sc.nextLine();
+                        validIntegers = true;
+                    } catch (InputMismatchException e){
+                        System.out.println("Les entiers entrés ne sont pas valides, veuillez essayer à nouveau " +
+                                "(ligne colonne)");
+                        sc.nextLine();
+                    }
+                }
+
+                var schema = new ArrayList<ArrayList<Boolean>>();
+                var row = new ArrayList<Boolean>();
+                row.add(true);
+                schema.add(row);
+                var square = new Piece(schema, 0, 0, 0);
+
+                while (!players.get(idPlayerPrior).buyPiece(square, x, y)) {
+                    System.out.println("Vous ne pouvez pas placer la pièce à ces positions, veuillez choisir d'autres " +
+                            "coordonnées (ligne colonne)");
+                    x = sc.nextInt();
+                    y = sc.nextInt();
+                }
+            }
+        }
     }
 
     /**
@@ -579,6 +801,20 @@ public interface Game {
      */
     static void end(Map<Integer, Player> players, GameMode mode) throws IOException, FontFormatException {
         if(mode == GameMode.GUI) {
+            int scorePlayer1 = players.get(1).score();
+            int scorePlayer2 = players.get(2).score();
+
+            if (scorePlayer1 > scorePlayer2) {
+                System.out.println("\nLe joueur 1 a gagné avec " + scorePlayer1 + " points contre " + scorePlayer2 +
+                        " points.");
+            } else if (scorePlayer1 < scorePlayer2) {
+                System.out.println("\nLe joueur 2 a gagné avec " + scorePlayer2 + " points contre " + scorePlayer1 +
+                        " points.");
+            } else {
+                System.out.println("\nÉgalité parfaite entre les deux joueurs avec " + scorePlayer1 + " points.");
+            }
+        }
+        else {
             int scorePlayer1 = players.get(1).score();
             int scorePlayer2 = players.get(2).score();
 

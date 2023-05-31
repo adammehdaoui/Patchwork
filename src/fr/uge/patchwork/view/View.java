@@ -19,7 +19,8 @@ import fr.umlv.zen5.*;
 public class View {
 
     public static void statusView(ApplicationContext context, TimeBoard timeBoard, Player p1, Player p2,
-                                  PlayerBoard player1Board, PlayerBoard player2Board) throws IOException, FontFormatException {
+                                  PlayerBoard player1Board, PlayerBoard player2Board) throws IOException,
+                                  FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         BufferedImage outlineSquare = fileToImage("resources/Board/outlineSquare.png", 30, 30);
         BufferedImage outlineSquareTB = fileToImage("resources/Board/outlineSquare.png", 60, 60);

@@ -15,7 +15,8 @@ public class Main {
      * @throws ClassNotFoundException if the class is not found in controllers
      * @throws FileNotFoundException if the file is not found in controllers
      */
-    public static void main(String[] args) throws ClassNotFoundException, IOException, FontFormatException {
+    public static void main(String[] args) throws ClassNotFoundException, IOException, FontFormatException,
+            InterruptedException {
         Game.start();
     }
 
