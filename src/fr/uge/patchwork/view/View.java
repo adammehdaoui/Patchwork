@@ -108,7 +108,7 @@ public class View {
             int x = 65;
             int y = 300;
 
-            graphics2D.drawString("" + p1.getButtons() , x - 30, y + 30);
+            graphics2D.drawString(String.valueOf(p1.getButtons()), x - 30, y + 30);
             while(i < p1.getButtons()) {
                 graphics2D.drawImage(miniButton, x, y, null);
 
@@ -127,7 +127,7 @@ public class View {
             x = width - 300;
             y = 300;
 
-            graphics2D.drawString("" + p2.getButtons() , x - 30, y + 30);
+            graphics2D.drawString(String.valueOf(p2.getButtons()), x - 30, y + 30);
             while(i < p2.getButtons()) {
                 graphics2D.drawImage(miniButton, x, y, null);
 
@@ -188,7 +188,6 @@ public class View {
                     py += 30;
                 }
 
-                //print the cost etc of the patches
                 graphics2D.setColor(Color.WHITE);
                 graphics2D.setFont(font.deriveFont(20f));
                 graphics2D.drawString("Cost: " + playablePieces.get(i).cost() , firstPlace + px, 240);

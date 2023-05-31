@@ -15,10 +15,6 @@ import java.util.Scanner;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.KeyboardKey;
 
-import javax.naming.Context;
-
-import static java.lang.Thread.sleep;
-
 /**
  * Class containing all controller methods of the game.
  */
@@ -169,8 +165,9 @@ public interface Game {
      */
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, String gameVersion, GameMode mode) throws IOException, FontFormatException, InterruptedException {
+        int idPlayerPrior = timeBoard.turnOf();
+
         if(mode == GameMode.GUI) {
-            int idPlayerPrior = timeBoard.turnOf();
             Event event;
             System.out.println("\n========== TOUR SUIVANT ==========\n");
 
@@ -212,21 +209,8 @@ public interface Game {
             }
             */
 
-            if (gameVersion.equals("2")) {
-                if (players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
-                    players.get(1).setSpecialPiece(true);
-                    timeBoard.setSpecialPieceAvailable(false);
-                    System.out.println("Le joueur 1 a gagné la tuile spéciale.");
-                }
-                if (players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
-                    players.get(2).setSpecialPiece(true);
-                    timeBoard.setSpecialPieceAvailable(false);
-                    System.out.println("Le joueur 2 a gagné la tuile spéciale.");
-                }
-            }
         }
         else {
-            int idPlayerPrior = timeBoard.turnOf();
             System.out.println("\n========== TOUR SUIVANT ==========\n");
 
             Game.status(null, players.get(1), players.get(2), pieceList, timeBoard, mode);
@@ -243,17 +227,18 @@ public interface Game {
                 Game.overtake(null, players, timeBoard, idPlayerPrior, mode);
             }
 
-            if (gameVersion.equals("2")) {
-                if (players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
-                    players.get(1).setSpecialPiece(true);
-                    timeBoard.setSpecialPieceAvailable(false);
-                    System.out.println("Le joueur 1 a gagné la tuile spéciale.");
-                }
-                if (players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
-                    players.get(2).setSpecialPiece(true);
-                    timeBoard.setSpecialPieceAvailable(false);
-                    System.out.println("Le joueur 2 a gagné la tuile spéciale.");
-                }
+        }
+
+        if (gameVersion.equals("2")) {
+            if (players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
+                players.get(1).setSpecialPiece(true);
+                timeBoard.setSpecialPieceAvailable(false);
+                System.out.println("Le joueur 1 a gagné la tuile spéciale.");
+            }
+            if (players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
+                players.get(2).setSpecialPiece(true);
+                timeBoard.setSpecialPieceAvailable(false);
+                System.out.println("Le joueur 2 a gagné la tuile spéciale.");
             }
         }
     }
@@ -472,7 +457,7 @@ public interface Game {
         }
         else {
             String str;
-            int idPiece = 0;
+            int idPiece;
             int x, y;
             ArrayList<Piece> playablePieces = pieceList.nextPieces();
 
