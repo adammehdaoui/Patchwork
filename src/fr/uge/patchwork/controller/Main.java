@@ -1,5 +1,6 @@
 package fr.uge.patchwork.controller;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ public class Main {
      * @throws ClassNotFoundException if the class is not found in controllers
      * @throws FileNotFoundException if the file is not found in controllers
      */
-    public static void main(String[] args) throws ClassNotFoundException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException, IOException, FontFormatException {
         Game.start();
     }
 
