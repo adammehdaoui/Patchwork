@@ -97,6 +97,8 @@ public interface Game {
             while (!timeBoard.endGame()) {
                 Game.progress(null, pieceSet, players, timeBoard, gameVersion, mode);
             }
+
+            Game.end(players, mode);
         }
 
         sc.close();

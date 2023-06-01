@@ -142,7 +142,6 @@ public class View {
                 i++;
             }
 
-
             graphics2D.drawString("O : ACHETER UNE PIÈCE" , width*5/6 - 50, height*11/20);
             graphics2D.drawString("N : PASSER LE TOUR", width*5/6 - 50, height*12/20);
         });
