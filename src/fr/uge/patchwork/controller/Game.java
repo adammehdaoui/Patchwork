@@ -42,7 +42,7 @@ public interface Game {
 
         /* Asking the user which version of the game he wants to play */
         Scanner sc = new Scanner(System.in);
-        System.out.println("Choisissez votre version de jeu (1 pour la version de base ou 2 pour la version complète)");
+        System.out.println("Choisissez votre version de jeu (1 pour la version de base, 2 pour la version complète ou 3 pour la version personnalisée)");
         String gameVersion = sc.nextLine();
 
         /* Initialization of the list of pieces depending on the version chosen */
@@ -384,7 +384,10 @@ public interface Game {
             int x, y;
             ArrayList<Piece> playablePieces = pieceList.nextPieces();
 
-            System.out.println(playablePieces);
+            //pas necessaire
+//            for (Piece playablePiece : playablePieces) {
+//                System.out.println(playablePiece);
+//            }
 
             /* Asking the player which piece they want to buy */
             ConsoleView.whichPiece();
@@ -443,7 +446,7 @@ public interface Game {
 
                 /* Moving the player and getting the number of buttons passed and then adding the buttons won */
                 timeBoard.movePlayer(players.get(idPlayerPrior), playablePieces.get(idPiece - 1).time());
-                pieceList.removePiece(idPiece - 1);
+                pieceList.removePiece(idPiece-1);
 
                 ConsoleView.playerMove(idPlayerPrior, playablePieces, idPiece);
             } else {

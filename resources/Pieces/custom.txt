@@ -1,0 +1,11 @@
+// this is the pattern you need to follow
+// 3 is the cost, 2 the time, 1 the number of button on the piece
+
+x o x
+x x x
+x o x
+3 2 1
+
+x x
+x o
+3 2 1

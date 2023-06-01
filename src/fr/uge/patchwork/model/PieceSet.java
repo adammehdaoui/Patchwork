@@ -28,30 +28,29 @@ public class PieceSet {
      */
     public void init(String gameVersion) throws IOException, IllegalArgumentException {
         /* Base game */
-        if(gameVersion.equals("1")){
-            /* Creation of a piece diagram */
-            var schema = new ArrayList<ArrayList<Boolean>>();
-            schema.add(new ArrayList<>(List.of(true, true)));
-            schema.add(new ArrayList<>(List.of(true, true)));
-
-            Piece piece1 = new Piece(schema, 3, 4, 1);
-            Piece piece2 = new Piece(schema, 2, 2, 0);
-
-            /* Creation of a table of 40 pieces (pieces 1 and 2 alternated) */
-            for (int i = 0; i < 20; i++) {
-                this.addPiece(piece1);
-                this.addPiece(piece2);
+        switch (gameVersion) {
+            case "1" -> {
+                /* Creation of the pieces of the basic game version */
+                var file = new PieceFactory(Path.of("Pieces/base.txt"));
+                file.read(this);
             }
-        }
-        /* Complete game */
-        else if(gameVersion.equals("2")){
-            /* Creation of the pieces of the complete game version */
-            var file = new PieceFactory(Path.of("Pieces/pieces.txt"));
-            file.read(this);
-        }
-        /* Invalid version */
-        else{
-            throw new IllegalArgumentException("Invalid game version");
+
+            /* Complete game */
+            case "2" -> {
+                /* Creation of the pieces of the complete game version */
+                var file = new PieceFactory(Path.of("Pieces/complet.txt"));
+                file.read(this);
+            }
+
+            /* Custom game */
+            case "3" -> {
+                /* Creation of the pieces of the custom game version */
+                var file = new PieceFactory(Path.of("Pieces/custom.txt"));
+                file.read(this);
+            }
+
+            /* Invalid version */
+            default -> throw new IllegalArgumentException("Invalid game version");
         }
 
         this.placeNeutral();
