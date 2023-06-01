@@ -338,6 +338,33 @@ public final class GUIView {
         });
     }
 
+    public static void endView(ApplicationContext context, int scorePlayer1, int scorePlayer2) throws IOException, FontFormatException {
+        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
+        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
+
+        clearView(context);
+
+        context.renderFrame(graphics2D -> {
+           graphics2D.setColor(Color.WHITE);
+           graphics2D.setFont(font.deriveFont(20f));
+
+           if(scorePlayer1 > scorePlayer2){
+               graphics2D.drawString("LE JOUEUR 1 A GAGNÉ "+scorePlayer1+" POINTS", width/3 + 50, height/2);
+           }
+           else if(scorePlayer1 < scorePlayer2){
+               graphics2D.drawString("LE JOUEUR 2 A GAGNÉ "+scorePlayer1+" POINTS", width/3 + 50, height/2);
+           }
+           else {
+               graphics2D.drawString("LES DEUX JOUEURS TERMINENT À ÉGALITÉ", width/3 + 50, height/2);
+           }
+
+        });
+    }
+
     public static BufferedImage fileToImage(String path, int w, int h) {
         BufferedImage img;
         try (var input = Files.newInputStream(Path.of(path))) {

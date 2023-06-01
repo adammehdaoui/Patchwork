@@ -1,6 +1,7 @@
 package fr.uge.patchwork.controller;
 
 import fr.uge.patchwork.model.*;
+import fr.uge.patchwork.view.ConsoleView;
 import fr.uge.patchwork.view.GUIView;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
@@ -63,7 +64,7 @@ public interface Game {
             System.exit(0);
         }
 
-        System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ". Système graphique choisi " + mode + "\n\n");
+        System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ". Système graphique choisi " + mode + ".\n\n");
 
         if(mode == GameMode.GUI) {
             Application.run(Color.BLACK, context -> {
@@ -88,9 +89,13 @@ public interface Game {
                         throw new RuntimeException(e);
                     }
                 }
-            });
 
-            Game.end(players, mode);
+                try {
+                    Game.end(context, players, mode);
+                } catch (IOException | FontFormatException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
         else {
             /* Starting game loop */
@@ -98,12 +103,10 @@ public interface Game {
                 Game.progress(null, pieceSet, players, timeBoard, gameVersion, mode);
             }
 
-            Game.end(players, mode);
+            Game.end(null, players, mode);
         }
 
         sc.close();
-
-        System.out.println("FIN DU JEU.");
     }
 
 
@@ -117,44 +120,21 @@ public interface Game {
     static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard, GameMode mode) throws IOException, FontFormatException {
         if(mode == GameMode.GUI) {
-            /* Display the status of the game */
-            System.out.println(player1);
-            System.out.println(timeBoard);
-            System.out.println(player2);
-
             /* Retrieving the ID of the player who must play */
             int idPlayerPrior = timeBoard.turnOf();
 
             /* Displaying the player who must play */
             GUIView.turnView(context, idPlayerPrior);
-
-            System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
-
-            /* Displaying playable pieces */
-            ArrayList<Piece> playablePieces = pieceList.nextPieces();
-            System.out.println("Les pièces jouables sont : \n");
-            for (int i = 0; i < 3; i++) {
-                System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
-            }
         }
         else {
-            /* Display the status of the game */
-            System.out.println(player1);
-            System.out.println(timeBoard);
-            System.out.println(player2);
-
             /* Retrieving the ID of the player who must play */
             int idPlayerPrior = timeBoard.turnOf();
 
-            /* Displaying the player who must play */
-            System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
-
-            /* Displaying playable pieces */
+            /* Getting playable pieces */
             ArrayList<Piece> playablePieces = pieceList.nextPieces();
-            System.out.println("Les pièces jouables sont : \n");
-            for (int i = 0; i < 3; i++) {
-                System.out.println("Pièce " + i + " : \n" + playablePieces.get(i));
-            }
+
+            /* Displaying the player who must play */
+            ConsoleView.statusView(player1, player2, timeBoard, idPlayerPrior, playablePieces);
         }
     }
 
@@ -172,40 +152,30 @@ public interface Game {
 
         if(mode == GameMode.GUI) {
             Event event;
-            System.out.println("\n========== TOUR SUIVANT ==========\n");
 
             Game.status(context, players.get(1), players.get(2), pieceList, timeBoard, mode);
 
             /* Asking the player if they want to buy a piece */
-            System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
-
             event = context.pollOrWaitEvent(30000);
             context.pollOrWaitEvent(5000);
 
             if (event == null || !event.getAction().equals(Event.Action.KEY_PRESSED)) {
-                System.out.println("Aucune action effectuée. On passe le tour.");
                 Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
             } else {
                 if (event.getKey().equals(KeyboardKey.O)) {
                     Game.buy(context, pieceList, players, timeBoard, idPlayerPrior, mode);
-                    System.out.println(event.getKey());
                 } else if (event.getKey().equals(KeyboardKey.N)) {
                     Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
-                    System.out.println(event.getKey());
                 } else {
-                    System.out.println("Aucune action effectuée. On passe le tour.");
                     Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
-                    System.out.println(event.getKey());
                 }
             }
         }
         else {
-            System.out.println("\n========== TOUR SUIVANT ==========\n");
-
             Game.status(null, players.get(1), players.get(2), pieceList, timeBoard, mode);
 
             /* Asking the player if they want to buy a piece */
-            System.out.println("Voulez-vous acheter une pièce ? (oui/non)");
+            ConsoleView.askingForPiece();
 
             Scanner sc = new Scanner(System.in);
             String str = sc.nextLine();
@@ -215,7 +185,6 @@ public interface Game {
             } else {
                 Game.overtake(null, players, timeBoard, idPlayerPrior, mode);
             }
-
         }
 
         if (gameVersion.equals("2")) {
@@ -258,8 +227,6 @@ public interface Game {
             GUIView.playablePiecesView(context, playablePieces, playablePiecesBooleans);
 
             /* Asking the player which piece they want to buy */
-            System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
-
             positions.add((int) context.getScreenInfo().getWidth() * 5 / 13);
 
             for (ArrayList<ArrayList<Boolean>> playablePiece : playablePiecesBooleans) {
@@ -291,21 +258,15 @@ public interface Game {
             px = (int) event.getLocation().getX();
 
             if (px < positions.get(1)) {
-                System.out.println("Pièce 1");
                 idPiece = 1;
             } else if (px >= positions.get(1) && px < positions.get(2)) {
-                System.out.println("Pièce 2");
                 idPiece = 2;
             } else if (px >= positions.get(2)) {
-                System.out.println("Pièce 3");
                 idPiece = 3;
             }
 
             while (playablePieces.get(idPiece - 1).cost() > players.get(idPlayerPrior).getButtons()) {
                 /* Asking the player if he wants to buy another piece */
-                System.out.println("Vous n'avez pas assez de boutons pour acheter cette pièce");
-                System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
-
                 event = context.pollOrWaitEvent(30000);
                 context.pollOrWaitEvent(5000);
 
@@ -317,27 +278,19 @@ public interface Game {
                 px = (int) event.getLocation().getX();
 
                 if (px < positions.get(1)) {
-                    System.out.println("Pièce 1");
                     idPiece = 1;
                 } else if (px >= positions.get(1) && px < positions.get(2)) {
-                    System.out.println("Pièce 2");
                     idPiece = 2;
                 } else if (px >= positions.get(2)) {
-                    System.out.println("Pièce 3");
                     idPiece = 3;
                 }
             }
 
             /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
-            System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
-
             GUIView.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(),
                     players.get(2).getBoard());
             GUIView.turnView(context, idPlayerPrior);
             GUIView.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
-
-            System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
-            /* str = sc.nextLine(); */
 
             event = context.pollOrWaitEvent(30000);
             context.pollOrWaitEvent(5000);
@@ -355,20 +308,13 @@ public interface Game {
                     schema = playablePieces.get(idPiece - 1).schema();
                     GUIView.currentPieceView(context, schema);
                     GUIView.turnView(context, idPlayerPrior);
-                } else {
-                    System.out.println("Vous n'avez pas choisi une action valide");
                 }
-
-                System.out.println("Votre pièce courante : \n" + playablePieces.get(idPiece - 1));
-                System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
 
                 event = context.pollOrWaitEvent(30000);
                 context.pollOrWaitEvent(5000);
             }
 
             /* Asking the user where he wants to place the piece on his board */
-            System.out.println("Veuillez choisir une position pour votre pièce ? (ligne colonne)");
-
             schema = playablePieces.get(idPiece - 1).schema();
 
             GUIView.validatedPieceView(context, schema);
@@ -377,12 +323,6 @@ public interface Game {
             event = context.pollOrWaitEvent(30000);
             context.pollOrWaitEvent(5000);
 
-                /* Version dans la console
-                x = sc.nextInt();
-                y = sc.nextInt();
-                sc.nextLine();
-                 */
-
             if (idPlayerPrior == 1) {
                 while (event == null || event.getLocation() == null
                         || event.getLocation().getX() < 65
@@ -390,7 +330,6 @@ public interface Game {
                         || event.getLocation().getY() < 0
                         || event.getLocation().getY() > 9 * 32) {
 
-                    System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                     event = context.pollOrWaitEvent(30000);
                     context.pollOrWaitEvent(3000);
                 }
@@ -405,7 +344,6 @@ public interface Game {
                         || event.getLocation().getY() < 0
                         || event.getLocation().getY() > 9 * 32) {
 
-                    System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                     event = context.pollOrWaitEvent(30000);
                     context.pollOrWaitEvent(3000);
                 }
@@ -434,14 +372,9 @@ public interface Game {
                 timeBoard.movePlayer(players.get(idPlayerPrior), playablePieces.get(idPiece - 1).time());
                 pieceList.removePiece(idPiece - 1);
 
-                System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
-                        " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
-
                 GUIView.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(),
                         players.get(2).getBoard());
             } else {
-                System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
-
                 overtake(context, players, timeBoard, idPlayerPrior, mode);
             }
         }
@@ -454,21 +387,19 @@ public interface Game {
             System.out.println(playablePieces);
 
             /* Asking the player which piece they want to buy */
-            System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
+            ConsoleView.whichPiece();
             Scanner sc = new Scanner(System.in);
             idPiece = sc.nextInt();
 
             while (playablePieces.get(idPiece - 1).cost() > players.get(idPlayerPrior).getButtons()) {
                 /* Asking the player if he wants to buy another piece */
-                System.out.println("Vous n'avez pas assez de boutons pour acheter cette pièce");
-                System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
+                ConsoleView.cantBuyPiece();
                 idPiece = sc.nextInt();
             }
 
             /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
-            System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
+            ConsoleView.actionsOnPiece(playablePieces, idPiece);
 
-            System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
             str = sc.nextLine();
 
             while(!str.equals("validate")) {
@@ -479,17 +410,16 @@ public interface Game {
                     /* Replacement of the piece with the invert piece */
                     playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
                 } else {
-                    System.out.println("Vous n'avez pas choisi une action valide");
+                    ConsoleView.notValid();
                 }
 
-                System.out.println("Votre pièce courante : \n" + playablePieces.get(idPiece - 1));
-                System.out.println("Que voulez-vous en faire ? (rotate/invert/validate)");
+                ConsoleView.actionsOnPiece(playablePieces, idPiece);
 
                 str = sc.nextLine();
             }
 
             /* Asking the user where he wants to place the piece on his board */
-            System.out.println("Veuillez choisir une position pour votre pièce ? (ligne colonne)");
+            ConsoleView.positions();
 
             x = sc.nextInt();
             y = sc.nextInt();
@@ -515,10 +445,9 @@ public interface Game {
                 timeBoard.movePlayer(players.get(idPlayerPrior), playablePieces.get(idPiece - 1).time());
                 pieceList.removePiece(idPiece - 1);
 
-                System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
-                        " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
+                ConsoleView.playerMove(idPlayerPrior, playablePieces, idPiece);
             } else {
-                System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
+                ConsoleView.cantPlace();
 
                 overtake(null, players, timeBoard, idPlayerPrior, mode);
             }
@@ -539,13 +468,8 @@ public interface Game {
 
             if (timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0) {
                 distance = 1;
-
-                System.out.println("Le joueur " + idPlayerPrior + " était en tête, il a donc avancé de " + distance + " case.");
             } else {
                 distance = timeBoard.distance() + 1;
-
-                System.out.println("Le joueur " + idPlayerPrior + " a décidé de passer son tour. Il a donc dépassé son adversaire en parcourant "
-                        + distance + " cases.");
             }
 
             Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
@@ -575,13 +499,10 @@ public interface Game {
 
             if (timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0) {
                 distance = 1;
-
-                System.out.println("Le joueur " + idPlayerPrior + " était en tête, il a donc avancé de " + distance + " case.");
+                ConsoleView.wasLeader(idPlayerPrior, distance);
             } else {
                 distance = timeBoard.distance() + 1;
-
-                System.out.println("Le joueur " + idPlayerPrior + " a décidé de passer son tour. Il a donc dépassé son adversaire en parcourant "
-                        + distance + " cases.");
+                ConsoleView.wasBehind(idPlayerPrior, distance);
             }
 
             Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
@@ -623,15 +544,11 @@ public interface Game {
             /* For each button cells the player crossed, he earns his number of buttons in patches he has on his board*/
             for (int i = 0; i < buttonsCrossed; i++) {
                 players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
-                System.out.println("Le joueur " + idPlayerPrior + " a gagné " + players.get(idPlayerPrior).buttonsToEarn()
-                        + " bouton(s) en passant sur une case bouton.");
             }
 
             /* If the player has passed patches, we ask him where he wants to place them */
             for (int i = 0; i < patchesEarned; i++) {
                 GUIView.winPatchView(context);
-                System.out.println("Vous avez gagné un patch spécial 1x1 en passant sur une case dédiée ! Veuillez choisir "
-                        + "où la placer (ligne colonne).");
 
                 Event event = context.pollOrWaitEvent(30000);
                 context.pollOrWaitEvent(3000);
@@ -643,7 +560,6 @@ public interface Game {
                             || event.getLocation().getY() < 0
                             || event.getLocation().getY() > 9 * 32) {
 
-                        System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                         event = context.pollOrWaitEvent(30000);
                         context.pollOrWaitEvent(3000);
                     }
@@ -657,7 +573,6 @@ public interface Game {
                             || event.getLocation().getY() < 0
                             || event.getLocation().getY() > 9 * 32) {
 
-                        System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                         event = context.pollOrWaitEvent(30000);
                         context.pollOrWaitEvent(3000);
                     }
@@ -676,14 +591,11 @@ public interface Game {
                     event = context.pollOrWaitEvent(30000);
                     context.pollOrWaitEvent(3000);
 
-                    System.out.println("Vous ne pouvez pas placer la pièce à ces positions, veuillez choisir d'autres coordonnées (ligne colonne)");
-
                     if (idPlayerPrior == 1) {
                         while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
                                 || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
                                 || event.getLocation().getY() > 9 * 32) {
 
-                            System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                             event = context.pollOrWaitEvent(30000);
                             context.pollOrWaitEvent(3000);
                         }
@@ -696,7 +608,6 @@ public interface Game {
                                 || event.getLocation().getX() > context.getScreenInfo().getWidth() * 1 / 3 + 9 * 32
                                 || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
 
-                            System.out.println("Vous n'avez pas choisi de position, veuillez réessayer (ligne colonne)");
                             event = context.pollOrWaitEvent(30000);
                             context.pollOrWaitEvent(3000);
                         }
@@ -714,16 +625,14 @@ public interface Game {
             /* For each button cells the player crossed, he earns his number of buttons in patches he has on his board*/
             for (int i = 0; i < buttonsCrossed; i++) {
                 players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
-                System.out.println("Le joueur " + idPlayerPrior + " a gagné " + players.get(idPlayerPrior).buttonsToEarn()
-                        + " bouton(s) en passant sur une case bouton.");
+                ConsoleView.crossButton(idPlayerPrior, players);
             }
 
             /* If the player has passed patches, we ask him where he wants to place them */
             for (int i = 0; i < patchesEarned; i++) {
                 boolean validIntegers = false;
 
-                System.out.println("Vous avez gagné un patch spécial 1x1 en passant sur une case dédiée ! Veuillez choisir "
-                        + "où la placer (ligne colonne).");
+                ConsoleView.crossPatch();
 
                 Scanner sc = new Scanner(System.in);
 
@@ -734,8 +643,7 @@ public interface Game {
                         sc.nextLine();
                         validIntegers = true;
                     } catch (InputMismatchException e){
-                        System.out.println("Les entiers entrés ne sont pas valides, veuillez essayer à nouveau " +
-                                "(ligne colonne)");
+                        ConsoleView.notValidPositions();
                         sc.nextLine();
                     }
                 }
@@ -747,8 +655,7 @@ public interface Game {
                 var square = new Piece(schema, 0, 0, 0);
 
                 while (!players.get(idPlayerPrior).buyPiece(square, x, y)) {
-                    System.out.println("Vous ne pouvez pas placer la pièce à ces positions, veuillez choisir d'autres " +
-                            "coordonnées (ligne colonne)");
+                    ConsoleView.cantPlacePatch();
                     x = sc.nextInt();
                     y = sc.nextInt();
                 }
@@ -760,34 +667,15 @@ public interface Game {
      * Controller method to display the winner of the game.
      * @param players players Map by ID
      */
-    static void end(Map<Integer, Player> players, GameMode mode) throws IOException, FontFormatException {
-        if(mode == GameMode.GUI) {
-            int scorePlayer1 = players.get(1).score();
-            int scorePlayer2 = players.get(2).score();
+    static void end(ApplicationContext context, Map<Integer, Player> players, GameMode mode) throws IOException, FontFormatException {
+        int scorePlayer1 = players.get(1).score();
+        int scorePlayer2 = players.get(2).score();
 
-            if (scorePlayer1 > scorePlayer2) {
-                System.out.println("\nLe joueur 1 a gagné avec " + scorePlayer1 + " points contre " + scorePlayer2 +
-                        " points.");
-            } else if (scorePlayer1 < scorePlayer2) {
-                System.out.println("\nLe joueur 2 a gagné avec " + scorePlayer2 + " points contre " + scorePlayer1 +
-                        " points.");
-            } else {
-                System.out.println("\nÉgalité parfaite entre les deux joueurs avec " + scorePlayer1 + " points.");
-            }
+        if(mode == GameMode.GUI) {
+            GUIView.endView(context, scorePlayer1, scorePlayer2);
         }
         else {
-            int scorePlayer1 = players.get(1).score();
-            int scorePlayer2 = players.get(2).score();
-
-            if (scorePlayer1 > scorePlayer2) {
-                System.out.println("\nLe joueur 1 a gagné avec " + scorePlayer1 + " points contre " + scorePlayer2 +
-                        " points.");
-            } else if (scorePlayer1 < scorePlayer2) {
-                System.out.println("\nLe joueur 2 a gagné avec " + scorePlayer2 + " points contre " + scorePlayer1 +
-                        " points.");
-            } else {
-                System.out.println("\nÉgalité parfaite entre les deux joueurs avec " + scorePlayer1 + " points.");
-            }
+            ConsoleView.endView(scorePlayer1, scorePlayer2);
         }
     }
 
