@@ -1,7 +1,7 @@
 package fr.uge.patchwork.controller;
 
 import fr.uge.patchwork.model.*;
-import fr.uge.patchwork.view.View;
+import fr.uge.patchwork.view.GUIView;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 
@@ -68,7 +68,7 @@ public interface Game {
         if(mode == GameMode.GUI) {
             Application.run(Color.BLACK, context -> {
                 try {
-                    View.statusView(context, timeBoard, players.get(1), players.get(2), playerBoard1, playerBoard2);
+                    GUIView.statusView(context, timeBoard, players.get(1), players.get(2), playerBoard1, playerBoard2);
                 } catch (IOException | FontFormatException e) {
                     throw new RuntimeException(e);
                 }
@@ -82,8 +82,8 @@ public interface Game {
                     }
 
                     try {
-                        View.statusView(context, timeBoard, players.get(1), players.get(2), playerBoard1, playerBoard2);
-                        View.turnView(context, timeBoard.turnOf());
+                        GUIView.statusView(context, timeBoard, players.get(1), players.get(2), playerBoard1, playerBoard2);
+                        GUIView.turnView(context, timeBoard.turnOf());
                     } catch (IOException | FontFormatException e) {
                         throw new RuntimeException(e);
                     }
@@ -126,7 +126,7 @@ public interface Game {
             int idPlayerPrior = timeBoard.turnOf();
 
             /* Displaying the player who must play */
-            View.turnView(context, idPlayerPrior);
+            GUIView.turnView(context, idPlayerPrior);
 
             System.out.println("C'est au tour du joueur " + idPlayerPrior + "\n");
 
@@ -166,7 +166,8 @@ public interface Game {
      * @param gameVersion version of the game
      */
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
-                            TimeBoard timeBoard, String gameVersion, GameMode mode) throws IOException, FontFormatException, InterruptedException {
+                            TimeBoard timeBoard, String gameVersion, GameMode mode) throws IOException,
+            FontFormatException, InterruptedException {
         int idPlayerPrior = timeBoard.turnOf();
 
         if(mode == GameMode.GUI) {
@@ -197,20 +198,6 @@ public interface Game {
                     System.out.println(event.getKey());
                 }
             }
-
-            /*
-            Version dans la console
-            Scanner sc = new Scanner(System.in);
-
-            String str = sc.nextLine();
-
-            if (str.equals("oui")) {
-                Game.buy(pieceList, players, timeBoard, idPlayerPrior);
-            } else {
-                Game.overtake(players, timeBoard, idPlayerPrior);
-            }
-            */
-
         }
         else {
             System.out.println("\n========== TOUR SUIVANT ==========\n");
@@ -268,7 +255,7 @@ public interface Game {
                 playablePiecesBooleans.add(playablePiece.schema());
             }
 
-            View.playablePiecesView(context, playablePieces, playablePiecesBooleans);
+            GUIView.playablePiecesView(context, playablePieces, playablePiecesBooleans);
 
             /* Asking the player which piece they want to buy */
             System.out.println("Quelle pièce voulez-vous acheter ? (1, 2, 3)");
@@ -344,9 +331,10 @@ public interface Game {
             /* Display the piece he wants to buy and ask him if he wants to rotate, invert or validate */
             System.out.println("Vous avez choisi la pièce : \n" + playablePieces.get(idPiece - 1));
 
-            View.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(), players.get(2).getBoard());
-            View.turnView(context, idPlayerPrior);
-            View.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
+            GUIView.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(),
+                    players.get(2).getBoard());
+            GUIView.turnView(context, idPlayerPrior);
+            GUIView.currentPieceView(context, playablePiecesBooleans.get(idPiece - 1));
 
             System.out.println("Que voulez-vous en faire ? (actions : rotate/invert/validate)");
             /* str = sc.nextLine(); */
@@ -359,14 +347,14 @@ public interface Game {
                     /* Replacement of the piece by the rotate piece */
                     playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
                     schema = playablePieces.get(idPiece - 1).schema();
-                    View.currentPieceView(context, schema);
-                    View.turnView(context, idPlayerPrior);
+                    GUIView.currentPieceView(context, schema);
+                    GUIView.turnView(context, idPlayerPrior);
                 } else if (event.getKey() != null && event.getKey().equals(KeyboardKey.I)) {
                     /* Replacement of the piece with the invert piece */
                     playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
                     schema = playablePieces.get(idPiece - 1).schema();
-                    View.currentPieceView(context, schema);
-                    View.turnView(context, idPlayerPrior);
+                    GUIView.currentPieceView(context, schema);
+                    GUIView.turnView(context, idPlayerPrior);
                 } else {
                     System.out.println("Vous n'avez pas choisi une action valide");
                 }
@@ -376,7 +364,6 @@ public interface Game {
 
                 event = context.pollOrWaitEvent(30000);
                 context.pollOrWaitEvent(5000);
-                /* str = sc.nextLine(); */
             }
 
             /* Asking the user where he wants to place the piece on his board */
@@ -384,8 +371,8 @@ public interface Game {
 
             schema = playablePieces.get(idPiece - 1).schema();
 
-            View.validatedPieceView(context, schema);
-            View.turnView(context, idPlayerPrior);
+            GUIView.validatedPieceView(context, schema);
+            GUIView.turnView(context, idPlayerPrior);
 
             event = context.pollOrWaitEvent(30000);
             context.pollOrWaitEvent(5000);
@@ -450,7 +437,8 @@ public interface Game {
                 System.out.println("Le joueur " + idPlayerPrior + " a acheté une pièce et l'a placé sur son plateau." +
                         " Il a avancé de " + playablePieces.get(idPiece - 1).time() + " cases.");
 
-                View.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(), players.get(2).getBoard());
+                GUIView.statusView(context, timeBoard, players.get(1), players.get(2), players.get(1).getBoard(),
+                        players.get(2).getBoard());
             } else {
                 System.out.println("Vous ne pouvez pas placer cette pièce à cet endroit. Vous passez donc votre tour.");
 
@@ -641,7 +629,7 @@ public interface Game {
 
             /* If the player has passed patches, we ask him where he wants to place them */
             for (int i = 0; i < patchesEarned; i++) {
-                View.winPatchView(context);
+                GUIView.winPatchView(context);
                 System.out.println("Vous avez gagné un patch spécial 1x1 en passant sur une case dédiée ! Veuillez choisir "
                         + "où la placer (ligne colonne).");
 
@@ -677,20 +665,6 @@ public interface Game {
                     x = (int) (event.getLocation().getY() / 32);
                     y = (int) (event.getLocation().getX() - (context.getScreenInfo().getWidth() / 1.3)) / 32;
                 }
-
-                /*
-                Version en ligne de commande
-                while(!validIntegers){
-                    try {
-                        x = sc.nextInt();
-                        y = sc.nextInt();
-                        sc.nextLine();
-                        validIntegers = true;
-                    } catch (InputMismatchException e){
-                        System.out.println("Les entiers entrés ne sont pas valides, veuillez essayer à nouveau (ligne colonne)");
-                        sc.nextLine();
-                    }
-                } */
 
                 var schema = new ArrayList<ArrayList<Boolean>>();
                 var row = new ArrayList<Boolean>();

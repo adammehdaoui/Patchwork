@@ -16,10 +16,10 @@ import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
 import fr.umlv.zen5.*;
 
-public class View {
+public final class GUIView {
 
     public static void statusView(ApplicationContext context, TimeBoard timeBoard, Player p1, Player p2,
-                                  PlayerBoard player1Board, PlayerBoard player2Board) throws IOException,
+                           PlayerBoard player1Board, PlayerBoard player2Board) throws IOException,
                                   FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
         BufferedImage outlineSquare = fileToImage("resources/Board/outlineSquare.png", 30, 30);
@@ -34,14 +34,14 @@ public class View {
         BufferedImage tagPlayer2 = fileToImage("resources/Player/tagPlayer2.png", 45, 45);
 
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
         Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
         context.renderFrame(graphics2D -> {
-            View.clearView(context);
+            clearView(context);
             graphics2D.setColor(Color.WHITE);
             graphics2D.setFont(font.deriveFont(20f));
 
@@ -147,11 +147,13 @@ public class View {
         });
     }
 
-    public static void playablePiecesView(ApplicationContext context, ArrayList<Piece> playablePieces, ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBoolean) throws IOException, FontFormatException {
+    public static void playablePiecesView(ApplicationContext context, ArrayList<Piece> playablePieces,
+                                   ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBoolean)
+            throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
 
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
         Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
@@ -200,9 +202,10 @@ public class View {
 
         });
     }
+
     public static void turnView(ApplicationContext context, int idPlayerPrior) throws IOException, FontFormatException {
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
         Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
@@ -223,7 +226,7 @@ public class View {
 
     public static void winPatchView(ApplicationContext context) throws IOException, FontFormatException {
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
         Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
@@ -237,11 +240,12 @@ public class View {
         });
     }
 
-    public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) throws IOException, FontFormatException {
+    public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
+            throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
 
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
         Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
@@ -282,11 +286,12 @@ public class View {
         });
     }
 
-    public static void validatedPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece) throws IOException, FontFormatException {
+    public static void validatedPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
+            throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("resources/Board/filledSquare.png", 30, 30);
 
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = View.class.getClassLoader().getResourceAsStream(path.toString());
+        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
         Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
