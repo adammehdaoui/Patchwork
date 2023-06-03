@@ -293,7 +293,7 @@ public class TimeBoard {
         return sb.toString();
     }
 
-    public Cell[][] formSpiralMatrix()
+    /*public Cell[][] formSpiralMatrix()
     {
         Cell[][] mat = new Cell[8][8];
 
@@ -348,6 +348,6 @@ public class TimeBoard {
             left++;
         }
         return mat;
-    }
+    }*/
 
 }

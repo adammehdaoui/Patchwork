@@ -23,6 +23,9 @@ public interface Game {
 
     /**
      * Controller method to start the game loop with the necessary parameters.
+     * @throws IOException if there is an error while reading the file
+     * @throws FontFormatException if there is an error while loading the font
+     * @throws InterruptedException if there is an error while loading the font
      */
     static void start() throws IOException, FontFormatException, InterruptedException {
         /* Creating the game with the necessary parameters */
@@ -114,10 +117,15 @@ public interface Game {
 
     /**
      * Controller method to display the status of the game.
+     * @param context zen5 context
      * @param player1 player 1
      * @param player2 player 2
      * @param pieceList list of pieces
      * @param timeBoard game board
+     * @param mode game mode
+     * @throws IOException if an I/O error occurs
+     * @throws FontFormatException if the font is not valid
+     * @throws InputMismatchException if the input is not valid
      */
     static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard, GameMode mode) throws IOException, FontFormatException {
@@ -137,10 +145,16 @@ public interface Game {
 
     /**
      * Controller method to manage the game loop.
+     * @param context zen5 context
      * @param pieceList list of pieces
      * @param players Map of players by ID
      * @param timeBoard game board
      * @param gameVersion version of the game
+     * @param mode game mode
+     * @throws IOException if an I/O error occurs
+     * @throws FontFormatException if the font is not valid
+     * @throws InterruptedException if the thread is interrupted
+     * @throws InputMismatchException if the input is not valid
      */
     static void progress(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, String gameVersion, GameMode mode) throws IOException,
@@ -200,10 +214,15 @@ public interface Game {
 
     /**
      * Controller method to manage the case where the player wants to buy a piece.
+     * @param context       zen5 context
      * @param pieceList     list of pieces
      * @param players       Map of players by ID
      * @param timeBoard     game board
      * @param idPlayerPrior ID of the player who must play
+     * @param mode          game mode
+     * @throws IOException         if an I/O error occurs
+     * @throws FontFormatException if the font format is not supported
+     * @throws InterruptedException if the thread is interrupted
      */
     static void buy(ApplicationContext context, PieceSet pieceList, Map<Integer, Player> players,
                             TimeBoard timeBoard, int idPlayerPrior, GameMode mode) throws IOException,
@@ -451,9 +470,13 @@ public interface Game {
 
     /**
      * Controller method to manage the case where the player wants to pass.
+     * @param context       zen5 context
      * @param players       players Map by ID
      * @param timeBoard     game board
      * @param idPlayerPrior ID of the player who must play
+     * @param mode          game mode
+     * @throws IOException          if the font file is not found
+     * @throws FontFormatException  if the font is not valid
      */
     static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard,
                          int idPlayerPrior, GameMode mode) throws IOException, FontFormatException {
@@ -525,10 +548,14 @@ public interface Game {
 
     /**
      * Controller method to manage the case where the player is rewarded with patches.
+     * @param context zen5 context
      * @param players players Map by ID
      * @param buttonsCrossed number of buttons crossed
      * @param patchesEarned number of patches earned
      * @param idPlayerPrior ID of the player who must play
+     * @param mode game mode
+     * @throws IOException          if the font file is not found
+     * @throws FontFormatException  if the font is not valid
      */
     static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned,
                        int idPlayerPrior, GameMode mode) throws IOException, FontFormatException {
@@ -660,9 +687,14 @@ public interface Game {
 
     /**
      * Controller method to display the winner of the game.
+     * @param context zen5 context
      * @param players players Map by ID
+     * @param mode game mode
+     * @throws IOException if the file is not found*
+     * @throws FontFormatException if the font is not valid
      */
-    static void end(ApplicationContext context, Map<Integer, Player> players, GameMode mode) throws IOException, FontFormatException {
+    static void end(ApplicationContext context, Map<Integer, Player> players, GameMode mode) throws IOException,
+            FontFormatException {
         int scorePlayer1 = players.get(1).score();
         int scorePlayer2 = players.get(2).score();
 

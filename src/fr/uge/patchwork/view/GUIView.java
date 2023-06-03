@@ -3,12 +3,10 @@ package fr.uge.patchwork.view;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import fr.uge.patchwork.model.Piece;
 import fr.uge.patchwork.model.Player;
 import fr.uge.patchwork.model.PlayerBoard;
@@ -16,8 +14,22 @@ import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
 import fr.umlv.zen5.*;
 
+/**
+ * Class dedicated to the graphic representation of the game.
+ */
 public final class GUIView {
 
+    /**
+     * Method that returns a BufferedImage from a file.
+     * @param context context of the game
+     * @param timeBoard time board of the game
+     * @param p1 player 1
+     * @param p2 player 2
+     * @param player1Board player 1 board
+     * @param player2Board player 2 board
+     * @throws IOException if there is an error while reading the file
+     * @throws FontFormatException if there is an error while loading the font
+     */
     public static void statusView(ApplicationContext context, TimeBoard timeBoard, Player p1, Player p2,
                            PlayerBoard player1Board, PlayerBoard player2Board) throws IOException,
                                   FontFormatException {
@@ -147,6 +159,14 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     * @param playablePieces the list of the playable pieces
+     * @param playablePiecesBoolean the list of the playable pieces in boolean
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
     public static void playablePiecesView(ApplicationContext context, ArrayList<Piece> playablePieces,
                                    ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBoolean)
             throws IOException, FontFormatException {
@@ -203,6 +223,13 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     * @param idPlayerPrior the id of the player who has the priority
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
     public static void turnView(ApplicationContext context, int idPlayerPrior) throws IOException, FontFormatException {
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
         InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
@@ -224,6 +251,12 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
     public static void winPatchView(ApplicationContext context) throws IOException, FontFormatException {
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
         InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
@@ -240,6 +273,13 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     * @param currentPiece the current piece of the player
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
     public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
             throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
@@ -286,6 +326,13 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     * @param currentPiece the current piece of the player
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
     public static void validatedPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
             throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
@@ -331,6 +378,10 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     */
     public static void clearView(ApplicationContext context) {
         context.renderFrame(graphics2D -> {
             graphics2D.setColor(Color.BLACK);
@@ -338,6 +389,14 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param context the context of the game
+     * @param scorePlayer1 the score of the player 1
+     * @param scorePlayer2 the score of the player 2
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
     public static void endView(ApplicationContext context, int scorePlayer1, int scorePlayer2) throws IOException, FontFormatException {
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
         InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
@@ -365,6 +424,13 @@ public final class GUIView {
         });
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param path the path of the image
+     * @param w the width of the image
+     * @param h the height of the image
+     * @return the image object
+     */
     public static BufferedImage fileToImage(String path, int w, int h) {
     	BufferedImage img;
     	
@@ -377,6 +443,13 @@ public final class GUIView {
     	return img;
     }
 
+    /**
+     * Display the view of the game when the player has to choose a piece to buy
+     * @param src the image object
+     * @param w the width of the image
+     * @param h the height of the image
+     * @return the image object
+     */
     public static BufferedImage scale(BufferedImage src, int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         int x, y;
