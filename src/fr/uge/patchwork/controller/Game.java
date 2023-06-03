@@ -77,7 +77,7 @@ public interface Game {
                 }
 
                 /* Starting game loop */
-                while (!timeBoard.endGame()) {
+                while (timeBoard.endGame()) {
                     try {
                         Game.progress(context, pieceSet, players, timeBoard, gameVersion, mode);
                     } catch (IOException | FontFormatException | InterruptedException e) {
@@ -101,7 +101,7 @@ public interface Game {
         }
         /* Starting game loop on console */
         else {
-            while (!timeBoard.endGame()) {
+            while (timeBoard.endGame()) {
                 Game.progress(null, pieceSet, players, timeBoard, gameVersion, mode);
             }
 

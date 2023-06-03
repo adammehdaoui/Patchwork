@@ -353,10 +353,10 @@ public final class GUIView {
            graphics2D.setFont(font.deriveFont(20f));
 
            if(scorePlayer1 > scorePlayer2){
-               graphics2D.drawString("LE JOUEUR 1 A GAGNÉ "+scorePlayer1+" POINTS", width/3 + 50, height/2);
+               graphics2D.drawString("LE JOUEUR 1 A GAGNÉ AVEC "+scorePlayer1+" POINTS", width/3 + 30, height/2);
            }
            else if(scorePlayer1 < scorePlayer2){
-               graphics2D.drawString("LE JOUEUR 2 A GAGNÉ "+scorePlayer1+" POINTS", width/3 + 50, height/2);
+               graphics2D.drawString("LE JOUEUR 2 A GAGNÉ AVEC "+scorePlayer1+" POINTS", width/3 + 30, height/2);
            }
            else {
                graphics2D.drawString("LES DEUX JOUEURS TERMINENT À ÉGALITÉ", width/3 + 50, height/2);

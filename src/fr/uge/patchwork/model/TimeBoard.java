@@ -212,7 +212,7 @@ public class TimeBoard {
      * @return true if the two players are on the last cell
      */
     public boolean endGame(){
-        return cells.get(nbCases - 1).player1() != null && cells.get(nbCases - 1).player2() != null;
+        return cells.get(nbCases - 1).player1() == null || cells.get(nbCases - 1).player2() == null;
     }
 
     /**
