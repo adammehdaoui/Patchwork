@@ -54,6 +54,7 @@ public interface Game {
         String input = sc.nextLine();
         GameMode mode;
 
+        /* GameMode selection */
         if(input.equals("1")){
             mode = GameMode.GUI;
         } else if(input.equals("2")){
@@ -66,6 +67,7 @@ public interface Game {
 
         System.out.print("\nLANCEMENT DU JEU EN VERSION " + gameVersion + ". Système graphique choisi " + mode + ".\n\n");
 
+        /* Starting the game loop with window */
         if(mode == GameMode.GUI) {
             Application.run(Color.BLACK, context -> {
                 try {
@@ -97,8 +99,8 @@ public interface Game {
                 }
             });
         }
+        /* Starting game loop on console */
         else {
-            /* Starting game loop */
             while (!timeBoard.endGame()) {
                 Game.progress(null, pieceSet, players, timeBoard, gameVersion, mode);
             }
@@ -119,20 +121,15 @@ public interface Game {
      */
     static void status(ApplicationContext context, Player player1, Player player2, PieceSet pieceList,
                               TimeBoard timeBoard, GameMode mode) throws IOException, FontFormatException {
-        if(mode == GameMode.GUI) {
-            /* Retrieving the ID of the player who must play */
-            int idPlayerPrior = timeBoard.turnOf();
+        /* Retrieving the ID of the player who must play */
+        int idPlayerPrior = timeBoard.turnOf();
 
+        if(mode == GameMode.GUI) {
             /* Displaying the player who must play */
             GUIView.turnView(context, idPlayerPrior);
-        }
-        else {
-            /* Retrieving the ID of the player who must play */
-            int idPlayerPrior = timeBoard.turnOf();
-
+        } else {
             /* Getting playable pieces */
             ArrayList<Piece> playablePieces = pieceList.nextPieces();
-
             /* Displaying the player who must play */
             ConsoleView.statusView(player1, player2, timeBoard, idPlayerPrior, playablePieces);
         }
@@ -162,9 +159,9 @@ public interface Game {
             if (event == null || !event.getAction().equals(Event.Action.KEY_PRESSED)) {
                 Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
             } else {
-                if (event.getKey().equals(KeyboardKey.O)) {
+                if (event.getKey().equals(KeyboardKey.O)) {     /* Oui */
                     Game.buy(context, pieceList, players, timeBoard, idPlayerPrior, mode);
-                } else if (event.getKey().equals(KeyboardKey.N)) {
+                } else if (event.getKey().equals(KeyboardKey.N)) {      /* Non */
                     Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
                 } else {
                     Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
