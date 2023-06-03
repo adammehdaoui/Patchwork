@@ -381,11 +381,6 @@ public interface Game {
             int x, y;
             ArrayList<Piece> playablePieces = pieceList.nextPieces();
 
-            //pas necessaire
-//            for (Piece playablePiece : playablePieces) {
-//                System.out.println(playablePiece);
-//            }
-
             /* Asking the player which piece they want to buy */
             ConsoleView.whichPiece();
             Scanner sc = new Scanner(System.in);
