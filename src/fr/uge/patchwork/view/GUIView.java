@@ -352,7 +352,7 @@ public final class GUIView {
             int max = 0;
 
             graphics2D.setColor(Color.BLACK);
-            graphics2D.fillRect(0, height * 3/4, width/3, height/3);
+            graphics2D.fillRect(0, height * 3/4, width/3 - 50, height/3);
 
             schema = currentPiece;
 
