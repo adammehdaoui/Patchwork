@@ -6,8 +6,6 @@
 
 ## 1. Lancer le jeu
 
----
-
 > Pour lancer le jeu, il suffit d'aller dans le répertoire du jeu puis dans le dossier
 **target** et de lancer le fichier Patchwork.jar avec la commande suivante :
 
@@ -17,15 +15,11 @@ java -jar Patchwork.jar
 
 ## 2. En jeu
 
----
-
 Une fois le jeu lancé, il vous sera demandé de choisir un mode de jeu. Vous pouvez alors
 choisir entre la version `1` (base), `2` (complète) ou `3` (personnalisée). Si vous choisissez une version invalide, le jeu vous le signalera et s'arrêtera.
 Le jeu vous demande ensuite l'affichage souhaité pour le jeu. Vous pouvez choisir entre `1` (console) et `2` (graphique). Si vous choisissez une version invalide, pour le mode ou l'affichage, le jeu vous le signalera et s'arrêtera.
 
 ### 1. Console
-
----
 
 L'affichage de l'état du jeu se fait dans la console. Il se fait dans l'ordre suivant :
 
@@ -57,8 +51,6 @@ La partie se termine lorsque les deux joueurs sont arrivés à la fin du `TimeBo
 Le joueur gagnant est alors affiché dans le terminal.
 
 ### 2. Graphique
-
----
 
 #### 1. Affichages
 
