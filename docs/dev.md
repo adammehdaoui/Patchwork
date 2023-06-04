@@ -12,6 +12,9 @@ L'architecture demandée pour le projet est le modèle `MVC` (Modèle-Vue-Contr�
 
 ![diagram_controllers](diagram_controllers.png "Diagramme logique des contrôleurs")
 
+Un enum permettant de définir les différents états du jeu est également présent dans le package `controller` : `GameMode`.
+Il représente le mode de jeu choisi (avec l'interface graphique ou dans la console).
+
 # 2.2. Modèles
 
 > En ce qui concerne la couche "modèle", on a décidé de séparer les différents objets du jeu de cette manière :
@@ -26,5 +29,8 @@ L'architecture demandée pour le projet est le modèle `MVC` (Modèle-Vue-Contr�
 
 # 2.3. Vues
 
-> La couche "vue" n'est pour l'instant pas exploitée, car la phase 2 se limite à un affichage console et à une interface en ligne de commande. La phase 3 sera dédiée à l'implémentation de la couche "vue" avec une interface graphique. 
+> La couche "vue" est séparée en deux interfaces : `GUIView` et `ConsoleView`. 
+
+- Lorsque l'utilisateur choisit le mode d'affichage "GUI" (Graphical User Interface), on appelera les méthodes statiques de `GUIView` qui utilisent la librairie Zen5 pour affichage graphique du jeu. 
+- Lorsque l'utilisateur choisit le mode d'affichage "Console", on appelera les méthodes statiques de `ConsoleView` qui n'utilisent pas de librairie graphique et affichent le jeu directement dans la console.
 
