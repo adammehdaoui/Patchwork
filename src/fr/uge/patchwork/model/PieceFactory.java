@@ -8,6 +8,7 @@ import java.io.InputStreamReader;   // interdit par le sujet !
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * Class dedicated to the reading of a file containing all the pieces of the game to interpret.
@@ -25,6 +26,15 @@ public record PieceFactory(Path path) {
      * @throws IOException error while reading the file
      */
     public void read(PieceSet pieces) throws IOException {
+        /*String line;
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("File not found in resources directory");
+        }
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));*/
+
         String line;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
 
@@ -32,10 +42,10 @@ public record PieceFactory(Path path) {
             throw new FileNotFoundException("File not found in resources directory");
         }
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        Scanner scanner = new Scanner(inputStream);
 
-        while ((line = reader.readLine()) != null) {
-            String[] data = line.split(" ");
+        while (scanner.hasNextLine()) {
+            String[] data = scanner.nextLine().split(" ");
             var schema = new ArrayList<ArrayList<Boolean>>();
 
             while(data[0].equals("o") || data[0].equals("x")){
@@ -49,7 +59,7 @@ public record PieceFactory(Path path) {
                 }
                 schema.add(row);
 
-                line = reader.readLine();
+                line = scanner.nextLine();
                 data = line.split(" ");
             }
 

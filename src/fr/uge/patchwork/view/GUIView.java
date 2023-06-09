@@ -170,7 +170,7 @@ public final class GUIView {
     public static void playablePiecesView(ApplicationContext context, ArrayList<Piece> playablePieces,
                                    ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBoolean)
             throws IOException, FontFormatException {
-        BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
+        var filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
 
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
         InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
@@ -282,7 +282,7 @@ public final class GUIView {
      */
     public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
             throws IOException, FontFormatException {
-        BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
+        var filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
 
         Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
         InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
@@ -435,7 +435,11 @@ public final class GUIView {
     	BufferedImage img;
     	
     	try (var input = GUIView.class.getClassLoader().getResourceAsStream(path)) {
-    	    img = ImageIO.read(input);
+            if (input == null){
+                throw new IllegalArgumentException("file not found! " + path);
+            }
+
+            img = ImageIO.read(input);
     	    img = scale(img, w, h);
     	} catch (IOException e) {
     	    throw new RuntimeException(e);
