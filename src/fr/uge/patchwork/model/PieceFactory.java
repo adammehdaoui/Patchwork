@@ -1,10 +1,7 @@
 package fr.uge.patchwork.model;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;   // interdit par le sujet !
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -16,6 +13,10 @@ import java.util.Scanner;
  */
 public record PieceFactory(Path path) {
 
+    /**
+     * Constructor of the class.
+     * @param path path of the file to read
+     */
     public PieceFactory {
         Objects.requireNonNull(path);
     }
@@ -26,20 +27,11 @@ public record PieceFactory(Path path) {
      * @throws IOException error while reading the file
      */
     public void read(PieceSet pieces) throws IOException {
-        /*String line;
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
-
-        if (inputStream == null) {
-            throw new FileNotFoundException("File not found in resources directory");
-        }
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));*/
-
         String line;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path.toString());
 
         if (inputStream == null) {
-            throw new FileNotFoundException("File not found in resources directory");
+            throw new IOException("File could not been opened");
         }
 
         Scanner scanner = new Scanner(inputStream);

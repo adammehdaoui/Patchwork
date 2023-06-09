@@ -1,6 +1,7 @@
 package fr.uge.patchwork.model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class dedicated to the representation of a piece (or a "patch" of the game).
@@ -10,6 +11,29 @@ import java.util.ArrayList;
  * @param button presence of a button on the piece
  */
 public record Piece(ArrayList<ArrayList<Boolean>> schema, int cost, int time, int button) {
+
+    /**
+     * Constructor of the class to controls the parameters.
+     * @param schema diagram of the piece
+     * @param cost cost of the piece
+     * @param time time to place the piece
+     * @param button presence of a button on the piece
+     */
+    public Piece {
+        Objects.requireNonNull(schema);
+
+        if (cost < 0) {
+            throw new IllegalArgumentException("Cost of piece must be positive.");
+        }
+
+        if (time < 0) {
+            throw new IllegalArgumentException("Time gain of piece must be positive.");
+        }
+
+        if(button < 0) {
+            throw new IllegalArgumentException("Button gain of piece must be positive.");
+        }
+    }
 
     /**
      * Count the number of "true" in the piece's diagram.

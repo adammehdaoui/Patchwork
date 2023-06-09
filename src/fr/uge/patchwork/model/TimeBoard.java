@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Class dedicated to the representation of the game board ("TimeBoard").
  */
-public class TimeBoard {
+public final class TimeBoard {
 
     public final ArrayList<Cell> cells;
     private final static int nbCases = 54;

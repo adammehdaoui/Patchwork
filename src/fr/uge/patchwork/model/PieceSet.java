@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Class representing the list of pieces available in the game.
  */
-public class PieceSet {
+public final class PieceSet {
     private final ArrayList<Piece> pieces;
     private int neutralPiece;
 
