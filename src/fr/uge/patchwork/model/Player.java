@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Class dedicated to the representation of a player of the game.
  */
-public class Player {
+public final class Player {
 
     private final int id;
     private int buttons;

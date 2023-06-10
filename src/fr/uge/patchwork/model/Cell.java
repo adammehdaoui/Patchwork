@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Class dedicated to the representation of a cell of the game board ("TimeBoard").
  */
-public class Cell {
+public final class Cell {
 
     private Player player1;
     private Player player2;

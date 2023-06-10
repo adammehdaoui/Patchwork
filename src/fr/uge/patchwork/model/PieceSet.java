@@ -3,12 +3,11 @@ package fr.uge.patchwork.model;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class representing the list of pieces available in the game.
  */
-public class PieceSet {
+public final class PieceSet {
     private final ArrayList<Piece> pieces;
     private int neutralPiece;
 

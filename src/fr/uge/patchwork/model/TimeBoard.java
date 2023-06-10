@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Class dedicated to the representation of the game board ("TimeBoard").
  */
-public class TimeBoard {
+public final class TimeBoard {
 
     public final ArrayList<Cell> cells;
     private final static int nbCases = 54;
@@ -292,62 +292,5 @@ public class TimeBoard {
 
         return sb.toString();
     }
-
-    /*public Cell[][] formSpiralMatrix()
-    {
-        Cell[][] mat = new Cell[8][8];
-
-        int top = 0,
-                bottom = 8 - 1,
-                left = 0,
-                right = 8 - 1;
-
-        int index = 0;
-
-        while (true) {
-            if (left > right)
-                break;
-
-            for (int i = left; i <= right; i++){
-                    if (nbCases - 1 == index) {
-                        break;
-                    }
-
-                mat[top][i] = cells.get(index++);
-            }
-            top++;
-
-            for (int i = top; i <= bottom; i++) {
-                if (nbCases - 1 == index) {
-                    break;
-                }
-                mat[i][right] = cells.get(index++);
-            }
-            right--;
-
-            if (left > right)
-                break;
-
-            for (int i = right; i >= left; i--) {
-                if (nbCases - 1 == index) {
-                    break;
-                }
-                mat[bottom][i] = cells.get(index++);
-            }
-            bottom--;
-
-            if (top > bottom)
-                break;
-
-            for (int i = bottom; i >= top; i--) {
-                if (nbCases - 1 == index) {
-                    break;
-                }
-                mat[i][left] = cells.get(index++);
-            }
-            left++;
-        }
-        return mat;
-    }*/
 
 }
