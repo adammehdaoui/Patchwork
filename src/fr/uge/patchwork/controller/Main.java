@@ -2,6 +2,7 @@ package fr.uge.patchwork.controller;
 
 import java.awt.*;
 import java.io.IOException;
+import static java.lang.System.exit;
 
 /**
  * Main class of the game.
@@ -19,6 +20,8 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException, IOException, FontFormatException,
             InterruptedException {
         Game.start();
+
+        exit(0);
     }
 
 }

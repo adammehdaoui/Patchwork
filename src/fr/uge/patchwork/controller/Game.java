@@ -97,7 +97,7 @@ public interface Game {
 
                 try {
                     Game.end(context, players, mode);
-                } catch (IOException | FontFormatException e) {
+                } catch (IOException | FontFormatException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             });
@@ -694,7 +694,7 @@ public interface Game {
      * @throws FontFormatException if the font is not valid
      */
     static void end(ApplicationContext context, Map<Integer, Player> players, GameMode mode) throws IOException,
-            FontFormatException {
+            FontFormatException, InterruptedException {
         int scorePlayer1 = players.get(1).score();
         int scorePlayer2 = players.get(2).score();
 
@@ -704,6 +704,8 @@ public interface Game {
         else {
             ConsoleView.endView(scorePlayer1, scorePlayer2);
         }
+
+        Thread.sleep(5000);
     }
 
 }
