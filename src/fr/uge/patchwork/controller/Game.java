@@ -199,15 +199,13 @@ public interface Game {
         }
 
         if (gameVersion.equals("2")) {
-            if (players.get(1).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
-                players.get(1).setSpecialPiece(true);
+            if (players.get(idPlayerPrior).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
+                players.get(idPlayerPrior).setSpecialPiece(true);
                 timeBoard.setSpecialPieceAvailable(false);
-                System.out.println("Le joueur 1 a gagné la tuile spéciale.");
-            }
-            if (players.get(2).getBoard().isSpecialPieceEarnable() && timeBoard.isSpecialPieceAvailable()) {
-                players.get(2).setSpecialPiece(true);
-                timeBoard.setSpecialPieceAvailable(false);
-                System.out.println("Le joueur 2 a gagné la tuile spéciale.");
+                if(mode == GameMode.CONSOLE)
+                    System.out.println("Le joueur " + idPlayerPrior + " a gagné la tuile spéciale. (7x7)");
+                else
+                    GUIView.specialPiece(context, idPlayerPrior);
             }
         }
     }
@@ -339,34 +337,9 @@ public interface Game {
             event = context.pollOrWaitEvent(30000);
             context.pollOrWaitEvent(5000);
 
-            if (idPlayerPrior == 1) {
-                while (event == null || event.getLocation() == null
-                        || event.getLocation().getX() < 65
-                        || event.getLocation().getX() > 65 + 9 * 32
-                        || event.getLocation().getY() < 0
-                        || event.getLocation().getY() > 9 * 32) {
-
-                    event = context.pollOrWaitEvent(30000);
-                    context.pollOrWaitEvent(3000);
-                }
-
-                x = (int) (event.getLocation().getY() / 32);
-                y = (int) (event.getLocation().getX() - 65) / 32;
-            } else {
-
-                while (event == null || event.getLocation() == null
-                        || event.getLocation().getX() < context.getScreenInfo().getWidth() / 1.3
-                        || event.getLocation().getX() > context.getScreenInfo().getWidth() / 1.3 + 9 * 32
-                        || event.getLocation().getY() < 0
-                        || event.getLocation().getY() > 9 * 32) {
-
-                    event = context.pollOrWaitEvent(30000);
-                    context.pollOrWaitEvent(3000);
-                }
-
-                x = (int) (event.getLocation().getY() / 32);
-                y = (int) (event.getLocation().getX() - (context.getScreenInfo().getWidth() / 1.3)) / 32;
-            }
+            int[] position = GUIView.askPosition(event, context, idPlayerPrior);
+            x = position[0];
+            y = position[1];
 
             /* If the player bought the piece, we move him on the time board. We also remove the piece from the list */
             if (players.get(idPlayerPrior).buyPiece(playablePieces.get(idPiece - 1), x, y)) {
@@ -480,70 +453,42 @@ public interface Game {
      */
     static void overtake(ApplicationContext context, Map<Integer, Player> players, TimeBoard timeBoard,
                          int idPlayerPrior, GameMode mode) throws IOException, FontFormatException {
-        if(mode == GameMode.GUI) {
-            int buttonsCrossed, patchesEarned;
-            int distance;
+        int buttonsCrossed, patchesEarned;
+        int distance;
 
-            if (timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0) {
-                distance = 1;
-            } else {
-                distance = timeBoard.distance() + 1;
-            }
-
-            Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
-
-            /* The player gets the number of he has on his board for each button cell he crossed */
-            buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
-            for (int i = 0; i < buttonsCrossed; i++) {
-                players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
-            }
-
-            /* The player earns the patches he has passed */
-            patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
-
-            /* The player earns the patches he has passed */
-            if (buttonsCrossed > 0 || patchesEarned > 0) {
-                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
-            }
-
-            /* Winning the distance in buttons */
-            players.get(idPlayerPrior).addButtons(distance);
-            /* Moving the player in front of his opponent */
-            timeBoard.movePlayer(players.get(idPlayerPrior), distance);
-        }
-        else {
-            int buttonsCrossed, patchesEarned;
-            int distance;
-
-            if (timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0) {
-                distance = 1;
+        if (timeBoard.isInFront() == idPlayerPrior || timeBoard.isInFront() == 0) {
+            distance = 1;
+            if(mode == GameMode.CONSOLE)
                 ConsoleView.wasLeader(idPlayerPrior, distance);
-            } else {
-                distance = timeBoard.distance() + 1;
+        } else {
+            distance = timeBoard.distance() + 1;
+            if(mode == GameMode.CONSOLE)
                 ConsoleView.wasBehind(idPlayerPrior, distance);
-            }
-
-            Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
-
-            /* The player gets the number of he has on his board for each button cell he crossed */
-            buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
-            for (int i = 0; i < buttonsCrossed; i++) {
-                players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
-            }
-
-            /* The player earns the patches he has passed */
-            patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
-
-            /* The player earns the patches he has passed */
-            if (buttonsCrossed > 0 || patchesEarned > 0) {
-                reward(null, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
-            }
-
-            /* Winning the distance in buttons */
-            players.get(idPlayerPrior).addButtons(distance);
-            /* Moving the player in front of his opponent */
-            timeBoard.movePlayer(players.get(idPlayerPrior), distance);
         }
+
+        Map<String, Integer> movement = timeBoard.predictMovement(players.get(idPlayerPrior), distance);
+
+        /* The player gets the number of he has on his board for each button cell he crossed */
+        buttonsCrossed = timeBoard.nbButton(movement.get("start"), movement.get("end"));
+        for (int i = 0; i < buttonsCrossed; i++) {
+            players.get(idPlayerPrior).addButtons(players.get(idPlayerPrior).buttonsToEarn());
+        }
+
+        /* The player earns the patches he has passed */
+        patchesEarned = timeBoard.nbPatch(movement.get("start"), movement.get("end"));
+
+        /* The player earns the patches he has passed */
+        if (buttonsCrossed > 0 || patchesEarned > 0) {
+            if (mode == GameMode.GUI)
+                reward(context, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
+            else
+                reward(null, players, buttonsCrossed, patchesEarned, idPlayerPrior, mode);
+        }
+
+        /* Winning the distance in buttons */
+        players.get(idPlayerPrior).addButtons(distance);
+        /* Moving the player in front of his opponent */
+        timeBoard.movePlayer(players.get(idPlayerPrior), distance);
     }
 
     /**
@@ -559,6 +504,12 @@ public interface Game {
      */
     static void reward(ApplicationContext context, Map<Integer, Player> players, int buttonsCrossed, int patchesEarned,
                        int idPlayerPrior, GameMode mode) throws IOException, FontFormatException {
+        var schema = new ArrayList<ArrayList<Boolean>>();
+        var row = new ArrayList<Boolean>();
+        row.add(true);
+        schema.add(row);
+        var square = new Piece(schema, 0, 0, 0);
+
         if(mode == GameMode.GUI) {
             int x;
             int y;
@@ -575,68 +526,19 @@ public interface Game {
                 Event event = context.pollOrWaitEvent(30000);
                 context.pollOrWaitEvent(3000);
 
-                if (idPlayerPrior == 1) {
-                    while (event == null || event.getLocation() == null
-                            || event.getLocation().getX() < 65
-                            || event.getLocation().getX() > 65 + 9 * 32
-                            || event.getLocation().getY() < 0
-                            || event.getLocation().getY() > 9 * 32) {
+                int[] position = GUIView.askPosition(event, context, idPlayerPrior);
+                x = position[0];
+                y = position[1];
 
-                        event = context.pollOrWaitEvent(30000);
-                        context.pollOrWaitEvent(3000);
-                    }
 
-                    x = (int) (event.getLocation().getY() / 32);
-                    y = (int) (event.getLocation().getX() - 65) / 32;
-                } else {
-                    while (event == null || event.getLocation() == null
-                            || event.getLocation().getX() < context.getScreenInfo().getWidth() / 1.3
-                            || event.getLocation().getX() > context.getScreenInfo().getWidth() / 1.3 + 9 * 32
-                            || event.getLocation().getY() < 0
-                            || event.getLocation().getY() > 9 * 32) {
-
-                        event = context.pollOrWaitEvent(30000);
-                        context.pollOrWaitEvent(3000);
-                    }
-
-                    x = (int) (event.getLocation().getY() / 32);
-                    y = (int) (event.getLocation().getX() - (context.getScreenInfo().getWidth() / 1.3)) / 32;
-                }
-
-                var schema = new ArrayList<ArrayList<Boolean>>();
-                var row = new ArrayList<Boolean>();
-                row.add(true);
-                schema.add(row);
-                var square = new Piece(schema, 0, 0, 0);
 
                 while (!players.get(idPlayerPrior).buyPiece(square, x, y)) {
                     event = context.pollOrWaitEvent(30000);
                     context.pollOrWaitEvent(3000);
 
-                    if (idPlayerPrior == 1) {
-                        while (event == null || event.getLocation() == null || event.getLocation().getX() < 65
-                                || event.getLocation().getX() > 65 + 9 * 32 || event.getLocation().getY() < 0
-                                || event.getLocation().getY() > 9 * 32) {
-
-                            event = context.pollOrWaitEvent(30000);
-                            context.pollOrWaitEvent(3000);
-                        }
-
-                        x = (int) (event.getLocation().getY() / 32);
-                        y = (int) (event.getLocation().getX() - 65) / 32;
-                    } else {
-                        while (event == null || event.getLocation() == null
-                                || event.getLocation().getX() < context.getScreenInfo().getWidth() * 1 / 3
-                                || event.getLocation().getX() > context.getScreenInfo().getWidth() * 1 / 3 + 9 * 32
-                                || event.getLocation().getY() < 0 || event.getLocation().getY() > 9 * 32) {
-
-                            event = context.pollOrWaitEvent(30000);
-                            context.pollOrWaitEvent(3000);
-                        }
-
-                        x = (int) (event.getLocation().getY() / 32);
-                        y = (int) (event.getLocation().getX() - context.getScreenInfo().getWidth() * 1 / 3) / 32;
-                    }
+                    position = GUIView.askPosition(event, context, idPlayerPrior);
+                    x = position[0];
+                    y = position[1];
                 }
             }
         }
@@ -669,12 +571,6 @@ public interface Game {
                         sc.nextLine();
                     }
                 }
-
-                var schema = new ArrayList<ArrayList<Boolean>>();
-                var row = new ArrayList<Boolean>();
-                row.add(true);
-                schema.add(row);
-                var square = new Piece(schema, 0, 0, 0);
 
                 while (!players.get(idPlayerPrior).buyPiece(square, x, y)) {
                     ConsoleView.cantPlacePatch();

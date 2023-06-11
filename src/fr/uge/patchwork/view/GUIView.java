@@ -13,11 +13,23 @@ import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
 import fr.umlv.zen5.*;
+import fr.umlv.zen5.Event;
 
 /**
  * Class dedicated to the graphic representation of the game.
  */
 public final class GUIView {
+    private final static Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+    private final static InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
+    private final static Font font;
+
+    static {
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Method that returns a BufferedImage from a file.
@@ -44,10 +56,6 @@ public final class GUIView {
         BufferedImage player2 = fileToImage("Player/player2.png", 14, 14);
         BufferedImage tagPlayer1 = fileToImage("Player/tagPlayer1.png", 45, 45);
         BufferedImage tagPlayer2 = fileToImage("Player/tagPlayer2.png", 45, 45);
-
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -172,10 +180,6 @@ public final class GUIView {
             throws IOException, FontFormatException {
         var filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
 
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
-
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
@@ -231,9 +235,6 @@ public final class GUIView {
      * @throws FontFormatException if the font is not found
      */
     public static void turnView(ApplicationContext context, int idPlayerPrior) throws IOException, FontFormatException {
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -258,9 +259,6 @@ public final class GUIView {
      * @throws FontFormatException if the font is not found
      */
     public static void winPatchView(ApplicationContext context) throws IOException, FontFormatException {
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -283,10 +281,6 @@ public final class GUIView {
     public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
             throws IOException, FontFormatException {
         var filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
-
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -337,10 +331,6 @@ public final class GUIView {
             throws IOException, FontFormatException {
         BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
 
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
-
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
 
@@ -379,6 +369,59 @@ public final class GUIView {
     }
 
     /**
+     * Display the view of the game when the plauer win the special piece
+     * @param context the context of the game
+     * @param idPlayerPrior the id of the player who win the special piece
+     * @throws IOException if the file of the image is not found
+     * @throws FontFormatException if the font is not found
+     */
+    public static void specialPiece(ApplicationContext context, int idPlayerPrior) throws IOException, FontFormatException {
+
+        int width = (int)context.getScreenInfo().getWidth();
+        int height = (int)context.getScreenInfo().getHeight();
+
+        context.renderFrame(graphics2D -> {
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(font.deriveFont(20f));
+
+            graphics2D.drawString("Le Joueur " + idPlayerPrior + " à gagné la tuile spécial 7x7", width*5/6, height*19/20);
+        });
+    }
+
+    /**
+     * return the position of the click of the player when he has to choose a place to put his piece
+     * @param event the event of the click
+     * @param context the context of the game
+     * @param idPlayerPrior the id of the player who has to choose a place to put his piece
+     */
+    public static int[] askPosition(Event event, ApplicationContext context, int idPlayerPrior){
+        if (idPlayerPrior == 1) {
+            while (event == null || event.getLocation() == null
+                    || event.getLocation().getX() < 65
+                    || event.getLocation().getX() > 65 + 9 * 32
+                    || event.getLocation().getY() < 0
+                    || event.getLocation().getY() > 9 * 32) {
+
+                event = context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(3000);
+            }
+            return new int[]{(int) (event.getLocation().getY() / 32), (int) (event.getLocation().getX() - 65) / 32};
+        } else {
+
+            while (event == null || event.getLocation() == null
+                    || event.getLocation().getX() < context.getScreenInfo().getWidth() / 1.3
+                    || event.getLocation().getX() > context.getScreenInfo().getWidth() / 1.3 + 9 * 32
+                    || event.getLocation().getY() < 0
+                    || event.getLocation().getY() > 9 * 32) {
+
+                event = context.pollOrWaitEvent(30000);
+                context.pollOrWaitEvent(3000);
+            }
+            return new int[]{(int) (event.getLocation().getY() / 32), (int) (event.getLocation().getX() - (context.getScreenInfo().getWidth() / 1.3)) / 32};
+        }
+    }
+
+    /**
      * Display the view of the game when the player has to choose a piece to buy
      * @param context the context of the game
      */
@@ -398,9 +441,6 @@ public final class GUIView {
      * @throws FontFormatException if the font is not found
      */
     public static void endView(ApplicationContext context, int scorePlayer1, int scorePlayer2) throws IOException, FontFormatException {
-        Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
-        InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
-        Font font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(fontStream));
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
