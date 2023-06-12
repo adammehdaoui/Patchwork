@@ -173,7 +173,7 @@ public interface Game {
             if (event == null || !event.getAction().equals(Event.Action.KEY_PRESSED)) {
                 Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
             } else {
-                if (event.getKey().equals(KeyboardKey.O)) {     /* Oui */
+                if (event.getKey().equals(KeyboardKey.O)) {             /* Oui */
                     Game.buy(context, pieceList, players, timeBoard, idPlayerPrior, mode);
                 } else if (event.getKey().equals(KeyboardKey.N)) {      /* Non */
                     Game.overtake(context, players, timeBoard, idPlayerPrior, mode);
@@ -310,19 +310,21 @@ public interface Game {
             context.pollOrWaitEvent(5000);
 
             while (event.getKey() == null || !event.getKey().equals(KeyboardKey.V)) {
-                if (event.getKey() != null && event.getKey().equals(KeyboardKey.R)) {
-                    /* Replacement of the piece by the rotate piece */
-                    playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
-                    schema = playablePieces.get(idPiece - 1).schema();
-                    GUIView.currentPieceView(context, schema);
-                    GUIView.turnView(context, idPlayerPrior);
-                } else if (event.getKey() != null && event.getKey().equals(KeyboardKey.I)) {
-                    /* Replacement of the piece with the invert piece */
-                    playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
-                    schema = playablePieces.get(idPiece - 1).schema();
-                    GUIView.currentPieceView(context, schema);
-                    GUIView.turnView(context, idPlayerPrior);
-                }
+            		if(event.getKey() != null) {
+	                if (event.getKey().equals(KeyboardKey.R)) {
+	                    /* Replacement of the piece by the rotate piece */
+	                    playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).rotate());
+	                    schema = playablePieces.get(idPiece - 1).schema();
+	                    GUIView.currentPieceView(context, schema);
+	                    GUIView.turnView(context, idPlayerPrior);
+	                } else if (event.getKey().equals(KeyboardKey.I)) {
+	                    /* Replacement of the piece with the invert piece */
+	                    playablePieces.set(idPiece - 1, playablePieces.get(idPiece - 1).invert());
+	                    schema = playablePieces.get(idPiece - 1).schema();
+	                    GUIView.currentPieceView(context, schema);
+	                    GUIView.turnView(context, idPlayerPrior);
+	                }
+               } 
 
                 event = context.pollOrWaitEvent(30000);
                 context.pollOrWaitEvent(5000);
