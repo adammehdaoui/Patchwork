@@ -19,7 +19,7 @@ import fr.umlv.zen5.Event;
  * Class dedicated to the graphic representation of the game.
  */
 public final class GUIView {
-    private final static Path path = Path.of("Font/Montserrat/static/Montserrat-Black.ttf");
+    private final static Path path = Path.of("Montserrat-Black.ttf");
     private final static InputStream fontStream = GUIView.class.getClassLoader().getResourceAsStream(path.toString());
     private final static Font font;
 
@@ -45,17 +45,17 @@ public final class GUIView {
     public static void statusView(ApplicationContext context, TimeBoard timeBoard, Player p1, Player p2,
                            PlayerBoard player1Board, PlayerBoard player2Board) throws IOException,
                                   FontFormatException {
-        BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
-        BufferedImage outlineSquare = fileToImage("Board/outlineSquare.png", 30, 30);
-        BufferedImage outlineSquareTB = fileToImage("Board/outlineSquare.png", 60, 60);
-        BufferedImage button = fileToImage("Board/button.png", 30, 30);
-        BufferedImage miniButton = fileToImage("Board/button.png", 15, 15);
-        BufferedImage patch = fileToImage("Board/patch.png", 30, 30);
+        BufferedImage filledSquare = fileToImage("filledSquare.png", 30, 30);
+        BufferedImage outlineSquare = fileToImage("outlineSquare.png", 30, 30);
+        BufferedImage outlineSquareTB = fileToImage("outlineSquare.png", 60, 60);
+        BufferedImage button = fileToImage("button.png", 30, 30);
+        BufferedImage miniButton = fileToImage("button.png", 15, 15);
+        BufferedImage patch = fileToImage("patch.png", 30, 30);
 
-        BufferedImage player1 = fileToImage("Player/player1.png", 15, 15);
-        BufferedImage player2 = fileToImage("Player/player2.png", 14, 14);
-        BufferedImage tagPlayer1 = fileToImage("Player/tagPlayer1.png", 45, 45);
-        BufferedImage tagPlayer2 = fileToImage("Player/tagPlayer2.png", 45, 45);
+        BufferedImage player1 = fileToImage("player1.png", 15, 15);
+        BufferedImage player2 = fileToImage("player2.png", 14, 14);
+        BufferedImage tagPlayer1 = fileToImage("tagPlayer1.png", 45, 45);
+        BufferedImage tagPlayer2 = fileToImage("tagPlayer2.png", 45, 45);
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -178,7 +178,7 @@ public final class GUIView {
     public static void playablePiecesView(ApplicationContext context, ArrayList<Piece> playablePieces,
                                    ArrayList<ArrayList<ArrayList<Boolean>>> playablePiecesBoolean)
             throws IOException, FontFormatException {
-        var filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
+        var filledSquare = fileToImage("filledSquare.png", 30, 30);
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -280,7 +280,7 @@ public final class GUIView {
      */
     public static void currentPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
             throws IOException, FontFormatException {
-        var filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
+        var filledSquare = fileToImage("filledSquare.png", 30, 30);
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();
@@ -329,7 +329,7 @@ public final class GUIView {
      */
     public static void validatedPieceView(ApplicationContext context, ArrayList<ArrayList<Boolean>> currentPiece)
             throws IOException, FontFormatException {
-        BufferedImage filledSquare = fileToImage("Board/filledSquare.png", 30, 30);
+        BufferedImage filledSquare = fileToImage("filledSquare.png", 30, 30);
 
         int width = (int)context.getScreenInfo().getWidth();
         int height = (int)context.getScreenInfo().getHeight();

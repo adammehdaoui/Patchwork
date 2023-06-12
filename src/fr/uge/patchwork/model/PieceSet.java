@@ -30,21 +30,21 @@ public final class PieceSet {
         switch (gameVersion) {
             case "1" -> {
                 /* Creation of the pieces of the basic game version */
-                var file = new PieceFactory(Path.of("Pieces/base.txt"));
+                var file = new PieceFactory(Path.of("base.txt"));
                 file.read(this);
             }
 
             /* Complete game */
             case "2" -> {
                 /* Creation of the pieces of the complete game version */
-                var file = new PieceFactory(Path.of("Pieces/complet.txt"));
+                var file = new PieceFactory(Path.of("complet.txt"));
                 file.read(this);
             }
 
             /* Custom game */
             case "3" -> {
                 /* Creation of the pieces of the custom game version */
-                var file = new PieceFactory(Path.of("Pieces/custom.txt"));
+                var file = new PieceFactory(Path.of("custom.txt"));
                 file.read(this);
             }
 
