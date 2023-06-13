@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-    </content>
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="zen5" level="project" />
-  </component>
-</module>
+<project name="Patchwork" default="jar" basedir=".">
+    <property name="src.dir" value="src" />
+    <property name="build.dir" value="target" />
+    <property name="res.dir" value="resources" />
+    <property name="lib.dir" value="lib" />
+    <property name="lib.file" value="${lib.dir}/zen.jar" />
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar" />
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}" />
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath refid="classpath" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.dir}/Patchwork.jar" basedir="${build.dir}">
+            <fileset dir="${res.dir}" includes="**/*" />
+            <fileset file="${lib.file}" />
+            <manifest>
+                <attribute name="Main-Class" value="fr.uge.patchwork.controller.Main" />
+            </manifest>
+            <zipgroupfileset dir="${java.home}" includes="lib/*.jar" />
+        </jar>
+    </target>
+</project>
