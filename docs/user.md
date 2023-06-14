@@ -21,7 +21,33 @@ Une fois le jeu lancé, il vous sera demandé de choisir un mode de jeu. Vous po
 choisir entre la version `1` (base), `2` (complète) ou `3` (personnalisée). Si vous choisissez une version invalide, le jeu vous le signalera et s'arrêtera.
 Le jeu vous demande ensuite l'affichage souhaité pour le jeu. Vous pouvez choisir entre `1` (console) et `2` (graphique). Si vous choisissez une version invalide, pour le mode ou l'affichage, le jeu vous le signalera et s'arrêtera.
 
-### 2.1. Console
+### 2.1. Version Personnalisée
+
+---
+
+Si vous voulez utiliser la version personnalisée, il vous faudra remplir le fichier `ressources/custom.txt` avec les pièces que vous souhaitez utiliser. <br>
+Pour cela, il vous suffit de remplir le fichier avec les pièces que vous souhaitez utiliser en suivant le format suivant :
+
+```shell
+x x
+x x
+3 4 1
+
+x x o
+o x x
+x x x
+2 2 0
+```
+
+> x : case remplie<br>
+> o : case vide<br>
+> 3 : prix en boutons<br>
+> 4 : prix en temps<br>
+> 1 : nombre de boutons sur la piece<br>
+
+<br>
+
+### 2.2. Console
 
 ---
 
@@ -35,7 +61,7 @@ L'affichage de l'état du jeu se fait dans la console. Il se fait dans l'ordre s
 
 À ce moment, il y a deux possibilités pour le joueur :
 
-#### ***2.1.1. Acheter une pièce***
+#### ***2.2.1. Acheter une pièce***
 
 Pour acheter une pièce le joueur saisit **"oui"** puis choisit la pièce qu'il veut acheter en entrant sa position (1, 2 ou 3) dans l'affichage tel qu'il est dans le terminal.
 
@@ -47,28 +73,28 @@ Le joueur a ensuite le choix entre trois possibilités :
 
 <br>
 
-#### ***2.1.2. Passer son tour***
+#### ***2.2.2. Passer son tour***
 
 Pour passer son tour, le joueur saisit **"non"**.
 
-#### ***2.1.3. Fin de partie***
+#### ***2.2.3. Fin de partie***
 
 La partie se termine lorsque les deux joueurs sont arrivés à la fin du `TimeBoard`.
 Le joueur gagnant est alors affiché dans le terminal.
 
 <br>
 
-### 2.2. Graphique
+### 2.3. Graphique
 
 ---
 
-#### ***2.2.1. Affichages***
+#### ***2.3.1. Affichages***
 
 - Le plateau du joueur 1 est affiché en haut à gauche de la fenêtre et le plateau du joueur 2 est affiché en haut à droite de la fenêtre (avec chacun en dessous le nombre de boutons que possède le joueur correspondant).
 - Le joueur dont c'est le tour est affiché en bas à droite de la fenêtre.
 - Les commandes du jeu sont affichées à droite ou en bas à gauche de la fenêtre.
 
-#### ***2.2.2. Commandes en jeu***
+#### ***2.3.2. Commandes en jeu***
 
 O : Acheter une pièce
 <br>
@@ -85,6 +111,6 @@ V : Valider la pièce
 
 > Une fois la pièce validée, le joueur peut la poser sur son plateau en cliquant sur une case.
 
-#### ***2.2.3. Fin de partie***
+#### ***2.3.3. Fin de partie***
 
 La partie se termine lorsque les deux joueurs sont arrivés à la fin du `"TimeBoard"`. Une fenêtre s'affiche alors pour indiquer le joueur gagnant avec son nombre de points.
