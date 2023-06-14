@@ -4,7 +4,7 @@
     <property name="build.dir" value="target" />
     <property name="res.dir" value="resources" />
     <property name="lib.dir" value="lib" />
-    <property name="lib.file" value="${lib.dir}/zen.jar" />
+    <property name="lib.file" value="${lib.dir}/zen5.jar" />
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar" />
@@ -14,21 +14,26 @@
         <delete dir="${build.dir}" />
     </target>
 
-    <target name="compile">
+    <target name="compile" depends="clean">
         <mkdir dir="${build.dir}" />
         <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
-            <classpath refid="classpath" />
+            <classpath>
+                <fileset dir="${lib.dir}" includes="**/*.jar" />
+            </classpath>
         </javac>
     </target>
 
     <target name="jar" depends="compile">
-        <jar destfile="${build.dir}/Patchwork.jar" basedir="${build.dir}">
+        <mkdir dir="${build.dir}/jar" />
+        <copy todir="${build.dir}/jar/lib">
+            <fileset dir="${lib.dir}" includes="**/*.jar" />
+        </copy>
+        <jar destfile="${build.dir}/jar/Patchwork.jar" basedir="${build.dir}">
             <fileset dir="${res.dir}" includes="**/*" />
-            <fileset file="${lib.file}" />
             <manifest>
                 <attribute name="Main-Class" value="fr.uge.patchwork.controller.Main" />
+                <attribute name="Class-Path" value="lib/zen5.jar" />
             </manifest>
-            <zipgroupfileset dir="${java.home}" includes="lib/*.jar" />
         </jar>
     </target>
 </project>
