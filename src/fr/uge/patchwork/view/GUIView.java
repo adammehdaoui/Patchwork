@@ -1,9 +1,7 @@
 package fr.uge.patchwork.view;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.awt.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -12,6 +10,8 @@ import fr.uge.patchwork.model.Player;
 import fr.uge.patchwork.model.PlayerBoard;
 import fr.uge.patchwork.model.TimeBoard;
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import fr.umlv.zen5.*;
 import fr.umlv.zen5.Event;
 
@@ -496,6 +496,7 @@ public final class GUIView {
      */
     public static BufferedImage scale(BufferedImage src, int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+
         int x, y;
         int ww = src.getWidth();
         int hh = src.getHeight();
@@ -509,6 +510,7 @@ public final class GUIView {
                 img.setRGB(x, y, col);
             }
         }
+        
         return img;
     }
 

@@ -25,8 +25,9 @@ Le jeu vous demande ensuite l'affichage souhaité pour le jeu. Vous pouvez chois
 
 ---
 
-Si vous voulez utiliser la version personnalisée, il vous faudra remplir le fichier `ressources/custom.txt` avec les pièces que vous souhaitez utiliser. <br>
-Pour cela, il vous suffit de remplir le fichier avec les pièces que vous souhaitez utiliser en suivant le format suivant :
+Afin d'utiliser la version personnalisée, il faut remplir le fichier `ressources/custom.txt` avec les pièces customisées que vous souhaitez utiliser. <br>
+Pour cela, il suffit de remplir le fichier avec les pièces que vous souhaitez utiliser en suivant le bon format.
+Les `x` correspondent aux cases remplies et les `o` aux cases vides (il faut remplir par des cases `o` lorsque la pièce n'est pas de forme rectangulaire). 
 
 ```shell
 x x
@@ -39,11 +40,20 @@ x x x
 2 2 0
 ```
 
-> x : case remplie<br>
-> o : case vide<br>
-> 3 : prix en boutons<br>
-> 4 : prix en temps<br>
-> 1 : nombre de boutons sur la piece<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Par rapport à la première pièce :
+
+> `x` : case remplie<br>
+> `o` : case vide<br>
+> 3 : coût en boutons<br>
+> 4 : coût en temps<br>
+> 1 : nombre de boutons sur la pièce<br>
 
 <br>
 
@@ -71,8 +81,6 @@ Le joueur a ensuite le choix entre trois possibilités :
 2. Retourner la pièce choisie (en saisissant `invert`)
 3. Placer la pièce choisie avec les modifications effectuées (en saisissant `validate`)
 
-<br>
-
 #### ***2.2.2. Passer son tour***
 
 Pour passer son tour, le joueur saisit **"non"**.
@@ -82,6 +90,11 @@ Pour passer son tour, le joueur saisit **"non"**.
 La partie se termine lorsque les deux joueurs sont arrivés à la fin du `TimeBoard`.
 Le joueur gagnant est alors affiché dans le terminal.
 
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
 ### 2.3. Graphique

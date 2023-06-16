@@ -10,7 +10,7 @@
 **target** et de lancer le fichier Patchwork.jar avec la commande suivante :
 
 ```shell
-java -jar Patchwork.jar
+java -jar target/jar/Patchwork.jar
 ```
 
 ## 2. En jeu

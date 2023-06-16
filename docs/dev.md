@@ -1,5 +1,22 @@
 # Architecture technique
 
+> Afin de recompiler le projet on peut utiliser Ant et les commandes suivantes qui se baseront sur fichier `build.xml` à la racine du projet :
+
+Pour compiler le projet :
+```shell
+ant
+```
+
+Pour nettoyer le projet :
+```shell
+ant clean
+```
+
+Pour lancer le jar :
+```
+java -jar target/jar/Patchwork.jar
+```
+
 ## 1. Architecture demandée
 
 L'architecture demandée pour le projet est le modèle `MVC` (Modèle-Vue-Contrôleur). Le modèle `MVC` est un modèle d'architecture logicielle destiné aux interfaces graphiques. Il est utilisé pour le développement d'applications et repose sur la séparation du traitement des données (Modèle), de l'interface de l'utilisateur (Vue) et de la logique de contrôle destinée à la liaison entre les deux autres couches (Contrôleur).
